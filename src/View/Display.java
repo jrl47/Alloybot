@@ -5,7 +5,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.HashMap;
 import java.util.List;
+
+import ModelComponents.ModelComponent;
 
 /**
  * 
@@ -30,14 +33,14 @@ public class Display {
 		pixels = new PixelArray(pixel, width);
 	}
 	
-	public void render(Pane p){
+	public void render(List<ModelComponent> components){
     	BufferStrategy bs = canvas.getBufferStrategy();
     	if(bs==null){
     		canvas.createBufferStrategy(3);
     		return;
     	}
     	clear();
-    	setPixels(p.getPixels());
+    	// setPixels(p.getPixels());
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 		g.dispose();

@@ -2,10 +2,13 @@ package View;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JFrame;
 
 import Controller.InputListener;
+import ModelComponents.ModelComponent;
 
 public class View {
 	public static int width = 800;
@@ -14,7 +17,6 @@ public class View {
 	
 	private JFrame frame;
 	private Display display;
-	private Pane primaryPane;
 	private Canvas canvas;
 	public View(InputListener l){
 		Dimension size = new Dimension((int)(width*scale), (int)(height*scale));
@@ -31,7 +33,7 @@ public class View {
 		frame.setFocusable(true);
 		display = new Display(width, height, canvas);
 	}
-	public void render(Object object) {
-		display.render(primaryPane);
+	public void render(List<ModelComponent> s) {
+		display.render(s);
 	}
 }

@@ -1,19 +1,27 @@
 package Model;
 
+import java.util.HashMap;
+import java.util.List;
+
 import Controller.InputListener;
+import ModelComponents.ModelComponent;
 
 public class Model {
 
-	InputListener listener;
-	State state;
+	private InputListener listener;
+	private HashMap<String, List<ModelComponent>> states;
+	private String state;
+	private List<ModelComponent> myComponents;
 	public Model(InputListener l) {
 		listener = l;
 	}
 	public void step() {
-		state.step();
+		for(ModelComponent m: myComponents){
+			m.step();
+		}
 	}
-	public ViewData getViewData() {
-		return state.getViewData();
+	public List<ModelComponent> getScreenState() {
+		return states.get(state);
 	}
 
 }
