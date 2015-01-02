@@ -9,19 +9,16 @@ import ModelComponents.ModelComponent;
 public class Model {
 
 	private InputListener listener;
-	private HashMap<String, List<ModelComponent>> states;
-	private String state;
-	private List<ModelComponent> myComponents;
+	private ModelData data;
 	public Model(InputListener l) {
 		listener = l;
 	}
 	public void step() {
-		for(ModelComponent m: myComponents){
+		for(ModelComponent m: data.getComponents()){
 			m.step();
 		}
 	}
-	public List<ModelComponent> getScreenState() {
-		return states.get(state);
+	public ScreenData getScreenData(){
+		return data.getScreenData();
 	}
-
 }

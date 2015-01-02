@@ -5,11 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-
-
-
 import Model.Model;
-import View.Display;
 import View.View;
 
 /**
@@ -64,7 +60,7 @@ public class Game implements Runnable{
 		model.step();
 	}
 	public void render() {
-		view.render(model.getScreenState());
+		view.render(model.getScreenData());
 	}
 	public void useInput() {
 		
