@@ -1,5 +1,8 @@
 package View;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+
 /**
  * 
  * @author Jacob
@@ -11,6 +14,10 @@ public class PixelArray {
 	public PixelArray(int[] p, int w){
 		pixels = p;
 		width = w;
+	}
+	public PixelArray(BufferedImage b){
+		pixels = ((DataBufferInt) b.getRaster().getDataBuffer()).getData();
+		width = b.getWidth();
 	}
 	public void setPixel(int x, int y, int newValue){
 		pixels[x + y*width] = newValue;

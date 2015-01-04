@@ -19,7 +19,7 @@ import ModelComponents.ModelComponent;
 public class View {
 	public static int width = 800;
 	public static int height = (width / 16) * 9;
-	public static double scale = 2;
+	public static double scale = 1;
 	
 	private JFrame frame;
 	private Canvas canvas;
@@ -48,19 +48,10 @@ public class View {
     		canvas.createBufferStrategy(3);
     		return;
     	}
-    	clear();
-		ScreenBuilder s = new ScreenBuilder(data);
-    	setPixels(s.getPixels());
+		ScreenBuilder s = new ScreenBuilder(data, pixels);
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 		g.dispose();
 		bs.show();
-	}
-	private void setPixels(PixelArray p) {
-		pixels.setPixels(p);
-	}
-
-	public void clear(){
-		pixels.clear();
 	}
 }

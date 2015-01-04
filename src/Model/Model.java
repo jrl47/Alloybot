@@ -12,6 +12,7 @@ public class Model {
 	private ModelData data;
 	public Model(InputListener l) {
 		listener = l;
+		data = new ModelData();
 	}
 	public void step() {
 		for(ModelComponent m: data.getComponents()){
