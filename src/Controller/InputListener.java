@@ -7,6 +7,9 @@ import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 
+import View.ScreenBuilder;
+import View.View;
+
 /**
  * 
  * @author Jacob
@@ -30,7 +33,12 @@ public class InputListener implements KeyListener, MouseListener{
 	public Set<Integer> getKey(){
 		return myKeys;
 	}
-
+	
+	public void step(ScreenBuilder screenBuilder) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub

@@ -25,6 +25,7 @@ public class View {
 	private Canvas canvas;
 	private BufferedImage image;
 	private PixelArray pixels;
+	private ScreenBuilder myScreen;
 	public View(InputListener l){
 		Dimension size = new Dimension((int)(width*scale), (int)(height*scale));
 		canvas = new Canvas();
@@ -48,10 +49,13 @@ public class View {
     		canvas.createBufferStrategy(3);
     		return;
     	}
-		ScreenBuilder s = new ScreenBuilder(data, pixels);
+		myScreen = new ScreenBuilder(data, pixels);
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 		g.dispose();
 		bs.show();
+	}
+	public ScreenBuilder getScreen(){
+		return myScreen;
 	}
 }

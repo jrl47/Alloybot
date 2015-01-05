@@ -12,7 +12,20 @@ public class ViewComponent {
 	private ModelComponent myComponent;
 	private PixelArray myPixels;
 	private Shape myBounds;
-	public ViewComponent(ModelComponent c, BufferedImage b, int x, int y){
+	private int x;
+	private int y;
+	public ViewComponent(ModelComponent c, BufferedImage b, int xx, int yy){
 		myPixels = new PixelArray(b);
+		x = xx;
+		y = yy;
+	}
+	public PixelArray getPixels(){
+		return myPixels;
+	}
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
 	}
 }

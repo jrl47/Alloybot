@@ -20,10 +20,11 @@ public class Game implements Runnable{
 	private boolean exitGame;
 	private View view;
 	private Model model;
+	private InputListener listener;
 	public Game(){
-		InputListener listener = new InputListener();
+		listener = new InputListener();
 		view = new View(listener);
-		model = new Model(listener);
+		model = new Model();
 		init();
 	}
 	public synchronized void init(){
@@ -37,6 +38,7 @@ public class Game implements Runnable{
 		while(exitGame==false){
 			step();
 			render();
+			useInput();
 			long now = System.nanoTime();
 			while(now - (firstTime+ticks*TICK_LENGTH) < TICK_LENGTH){
 				Thread.yield();
@@ -63,6 +65,6 @@ public class Game implements Runnable{
 		view.render(model.getScreenData());
 	}
 	public void useInput() {
-		
+		listener.step(view.getScreen());
 	}
 }

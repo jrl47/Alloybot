@@ -7,11 +7,9 @@ import Controller.InputListener;
 import ModelComponents.ModelComponent;
 
 public class Model {
-
-	private InputListener listener;
+	
 	private ModelData data;
-	public Model(InputListener l) {
-		listener = l;
+	public Model() {
 		data = new ModelData();
 	}
 	public void step() {
