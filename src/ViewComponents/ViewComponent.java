@@ -7,22 +7,32 @@ import java.awt.image.BufferedImage;
 import ModelComponents.ModelComponent;
 import View.PixelArray;
 
-public class ViewComponent {
+public abstract class ViewComponent {
 	
 	private ModelComponent myComponent;
 	private PixelArray myPixels;
+	private PixelArray myHoverPixels;
 	private Shape myBounds;
+	private BufferedImage myImage;
+	private BufferedImage myHover;
+	private boolean isHover;
 	private int x;
 	private int y;
-	public ViewComponent(ModelComponent c, BufferedImage b, int xx, int yy){
-		myPixels = new PixelArray(b);
+	public ViewComponent(ModelComponent c, int xx, int yy){
+		isHover = false;
+		myImage = loadImage();
+		myPixels = new PixelArray(myImage);
+		myHover = loadHover();
+		myHoverPixels = new PixelArray(myHover);
 		myComponent = c;
 		x = xx;
 		y = yy;
-		myBounds = new Rectangle(x, y, b.getWidth(), b.getHeight());
+		myBounds = new Rectangle(x, y, myImage.getWidth(), myImage.getHeight());
 	}
 	public PixelArray getPixels(){
-		return myPixels;
+		if(!isHover)
+			return myPixels;
+		return myHoverPixels;
 	}
 	public int getX() {
 		return x;
@@ -36,7 +46,11 @@ public class ViewComponent {
 	public void respond(){
 		if(myComponent!=null){
 			myComponent.respond();
-			System.out.println("Dsd");
 		}
+	}
+	public abstract BufferedImage loadImage();
+	public abstract BufferedImage loadHover();
+	public void setHover(boolean b){
+		isHover = b;
 	}
 }

@@ -26,12 +26,15 @@ public class View {
 	private BufferedImage image;
 	private PixelArray pixels;
 	private ScreenBuilder myScreen;
+	private String state;
 	public View(InputListener l){
 		Dimension size = new Dimension((int)(width*scale), (int)(height*scale));
 		myScreen = new ScreenBuilder(null, null);
 		canvas = new Canvas();
 		canvas.setPreferredSize(size);
 		canvas.addMouseListener(l);
+		canvas.addMouseMotionListener(l);
+		state = "";
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setTitle("Alloybot");
@@ -50,7 +53,11 @@ public class View {
     		canvas.createBufferStrategy(3);
     		return;
     	}
-		myScreen = new ScreenBuilder(data, pixels);
+    	if(!state.equals(data.getID())){
+    		myScreen = new ScreenBuilder(data, pixels);
+    		state = data.getID();
+    	}
+    	myScreen.drawComponents();
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 		g.dispose();

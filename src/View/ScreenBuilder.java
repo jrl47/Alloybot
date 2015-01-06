@@ -10,7 +10,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
-import ModelComponents.StartButton;
+import ViewComponents.EndBackground;
+import ViewComponents.StartButton;
+import ViewComponents.StartBackground;
 import ViewComponents.ViewComponent;
 
 public class ScreenBuilder {
@@ -44,7 +46,7 @@ public class ScreenBuilder {
 		drawComponents();
 		
 	}
-	private void drawComponents() {
+	public void drawComponents() {
 		for(int i=0; i<myComponents.size(); i++){
 			drawComponent(myComponents.get(i));
 		}
@@ -65,24 +67,10 @@ public class ScreenBuilder {
 		}
 	}
 	public void buildStart(){
-		BufferedImage back = null;
-		BufferedImage start = null;
-		try {
-			back = ImageIO.read(ScreenBuilder.class.getResource("/awesometitle.png"));
-			start = ImageIO.read(ScreenBuilder.class.getResource("/START.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		myComponents.add(new ViewComponent(null, back, 0, 0));
-		myComponents.add(new ViewComponent(myData.getComponents().get(0), start, 180, 100));
+		myComponents.add(new StartBackground(null, 0, 0));
+		myComponents.add(new StartButton(myData.getComponents().get(0), 180, 100));
 	}
 	public void buildEnd(){
-		BufferedImage back = null;
-		try {
-			back = ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		myComponents.add(new ViewComponent(null, back, 0, 0));
+		myComponents.add(new EndBackground(null, 0, 0));
 	}
 }

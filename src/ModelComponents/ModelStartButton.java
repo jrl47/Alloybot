@@ -2,9 +2,9 @@ package ModelComponents;
 
 import Model.ModelData;
 
-public class StartButton extends ModelButton{
+public class ModelStartButton extends ModelButton{
 
-	public StartButton(ModelData d) {
+	public ModelStartButton(ModelData d) {
 		super(d);
 	}
 

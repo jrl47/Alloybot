@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ModelComponents.ModelComponent;
-import ModelComponents.StartButton;
+import ModelComponents.ModelStartButton;
 
 public class ModelData {
 	public static final String START_MENU_STATE = "Start";
@@ -21,7 +21,7 @@ public class ModelData {
 		screens = new HashMap<String, ScreenData>();
 		
 		List<ModelComponent> startComp = new ArrayList<ModelComponent>();
-		startComp.add(new StartButton(this));
+		startComp.add(new ModelStartButton(this));
 		myComponents.addAll(startComp);
 		screens.put(START_MENU_STATE, new ScreenData(START_MENU_STATE, startComp));
 		
