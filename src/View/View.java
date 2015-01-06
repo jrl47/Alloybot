@@ -28,9 +28,10 @@ public class View {
 	private ScreenBuilder myScreen;
 	public View(InputListener l){
 		Dimension size = new Dimension((int)(width*scale), (int)(height*scale));
+		myScreen = new ScreenBuilder(null, null);
 		canvas = new Canvas();
 		canvas.setPreferredSize(size);
-		canvas.addKeyListener(l);
+		canvas.addMouseListener(l);
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setTitle("Alloybot");

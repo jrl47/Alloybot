@@ -10,15 +10,19 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
+import ModelComponents.StartButton;
 import ViewComponents.ViewComponent;
 
 public class ScreenBuilder {
 
 	private PixelArray pixels;
 	private List<ViewComponent> myComponents;
+	private ScreenData myData;
 	public ScreenBuilder(ScreenData data, PixelArray p) {
 		myComponents = new ArrayList<ViewComponent>();
 		pixels = p;
+		myData = data;
+		if(myData!=null){
 		String myMeth = "build" + data.getID();
 		
 		// reflection stuff to call the right build method based on the ScreenData's ID
@@ -36,11 +40,22 @@ public class ScreenBuilder {
 				| InvocationTargetException e) {
 			e.printStackTrace();
 		}
+		}
+		drawComponents();
 		
+	}
+	private void drawComponents() {
+		for(int i=0; i<myComponents.size(); i++){
+			drawComponent(myComponents.get(i));
+		}
 	}
 	public PixelArray getPixels() {
 		return pixels;
 	}
+	public List<ViewComponent> getComponents(){
+		return myComponents;
+	}
+	
 	public void drawComponent(ViewComponent v){
 		PixelArray pix = v.getPixels();
 		for(int i=v.getX(); i<pix.getWidth() + v.getX(); i++){
@@ -50,7 +65,6 @@ public class ScreenBuilder {
 		}
 	}
 	public void buildStart(){
-		
 		BufferedImage back = null;
 		BufferedImage start = null;
 		try {
@@ -59,14 +73,16 @@ public class ScreenBuilder {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(start.getWidth());
 		myComponents.add(new ViewComponent(null, back, 0, 0));
-		myComponents.add(new ViewComponent(null, start, 180, 100));
-		for(int i=0; i<myComponents.size(); i++){
-			drawComponent(myComponents.get(i));
-		}
+		myComponents.add(new ViewComponent(myData.getComponents().get(0), start, 180, 100));
 	}
 	public void buildEnd(){
-		
+		BufferedImage back = null;
+		try {
+			back = ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		myComponents.add(new ViewComponent(null, back, 0, 0));
 	}
 }

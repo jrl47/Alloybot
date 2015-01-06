@@ -1,14 +1,14 @@
 package Controller;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+
 
 import View.ScreenBuilder;
-import View.View;
+import ViewComponents.ViewComponent;
 
 /**
  * 
@@ -16,56 +16,50 @@ import View.View;
  * 
  * Keeps track of all currently pressed keys.
  */
-public class InputListener implements KeyListener, MouseListener{
+public class InputListener implements MouseListener{
 	
-	private Set<Integer> myKeys = new HashSet<Integer>();
-	public void keyPressed(KeyEvent e) {
-		myKeys.add(e.getKeyCode());
-	}
-
-	public void keyReleased(KeyEvent e) {
-		myKeys.remove(e.getKeyCode());
-	}
-
-	public void keyTyped(KeyEvent e) {
-
-	}
-	public Set<Integer> getKey(){
-		return myKeys;
-	}
-	
-	public void step(ScreenBuilder screenBuilder) {
-		// TODO Auto-generated method stub
-		
+	MouseEvent mostRecentEvent = null;
+	boolean clicked = false;
+	boolean entered = false;
+	boolean exited = false;
+	public void step(List<ViewComponent> list) {
+		if(clicked){
+			for(ViewComponent v: list){
+				Shape s = v.getBounds();
+				if(s.contains(mostRecentEvent.getX(), mostRecentEvent.getY())){
+					v.respond();
+				}
+			}
+		}
+		mostRecentEvent = null;
+		clicked = false;
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		mostRecentEvent = arg0;
+		clicked = true;
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		mostRecentEvent = arg0;
+		entered = true;
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		mostRecentEvent = arg0;
+		exited = true;
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 }

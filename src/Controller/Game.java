@@ -65,6 +65,6 @@ public class Game implements Runnable{
 		view.render(model.getScreenData());
 	}
 	public void useInput() {
-		listener.step(view.getScreen());
+		listener.step(view.getScreen().getComponents());
 	}
 }

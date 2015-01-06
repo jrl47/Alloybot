@@ -16,8 +16,10 @@ public class ViewComponent {
 	private int y;
 	public ViewComponent(ModelComponent c, BufferedImage b, int xx, int yy){
 		myPixels = new PixelArray(b);
+		myComponent = c;
 		x = xx;
 		y = yy;
+		myBounds = new Rectangle(x, y, b.getWidth(), b.getHeight());
 	}
 	public PixelArray getPixels(){
 		return myPixels;
@@ -27,5 +29,14 @@ public class ViewComponent {
 	}
 	public int getY() {
 		return y;
+	}
+	public Shape getBounds(){
+		return myBounds;
+	}
+	public void respond(){
+		if(myComponent!=null){
+			myComponent.respond();
+			System.out.println("Dsd");
+		}
 	}
 }
