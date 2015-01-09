@@ -24,7 +24,7 @@ public class StartTitle extends ViewComponent{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return f.getStringImage("ALLOXYBOT");
+		return f.getStringImage("ALLOXYBOT", 5);
 	}
 
 	@Override

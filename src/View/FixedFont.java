@@ -1,6 +1,7 @@
 package View;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,16 @@ public class FixedFont {
 			myImages.add(bb);
 		}
 	}
-	public BufferedImage getStringImage(String s){
-		BufferedImage bb = new BufferedImage((myWidth+1)*s.length(), myHeight, BufferedImage.TYPE_INT_RGB);
+	public BufferedImage getStringImage(String s, int scale){
+		BufferedImage bb = new BufferedImage((myWidth+1)*s.length()-1, myHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bb.getGraphics();
 		for(int i=0; i<s.length(); i++){
 			g.drawImage(myImages.get((int)s.charAt(i)-65), (myWidth+1)*i, 0, null);
 		}
-		return bb;
+		BufferedImage sc = new BufferedImage(bb.getWidth()*scale, bb.getHeight()*scale,BufferedImage.TYPE_INT_ARGB);
+		Graphics2D gg = sc.createGraphics();
+		gg.drawImage(bb,  0,  0, bb.getWidth()*scale, bb.getHeight()*scale, null);
+		gg.dispose();
+		return sc;
 	}
 }
