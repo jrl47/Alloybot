@@ -14,7 +14,7 @@ import View.View;
  * Keeps track of universal values and sets up Game framework.
  */
 public class Game implements Runnable{
-	private final double TICK_LENGTH = 1000000000.0/20.0;
+	private final double TICK_LENGTH = 1000000000.0/30.0;
 	
 	private Thread thread;
 	private boolean exitGame;

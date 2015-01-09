@@ -63,6 +63,7 @@ public class ScreenBuilder {
 		PixelArray pix = v.getPixels();
 		for(int i=v.getX(); i<pix.getWidth() + v.getX(); i++){
 			for(int j=v.getY(); j<pix.getHeight() + v.getY(); j++){
+				if(pix.getPixel(i-v.getX(), j-v.getY())!=0)
 				pixels.setPixel(i, j, pix.getPixel(i-v.getX(), j-v.getY()));
 			}
 		}
