@@ -43,9 +43,10 @@ public class View {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setVisible(true);
 		frame.setFocusable(true);
-		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		int [] pixel = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 		pixels = new PixelArray(pixel, width);
+//		pixels = new PixelArray(image);
 	}
 	public void render(ScreenData data) {
     	BufferStrategy bs = canvas.getBufferStrategy();
