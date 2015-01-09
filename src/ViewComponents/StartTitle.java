@@ -6,22 +6,25 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import ModelComponents.ModelComponent;
+import View.FixedFont;
 import View.ScreenBuilder;
 
-public class StartBackground extends ViewComponent{
+public class StartTitle extends ViewComponent{
 
-	public StartBackground(int xx, int yy) {
+	public StartTitle(int xx, int yy) {
 		super(null, xx, yy);
 	}
 
 	@Override
 	public BufferedImage loadImage() {
+		FixedFont f = null;
 		try {
-			return ImageIO.read(ScreenBuilder.class.getResource("/awesometitle.png"));
+			f = new FixedFont(ImageIO.read(ScreenBuilder.class.getResource("/fonts.png")), 6);
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return f.getStringImage("ALLOXYBOT");
 	}
 
 	@Override

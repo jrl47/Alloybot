@@ -13,6 +13,7 @@ import Model.ScreenData;
 import ViewComponents.EndBackground;
 import ViewComponents.StartButton;
 import ViewComponents.StartBackground;
+import ViewComponents.StartTitle;
 import ViewComponents.ViewComponent;
 
 public class ScreenBuilder {
@@ -67,7 +68,8 @@ public class ScreenBuilder {
 		}
 	}
 	public void buildStart(){
-		myComponents.add(new StartBackground(null, 0, 0));
+		myComponents.add(new StartBackground(0, 0));
+		myComponents.add(new StartTitle(0,0));
 		myComponents.add(new StartButton(myData.getComponents().get(0), 180, 100));
 	}
 	public void buildEnd(){
