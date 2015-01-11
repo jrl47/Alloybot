@@ -16,20 +16,23 @@ public abstract class ViewComponent {
 	private BufferedImage myImage;
 	private BufferedImage myHover;
 	private boolean isHover;
+	private boolean isLoaded;
 	private int x;
 	private int y;
 	public ViewComponent(ModelComponent c, int xx, int yy){
 		isHover = false;
-		myImage = loadImage();
-		myPixels = new PixelArray(myImage);
-		myHover = loadHover();
-		myHoverPixels = new PixelArray(myHover);
 		myComponent = c;
 		x = xx;
 		y = yy;
-		myBounds = new Rectangle(x, y, myImage.getWidth(), myImage.getHeight());
 	}
 	public PixelArray getPixels(){
+		if(!isLoaded){
+			myImage = loadImage();
+			myPixels = new PixelArray(myImage);
+			myHover = loadHover();
+			myHoverPixels = new PixelArray(myHover);
+			myBounds = new Rectangle(x, y, myImage.getWidth(), myImage.getHeight());
+		}
 		if(!isHover)
 			return myPixels;
 		return myHoverPixels;

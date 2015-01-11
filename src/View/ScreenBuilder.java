@@ -10,10 +10,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
+import ViewComponents.Button;
 import ViewComponents.EndBackground;
-import ViewComponents.StartButton;
 import ViewComponents.StartBackground;
-import ViewComponents.StartTitle;
+import ViewComponents.Text;
 import ViewComponents.ViewComponent;
 
 public class ScreenBuilder {
@@ -70,10 +70,11 @@ public class ScreenBuilder {
 	}
 	public void buildStart(){
 		myComponents.add(new StartBackground(0, 0));
-		myComponents.add(new StartTitle(0,0));
-		myComponents.add(new StartButton(myData.getComponents().get(0), 180, 100));
+		myComponents.add(new Text(10,10, "ALLOYALITY", 5));
+		myComponents.add(new Button(myData.getComponents().get(0), 180, 100, "START", 4));
 	}
 	public void buildEnd(){
 		myComponents.add(new EndBackground(null, 0, 0));
+		myComponents.add(new Text(10, 10, "GAME OVER", 3));
 	}
 }

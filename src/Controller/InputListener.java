@@ -7,11 +7,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 
-
-
-
 import View.ScreenBuilder;
-import ViewComponents.StartButton;
 import ViewComponents.ViewComponent;
 
 /**
@@ -52,8 +48,7 @@ public class InputListener implements MouseListener, MouseMotionListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		mostRecentEvent = arg0;
-		clicked = true;
+
 	}
 
 	@Override
@@ -73,12 +68,14 @@ public class InputListener implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		
+		mostRecentEvent = arg0;
+		clicked = true;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-
+		mostRecentEvent = arg0;
+		moved = true;
 	}
 
 	@Override

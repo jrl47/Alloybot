@@ -5,23 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 
 import ModelComponents.ModelComponent;
-import ModelComponents.ModelStartButton;
+import ModelComponents.StateChangeButton;
 
 public class ModelData {
 	public static final String START_MENU_STATE = "Start";
 	public static final String GAME_OVER_STATE = "End";
 	
 	private HashMap<String, ScreenData> screens;
-	private String state;
+	private StringVariable state;
 	private List<ModelComponent> myComponents;
 	
 	public ModelData(){
-		state = START_MENU_STATE;
+		state = new StringVariable(START_MENU_STATE);
 		myComponents = new ArrayList<ModelComponent>();
 		screens = new HashMap<String, ScreenData>();
 		
 		List<ModelComponent> startComp = new ArrayList<ModelComponent>();
-		startComp.add(new ModelStartButton(this));
+		startComp.add(new StateChangeButton(state, GAME_OVER_STATE));
 		myComponents.addAll(startComp);
 		screens.put(START_MENU_STATE, new ScreenData(START_MENU_STATE, startComp));
 		
@@ -32,13 +32,10 @@ public class ModelData {
 		return myComponents;
 	}
 	public ScreenData getScreenData() {
-		return screens.get(state);
+		return screens.get(state.getString());
 	}
 	
 	public String getState(){
-		return state;
-	}
-	public void setState(String s){
-		state = s;
+		return state.getString();
 	}
 }

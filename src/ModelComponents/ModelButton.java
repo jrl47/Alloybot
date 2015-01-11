@@ -4,8 +4,8 @@ import Model.ModelData;
 
 public abstract class ModelButton extends ModelComponent{
 
-	public ModelButton(ModelData d) {
-		super(d);
+	public ModelButton() {
+		super();
 	}
 
 	@Override
