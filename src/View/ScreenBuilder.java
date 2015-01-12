@@ -1,6 +1,5 @@
 package View;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,10 +9,10 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
+import ViewComponents.AlloyButton;
+import ViewComponents.AlloyText;
+import ViewComponents.Background;
 import ViewComponents.Button;
-import ViewComponents.EndBackground;
-import ViewComponents.StartBackground;
-import ViewComponents.Text;
 import ViewComponents.ViewComponent;
 
 public class ScreenBuilder {
@@ -69,12 +68,20 @@ public class ScreenBuilder {
 		}
 	}
 	public void buildStart(){
-		myComponents.add(new StartBackground(0, 0));
-		myComponents.add(new Text(10,10, "ALLOYALITY", 5));
-		myComponents.add(new Button(myData.getComponents().get(0), 180, 100, "START", 4));
+		try {
+			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/awesometitle.png"))));
+			myComponents.add(new AlloyText(10,10, "ALLOYALITY", 5));
+			myComponents.add(new AlloyButton(myData.getComponents().get(0), 180, 100, "START", 4));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	public void buildEnd(){
-		myComponents.add(new EndBackground(null, 0, 0));
-		myComponents.add(new Text(10, 10, "GAME OVER", 3));
+		try {
+			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"))));
+			myComponents.add(new AlloyText(10, 10, "GAME OVER", 3));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
