@@ -15,7 +15,7 @@ public class Button extends ViewComponent{
 	protected String myString;
 	protected int mySize;
 	protected BufferedImage myFont;
-	private BufferedImage myHoverFont;
+	protected BufferedImage myHoverFont;
 	public Button(ModelComponent c, int xx, int yy, String s, int size, BufferedImage font, BufferedImage hoverFont) {
 		super(c, xx, yy);
 		myString = s;

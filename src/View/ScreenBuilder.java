@@ -9,6 +9,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
+import ViewComponents.AlloyBorderedButton;
 import ViewComponents.AlloyBorderedText;
 import ViewComponents.AlloyButton;
 import ViewComponents.AlloyText;
@@ -71,8 +72,8 @@ public class ScreenBuilder {
 	public void buildStart(){
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/awesometitle.png"))));
-			myComponents.add(new AlloyBorderedText(10,10, "ALLOYALITY", 5));
-			myComponents.add(new AlloyButton(myData.getComponents().get(0), 480, 240, "START", 4));
+			myComponents.add(new AlloyBorderedText(200,10, "ALLOYALITY", 5));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 240, 140, "START GAME", 4));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,6 +82,14 @@ public class ScreenBuilder {
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"))));
 			myComponents.add(new AlloyText(10, 10, "GAME OVER", 3));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void buildMap(){
+		try {
+			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"))));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 25, 100, "CLICK HERE", 10));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

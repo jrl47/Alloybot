@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import ModelComponents.ModelComponent;
+import View.BorderedFixedFont;
 import View.FixedFont;
 
 public class BorderedButton extends Button{
@@ -18,21 +19,11 @@ public class BorderedButton extends Button{
 	}
 	
 	public BufferedImage loadImage() {
-		FixedFont f = null;
-		FixedFont back = null;
-		BufferedImage b = myFont;
-		f = new FixedFont(b, 6);
-		b = myBorder;
-		back = new FixedFont(b, 6);
-		String s = "";
-		s += "A";
-		for(int i=0; i<myString.length()-1; i++){
-			s+="B";
-		}
-		s += "C";
-		BufferedImage result = back.getStringImage(s, mySize);
-		Graphics2D g = result.createGraphics();
-		g.drawImage(f.getStringImage(myString, mySize), 3*mySize, 3*mySize, null);
-		return result;
+		BorderedFixedFont f = new BorderedFixedFont(myFont, 6, myBorder);
+		return f.getStringImage(myString, mySize);
+	}
+	public BufferedImage loadHover(){
+		BorderedFixedFont f = new BorderedFixedFont(myHoverFont, 6, myHoverBorder);
+		return f.getStringImage(myString, mySize);
 	}
 }
