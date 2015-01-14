@@ -1,13 +1,13 @@
 package ModelComponents;
 
 import Model.ModelData;
-import Model.StringVariable;
+import Model.State;
 
 public class StateChangeButton extends ModelButton{
 
-	StringVariable myOldState;
-	String myNewState;
-	public StateChangeButton(StringVariable oldState, String newState) {
+	private State myOldState;
+	private String myNewState;
+	public StateChangeButton(State oldState, String newState) {
 		super();
 		myNewState = newState;
 		myOldState = oldState;
@@ -15,7 +15,7 @@ public class StateChangeButton extends ModelButton{
 
 	@Override
 	public void respond() {
-		myOldState.setString(myNewState);
+		myOldState.setState(myNewState);
 	}
 
 }

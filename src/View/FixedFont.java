@@ -8,16 +8,18 @@ import java.util.List;
 
 public class FixedFont {
 
-	private List<BufferedImage> myImages;
-	private int myWidth;
-	private int myHeight;
-	public FixedFont(BufferedImage b, int width){
+	protected List<BufferedImage> myImages;
+	protected int myWidth;
+	protected int myHeight;
+	public FixedFont(BufferedImage font, int width){
 		myWidth = width;
-		myHeight = b.getHeight();
+		myHeight = font.getHeight();
 		myImages = new ArrayList<BufferedImage>();
 		for(int i=0; i<27; i++){
-			BufferedImage bb = b.getSubimage((width+1)*i, 0, width+1, b.getHeight());
+			if(i*(width+1)<font.getWidth()){
+			BufferedImage bb = font.getSubimage((width+1)*i, 0, width+1, font.getHeight());
 			myImages.add(bb);
+			}
 		}
 	}
 	public BufferedImage getStringImage(String s, int scale){

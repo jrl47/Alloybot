@@ -12,11 +12,11 @@ public class ModelData {
 	public static final String GAME_OVER_STATE = "End";
 	
 	private HashMap<String, ScreenData> screens;
-	private StringVariable state;
+	private State state;
 	private List<ModelComponent> myComponents;
 	
 	public ModelData(){
-		state = new StringVariable(START_MENU_STATE);
+		state = new State(START_MENU_STATE);
 		myComponents = new ArrayList<ModelComponent>();
 		screens = new HashMap<String, ScreenData>();
 		
@@ -32,10 +32,10 @@ public class ModelData {
 		return myComponents;
 	}
 	public ScreenData getScreenData() {
-		return screens.get(state.getString());
+		return screens.get(state.getState());
 	}
 	
 	public String getState(){
-		return state.getString();
+		return state.getState();
 	}
 }

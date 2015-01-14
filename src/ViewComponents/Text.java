@@ -12,25 +12,19 @@ import View.ScreenBuilder;
 
 public class Text extends ViewComponent {
 
-	String myString;
-	BufferedImage myImage;
-	int mySize;
-	public Text(int xx, int yy, String s, int size, BufferedImage b) {
+	protected String myString;
+	protected BufferedImage myFont;
+	protected int mySize;
+	public Text(int xx, int yy, String s, int size, BufferedImage font) {
 		super(null, xx, yy);
 		myString = s;
 		mySize = size;
-		myImage = b;
+		myFont = font;
 	}
 
 	@Override
 	public BufferedImage loadImage() {
-		FixedFont f = null;
-		BufferedImage b = myImage;
-		BufferedImage bb = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = bb.createGraphics();
-		g.drawImage(b, 0, 0, null);
-		g.dispose();
-		f = new FixedFont(bb, 6);
+		FixedFont f = new FixedFont(myFont, 6);
 		return f.getStringImage(myString, mySize);
 	}
 

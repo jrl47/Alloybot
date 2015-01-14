@@ -12,10 +12,10 @@ import View.ScreenBuilder;
 
 public class Button extends ViewComponent{
 
-	String myString;
-	int mySize;
-	BufferedImage myFont;
-	BufferedImage myHoverFont;
+	protected String myString;
+	protected int mySize;
+	protected BufferedImage myFont;
+	private BufferedImage myHoverFont;
 	public Button(ModelComponent c, int xx, int yy, String s, int size, BufferedImage font, BufferedImage hoverFont) {
 		super(c, xx, yy);
 		myString = s;
@@ -26,25 +26,13 @@ public class Button extends ViewComponent{
 
 	@Override
 	public BufferedImage loadImage() {
-		FixedFont f = null;
-		BufferedImage b = myFont;
-		BufferedImage bb = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = bb.createGraphics();
-		g.drawImage(b, 0, 0, null);
-		g.dispose();
-		f = new FixedFont(bb, 6);
+		FixedFont f = new FixedFont(myFont, 6);
 		return f.getStringImage(myString, mySize);
 	}
 
 	@Override
 	public BufferedImage loadHover() {
-		FixedFont f = null;
-		BufferedImage b = myHoverFont;
-		BufferedImage bb = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = bb.createGraphics();
-		g.drawImage(b, 0, 0, null);
-		g.dispose();
-		f = new FixedFont(bb, 6);
+		FixedFont f = new FixedFont(myHoverFont, 6);
 		return f.getStringImage(myString, mySize);
 	}
 

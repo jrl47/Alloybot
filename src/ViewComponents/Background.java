@@ -10,7 +10,7 @@ import View.ScreenBuilder;
 
 public class Background extends ViewComponent{
 	
-	BufferedImage myImage;
+	private BufferedImage myImage;
 	public Background(int xx, int yy, BufferedImage b) {
 		super(null, xx, yy);
 		myImage = b;

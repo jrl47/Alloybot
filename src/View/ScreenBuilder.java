@@ -9,6 +9,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
+import ViewComponents.AlloyBorderedText;
 import ViewComponents.AlloyButton;
 import ViewComponents.AlloyText;
 import ViewComponents.Background;
@@ -70,8 +71,8 @@ public class ScreenBuilder {
 	public void buildStart(){
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/awesometitle.png"))));
-			myComponents.add(new AlloyText(10,10, "ALLOYALITY", 5));
-			myComponents.add(new AlloyButton(myData.getComponents().get(0), 180, 100, "START", 4));
+			myComponents.add(new AlloyBorderedText(10,10, "ALLOYALITY", 5));
+			myComponents.add(new AlloyButton(myData.getComponents().get(0), 480, 240, "START", 4));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -18,9 +18,9 @@ import ViewComponents.ViewComponent;
  */
 public class InputListener implements MouseListener, MouseMotionListener{
 	
-	MouseEvent mostRecentEvent = null;
-	boolean clicked = false;
-	boolean moved = false;
+	private MouseEvent mostRecentEvent = null;
+	private boolean clicked = false;
+	private boolean moved = false;
 	public void step(List<ViewComponent> list) {
 		if(clicked){
 			for(ViewComponent v: list){
