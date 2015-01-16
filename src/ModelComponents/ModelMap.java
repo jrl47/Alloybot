@@ -10,8 +10,8 @@ public abstract class ModelMap extends ModelComponent{
 	protected MapCellFactory myFactory;
 	protected int x;
 	protected int y;
-	protected int width;
-	protected int height;
+	protected int myWidth;
+	protected int myHeight;
 	public ModelMap(int width, int height){
 		List<List<MapCell>> myList = new ArrayList<List<MapCell>>();
 		for(int i=0; i<width; i++){
@@ -21,6 +21,8 @@ public abstract class ModelMap extends ModelComponent{
 			}
 			myList.add(newList);
 		}
+		myWidth = width;
+		myHeight = height;
 		myCells = new MapCellArray(myList);
 		myFactory = new MapCellFactory();
 	}
@@ -44,5 +46,11 @@ public abstract class ModelMap extends ModelComponent{
 	}
 	public void incrementY(int yinc){
 		y += yinc;
+	}
+	public int getWidth(){
+		return myWidth;
+	}
+	public int getHeight(){
+		return myHeight;
 	}
 }

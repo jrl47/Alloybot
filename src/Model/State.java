@@ -2,7 +2,6 @@ package Model;
 
 public class State {
 	private String myString;
-	private boolean myLoadStatus;
 	public State(String string){
 		myString = string;
 	}
@@ -14,11 +13,5 @@ public class State {
 	}
 	public String getState(){
 		return myString;
-	}
-	public boolean getLoadStatus(){
-		return myLoadStatus;
-	}
-	public void setLoadStatus(boolean b){
-		myLoadStatus = b;
 	}
 }

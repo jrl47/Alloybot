@@ -22,12 +22,12 @@ public class ViewMap extends ViewComponent {
 
 	@Override
 	public BufferedImage loadImage() {
-		BufferedImage b = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = b.createGraphics();
+		BufferedImage frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage map = new BufferedImage(16*WIDTH, 16*HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = map.createGraphics();
 		try {
 			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")), 0, 0, null);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		DeciduousTileManager manager = null;
@@ -40,12 +40,21 @@ public class ViewMap extends ViewComponent {
 		}
 		for(int i=0; i<WIDTH; i++){
 			for(int j=0; j<HEIGHT; j++){
-				if(i+x > 0 && j+y > 0)
-					g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i+x, j+y).getID()), i*16 + BORDER_WIDTH, j*16 + BORDER_WIDTH, null);
+				if(i+x > 0 && j+y > 0 && i+x < ((ModelMap) myComponent).getWidth() && j+y < ((ModelMap) myComponent).getHeight())
+					g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i+x, j+y).getID()),
+							i*16 + BORDER_WIDTH, j*16 + BORDER_WIDTH, null);
 			}
 		}
 		g.dispose();
-		return b;
+		g = frame.createGraphics();
+		g.drawImage(map, BORDER_WIDTH, BORDER_WIDTH, null);
+		return frame;
+	}
+	
+	public void respond(){
+		if(myComponent!=null){
+				myComponent.respond();
+		}
 	}
 
 	@Override
