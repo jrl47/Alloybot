@@ -3,7 +3,7 @@ package ModelComponents;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasicMap extends Map{
+public class BasicMap extends ModelMap{
 
 	public BasicMap(){
 		super(50, 50);
@@ -17,8 +17,8 @@ public class BasicMap extends Map{
 				}
 			}
 		}
-		setX(10);
-		setY(10);
+		setX(0);
+		setY(0);
 	}
 	@Override
 	public void step() {

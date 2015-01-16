@@ -9,7 +9,7 @@ import View.PixelArray;
 
 public abstract class ViewComponent {
 	
-	private ModelComponent myComponent;
+	protected ModelComponent myComponent;
 	private PixelArray myPixels;
 	private PixelArray myHoverPixels;
 	private Shape myBounds;

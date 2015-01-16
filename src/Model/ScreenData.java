@@ -6,6 +6,7 @@ import ModelComponents.ModelComponent;
 
 public class ScreenData {
 	private String id;
+	private boolean myLoadStatus;
 	private List<ModelComponent> myComponents;
 	public ScreenData(String i, List<ModelComponent> c){
 		id = i;
@@ -16,5 +17,11 @@ public class ScreenData {
 	}
 	public List<ModelComponent> getComponents(){
 		return myComponents;
+	}
+	public boolean needsReload() {
+		return myLoadStatus;
+	}
+	public void setReload(){
+		myLoadStatus = true;
 	}
 }

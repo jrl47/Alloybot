@@ -56,6 +56,9 @@ public class View {
     		myScreen = new ScreenBuilder(data, pixels);
     		state = data.getID();
     	}
+    	if(data.needsReload()){
+    		myScreen = new ScreenBuilder(data, pixels);
+    	}
     	myScreen.drawComponents();
 		Graphics g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);

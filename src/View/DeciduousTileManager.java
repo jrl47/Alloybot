@@ -16,7 +16,7 @@ public class DeciduousTileManager extends TileManager{
 	@Override
 	public BufferedImage getImage(String s) {
 		if(s.equals(MapCell.GRASS))
-			return myImage.getSubimage(1, 0, 16, 16);
+			return myImage.getSubimage(1*16, 0, 16, 16);
 		if(s.equals(MapCell.DIRT))
 			return myImage.getSubimage(0, 0, 16, 16);
 		return null;

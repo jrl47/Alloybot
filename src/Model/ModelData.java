@@ -49,7 +49,10 @@ public class ModelData {
 		return myComponents;
 	}
 	public ScreenData getScreenData() {
-		return screens.get(state.getState());
+		ScreenData s = screens.get(state.getState());
+		if(state.getLoadStatus())
+			s.setReload();
+		return s;
 	}
 	
 	public String getState(){

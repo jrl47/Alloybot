@@ -89,8 +89,8 @@ public class ScreenBuilder {
 	public void buildMap(){
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 240, 140, "START GAME", 4));
-			myComponents.add(new ViewMap(myData.getComponents().get(1), 10, 10));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 640, 380, "END GAME", 2));
+			myComponents.add(new ViewMap(myData.getComponents().get(1), 310, 120));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
