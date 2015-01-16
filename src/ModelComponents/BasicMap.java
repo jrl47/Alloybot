@@ -26,8 +26,8 @@ public class BasicMap extends ModelMap{
 //				}
 			}
 		}
-		setX(0);
-		setY(0);
+		setX(15);
+		setY(15);
 	}
 	@Override
 	public void step() {

@@ -13,8 +13,8 @@ import ViewComponents.ViewComponent;
 
 public class ViewMap extends ViewComponent {
 
-	public static final int WIDTH = 11;
-	public static final int HEIGHT = 11;
+	public static final int WIDTH = 23;
+	public static final int HEIGHT = 23;
 	public static final int BORDER_WIDTH = 10;
 	private int prevX;
 	private int prevY;

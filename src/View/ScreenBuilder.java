@@ -90,11 +90,11 @@ public class ScreenBuilder {
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 640, 380, "END GAME", 2));
-			myComponents.add(new ViewMap(myData.getComponents().get(1), 310, 120));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 520, 200, "RIGHT", 2));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 230, 200, "LEFT", 2));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 380, 330, "DOWN", 2));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(5), 390, 70, "UP", 2));
+			myComponents.add(new ViewMap(myData.getComponents().get(1), 210, 32));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 604, 210, "RIGHT", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 170, 210, "LEFT", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 385, 425, "DOWN", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(5), 390, 8, "UP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
