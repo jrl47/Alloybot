@@ -2,11 +2,16 @@ package View;
 
 import java.awt.image.BufferedImage;
 
+import ModelComponents.MapCell;
+import ModelComponents.ModelMap;
+
 public abstract class TileManager {
 
 	protected BufferedImage myImage;
-	public TileManager(BufferedImage b){
+	protected ModelMap myMap;
+	public TileManager(BufferedImage b, ModelMap m){
 		myImage = b;
+		myMap = m;
 	}
-	public abstract BufferedImage getImage(String s);
+	public abstract BufferedImage getImage(MapCell m);
 }

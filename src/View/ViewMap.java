@@ -51,14 +51,14 @@ public class ViewMap extends ViewComponent {
 		prevX = x;
 		prevY = y;
 		try {
-			manager = new DeciduousTileManager();
+			manager = new DeciduousTileManager((ModelMap)myComponent);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		for(int i=-1; i<WIDTH+2; i++){
 			for(int j=-1; j<HEIGHT+2; j++){
-				if(i+x > 0 && j+y > 0 && i+x < ((ModelMap) myComponent).getWidth() && j+y < ((ModelMap) myComponent).getHeight())
-					g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i+x, j+y).getID()),
+				if(i+x >= 0 && j+y >= 0 && i+x < ((ModelMap) myComponent).getWidth() && j+y < ((ModelMap) myComponent).getHeight())
+					g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i+x, j+y)),
 							i*16, j*16, null);
 			}
 		}

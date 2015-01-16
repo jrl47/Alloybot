@@ -19,7 +19,7 @@ import ModelComponents.ModelComponent;
 public class View {
 	public static int width = 800;
 	public static int height = (width / 16) * 9;
-	public static double scale = 1;
+	public static double scale = 2;
 	
 	private JFrame frame;
 	private Canvas canvas;

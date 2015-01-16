@@ -4,12 +4,12 @@ import ModelComponents.MapCell;
 
 public class MapCellFactory {
 
-	public MapCell makeGrassCell() {
-		return new MapCell(MapCell.GRASS);
+	public MapCell makeGrassCell(int x, int y) {
+		return new MapCell(MapCell.GRASS, x, y);
 	}
 
-	public MapCell makeDirtCell() {
-		return new MapCell(MapCell.DIRT);
+	public MapCell makeDirtCell(int x, int y) {
+		return new MapCell(MapCell.DIRT, x, y);
 	}
 
 }
