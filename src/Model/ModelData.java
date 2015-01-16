@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ModelComponents.BasicMap;
 import ModelComponents.ModelComponent;
 import ModelComponents.StateChangeButton;
 
@@ -28,6 +29,7 @@ public class ModelData {
 	private void loadMap() {
 		List<ModelComponent> mapComp = new ArrayList<ModelComponent>();
 		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
+		mapComp.add(new BasicMap());
 		myComponents.addAll(mapComp);
 		screens.put(MAP_EXPLORATION_STATE, new ScreenData(MAP_EXPLORATION_STATE, mapComp));
 	}

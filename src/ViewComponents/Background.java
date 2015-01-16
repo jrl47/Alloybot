@@ -24,17 +24,6 @@ public class Background extends ViewComponent{
 		g.drawImage(b, 0, 0, null);
 		g.dispose();
 		return bb;
-//		try {
-//			BufferedImage b = ImageIO.read(ScreenBuilder.class.getResource("/awesometitle.png"));
-//			BufferedImage bb = new BufferedImage(b.getWidth(), b.getHeight(), BufferedImage.TYPE_INT_ARGB);
-//			Graphics2D g = bb.createGraphics();
-//			g.drawImage(b, 0, 0, null);
-//			g.dispose();
-//			return bb;
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
 	}
 
 	@Override

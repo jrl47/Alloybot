@@ -56,4 +56,7 @@ public abstract class ViewComponent {
 	public void setHover(boolean b){
 		isHover = b;
 	}
+	public void setLoaded(boolean b){
+		isLoaded = b;
+	}
 }
