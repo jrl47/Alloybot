@@ -11,5 +11,13 @@ public class MapCellFactory {
 	public MapCell makeDirtCell(int x, int y) {
 		return new MapCell(MapCell.DIRT, x, y);
 	}
+	
+	public MapCell makeSmallRocksCell(int x, int y) {
+		return new MapCell(MapCell.SMALL_ROCKS, x, y);
+	}
+	
+	public MapCell makeLargeRocksCell(int x, int y) {
+		return new MapCell(MapCell.LARGE_ROCKS, x, y);
+	}
 
 }

@@ -3,6 +3,8 @@ package ModelComponents;
 public class MapCell {
 	public static final String GRASS = "grass";
 	public static final String DIRT = "dirt";
+	public static final String SMALL_ROCKS = "srocks";
+	public static final String LARGE_ROCKS = "lrocks";
 	private String myID;
 	private int myX;
 	private int myY;

@@ -11,12 +11,18 @@ public class BasicMap extends ModelMap{
 		for(int i=0; i<50; i++){
 			for(int j=0; j<50; j++){
 				Random r = new Random();
-				boolean b = r.nextBoolean();
-				if(b){
+				int in = r.nextInt(24);
+				if(in<11){
 					myCells.setCell(i, j, myFactory.makeGrassCell(i, j));
 				}
-				else{
+				else if(in<22){
 					myCells.setCell(i, j, myFactory.makeDirtCell(i, j));
+				}
+				else if (in==22){
+					myCells.setCell(i, j, myFactory.makeSmallRocksCell(i, j));
+				}
+				else if (in==23){
+					myCells.setCell(i, j, myFactory.makeLargeRocksCell(i, j));
 				}
 //				if((i + j) % 2 == 1){
 //					myCells.setCell(i,j, myFactory.makeGrassCell());
