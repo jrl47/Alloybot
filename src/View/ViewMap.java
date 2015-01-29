@@ -15,8 +15,8 @@ import ViewComponents.ViewComponent;
 
 public class ViewMap extends ViewComponent implements InputSensitive{
 
-	public static final int WIDTH = 25;
-	public static final int HEIGHT = 27;
+	public static final int WIDTH = 31;
+	public static final int HEIGHT = 25;
 	public static final int BORDER_WIDTH = 10;
 	private int x;
 	private int y;
@@ -29,9 +29,12 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	
 	private boolean loaded;
 	
-	private int xDirection;
-	private int yDirection;
-	private int animateCounter;
+	private double xDirection;
+	private double yDirection;
+	private double animateXCounter;
+	private double animateYCounter;
+	private double xCounterDecrement;
+	private double yCounterDecrement;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
 	}
@@ -52,14 +55,14 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private BufferedImage drawVisibleMapRegion() {
 		BufferedImage tempMap = new BufferedImage(16*WIDTH, 16*HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics tempG = tempMap.createGraphics();
-		tempG.drawImage(map.getSubimage(x*16 + animateCounter*xDirection,  y*16 + animateCounter*yDirection, 16*WIDTH, 16*HEIGHT), 0, 0, null);
+		tempG.drawImage(map.getSubimage(x*16 + (int)(animateXCounter*xDirection),  y*16 + (int)(animateYCounter*yDirection), 16*WIDTH, 16*HEIGHT), 0, 0, null);
 		tempG.dispose();
 		Graphics2D g = tempMap.createGraphics();
 		DeciduousTileManager manager = null;
 		try {
 			manager = new DeciduousTileManager((ModelMap)myComponent);
 		} catch (IOException e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
 		}
 		drawHoverTile(g, manager);
 		g.dispose();
@@ -82,20 +85,20 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 26, 10, 10),
 					0, BORDER_WIDTH + 16*HEIGHT, null);
 			for(int i=0; i<WIDTH; i++){
-				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 10, 10, 16),
-						0, BORDER_WIDTH + 16*i, null);
-			}
-			for(int i=0; i<WIDTH; i++){
-				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 10, 10, 16),
-						BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*i, null);
-			}
-			for(int i=0; i<HEIGHT; i++){
 				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(10, 0, 16, 10),
 						BORDER_WIDTH + 16*i, 0, null);
 			}
-			for(int i=0; i<HEIGHT; i++){
+			for(int i=0; i<WIDTH; i++){
 				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(10, 26, 16, 10),
 						BORDER_WIDTH + 16*i, BORDER_WIDTH + 16*HEIGHT, null);
+			}
+			for(int i=0; i<HEIGHT; i++){
+				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 10, 10, 16),
+						0, BORDER_WIDTH + 16*i, null);
+			}
+			for(int i=0; i<HEIGHT; i++){
+				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 10, 10, 16),
+						BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*i, null);
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -105,20 +108,37 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	}
 
 	private void handleAnimation() {
-		if(animateCounter>0){
-			animateCounter--;
+		if(animateXCounter>0){
+			animateXCounter-=xCounterDecrement;
 		}
-		else{
-			xDirection = 0;
-			yDirection = 0;
+		if(animateYCounter>0){
+			animateYCounter-=yCounterDecrement;
+		}
+		if(animateXCounter==0 && animateYCounter==0){
+		xDirection = 0;
+		yDirection = 0;
 		}
 		if(prevX!=x){
-			animateCounter = 8;
-			xDirection = (int)((prevX - x)*1.5);
+			animateXCounter = 16;
+			xDirection = (int)((prevX - x)*1);
 		}
 		if(prevY!=y){
-			animateCounter = 8;
-			yDirection = (int)((prevY - y)*1.5);
+			animateYCounter = 16;
+			yDirection = (int)((prevY - y)*1);
+		}
+		if(animateXCounter != animateYCounter){
+			if(animateXCounter > animateYCounter){
+				xCounterDecrement = 1;
+				yCounterDecrement = 1.0*(animateYCounter/animateXCounter);
+			}
+			else{
+				yCounterDecrement = 1;
+				xCounterDecrement = 1.0*(animateXCounter/animateYCounter);
+			}
+		}
+		else{
+			xCounterDecrement = 1;
+			yCounterDecrement = 1;
 		}
 		prevX = x;
 		prevY = y;
@@ -127,8 +147,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
 		for(int i=-1; i<WIDTH+2; i++){
 			for(int j=-1; j<HEIGHT+2; j++){
-				if((isHover && animateCounter==0 && BORDER_WIDTH + (i)*16 <= xHover && BORDER_WIDTH + (i+1)*16 > xHover)
-						&& (isHover && animateCounter==0 && BORDER_WIDTH + (j)*16 <= yHover && BORDER_WIDTH + (j+1)*16 > yHover)){
+				if((isHover && animateXCounter==0 && animateYCounter==0 && BORDER_WIDTH + (i)*16 <= xHover && BORDER_WIDTH + (i+1)*16 > xHover)
+						&& (isHover && animateXCounter==0 && animateYCounter==0  && BORDER_WIDTH + (j)*16 <= yHover && BORDER_WIDTH + (j+1)*16 > yHover)){
 					g.drawImage(manager.getHoverTransparency(),
 						i*16, j*16, null);
 				}
@@ -158,7 +178,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	
 	public void respond(){
 		if(myComponent!=null){
-			if(animateCounter==0)
+			if(animateXCounter==0 && animateYCounter==0)
 				myComponent.respond();
 		}
 	}
@@ -172,7 +192,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	public void useInput(int xx, int yy, boolean b) {
 		xHover = xx;
 		yHover = yy;
-		if(b && animateCounter==0){
+		if(b && animateXCounter==0 && animateYCounter==0 && xx >= 9 && yy >= 9 &&
+				xx < 9 + WIDTH*16 && yy < 9 + HEIGHT*16){
 			int newX = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getX();
 			int newY = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getY();
 			if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth()){
