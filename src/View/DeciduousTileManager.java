@@ -25,11 +25,21 @@ public class DeciduousTileManager extends TileManager{
 			return generateSmallRocks(m);
 		if(m.getID().equals(MapCell.LARGE_ROCKS))
 			return generateLargeRocks(m);
+		if(m.getID().equals(MapCell.WATER))
+			return generateWater(m);
 		return null;
 	}
 	
+	private BufferedImage generateWater(MapCell m) {
+		BufferedImage bb = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bb.getGraphics();
+		g.drawImage(myImage.getSubimage(9*16, 0, 16, 16), 0, 0, null);
+		fuzzBorderWithGrass(m, g);
+		return bb;
+	}
+
 	public BufferedImage getHoverTransparency(){
-		return myImage.getSubimage(3*16, 2*16, 16, 16);
+		return myImage.getSubimage(7*16, 0, 16, 16);
 	}
 
 	private BufferedImage generateLargeRocks(MapCell m) {
@@ -41,6 +51,14 @@ public class DeciduousTileManager extends TileManager{
 	}
 
 	private BufferedImage generateDirt(MapCell m) {
+		BufferedImage bb = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bb.getGraphics();
+		g.drawImage(myImage.getSubimage(8*16, 0, 16, 16), 0, 0, null);
+		fuzzBorderWithGrass(m, g);
+		return bb;
+	}
+
+	private void fuzzBorderWithGrass(MapCell m, Graphics g) {
 		String up = "";
 		String down = "";
 		String left = "";
@@ -57,24 +75,18 @@ public class DeciduousTileManager extends TileManager{
 		boolean d = down.equals(MapCell.GRASS)||down.equals(MapCell.SMALL_ROCKS)||down.equals(MapCell.LARGE_ROCKS);
 		boolean l = left.equals(MapCell.GRASS)||left.equals(MapCell.SMALL_ROCKS)||left.equals(MapCell.LARGE_ROCKS);
 		boolean r = right.equals(MapCell.GRASS)||right.equals(MapCell.SMALL_ROCKS)||right.equals(MapCell.LARGE_ROCKS);
-		
-		
-		BufferedImage bb = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = bb.getGraphics();
-		g.drawImage(myImage.getSubimage(3*16, 0, 16, 16), 0, 0, null);
 		if(u){
-			g.drawImage(myImage.getSubimage(0, 1*16, 16, 16), 0, 0, null);
+			g.drawImage(myImage.getSubimage(3*16, 0, 16, 16), 0, 0, null);
 		}
 		if(d){
-			g.drawImage(myImage.getSubimage(0, 2*16, 16, 16), 0, 0, null);
+			g.drawImage(myImage.getSubimage(5*16, 0, 16, 16), 0, 0, null);
 		}
 		if(l){
-			g.drawImage(myImage.getSubimage(1*16, 2*16, 16, 16), 0, 0, null);
+			g.drawImage(myImage.getSubimage(4*16, 0, 16, 16), 0, 0, null);
 		}
 		if(r){
-			g.drawImage(myImage.getSubimage(2*16, 2*16, 16, 16), 0, 0, null);
+			g.drawImage(myImage.getSubimage(6*16, 0, 16, 16), 0, 0, null);
 		}
-		return bb;
 	}
 
 	private BufferedImage generateGrass() {

@@ -19,5 +19,8 @@ public class MapCellFactory {
 	public MapCell makeLargeRocksCell(int x, int y) {
 		return new MapCell(MapCell.LARGE_ROCKS, x, y);
 	}
+	public MapCell makeWaterCell(int x, int y) {
+		return new MapCell(MapCell.WATER, x, y);
+	}
 
 }

@@ -5,6 +5,7 @@ public class MapCell {
 	public static final String DIRT = "dirt";
 	public static final String SMALL_ROCKS = "srocks";
 	public static final String LARGE_ROCKS = "lrocks";
+	public static final String WATER = "water";
 	private String myID;
 	private int myX;
 	private int myY;
