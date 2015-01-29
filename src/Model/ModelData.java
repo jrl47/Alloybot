@@ -32,10 +32,6 @@ public class ModelData {
 		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
 		BasicMap b = new BasicMap();
 		mapComp.add(b);
-		mapComp.add(new MapMoveButton(b, 1, 0));
-		mapComp.add(new MapMoveButton(b, -1, 0));
-		mapComp.add(new MapMoveButton(b, 0, 1));
-		mapComp.add(new MapMoveButton(b, 0, -1));
 		myComponents.addAll(mapComp);
 		screens.put(MAP_EXPLORATION_STATE, new ScreenData(MAP_EXPLORATION_STATE, mapComp));
 	}

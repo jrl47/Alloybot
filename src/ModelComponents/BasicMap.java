@@ -7,12 +7,12 @@ import java.util.Random;
 public class BasicMap extends ModelMap{
 
 	public BasicMap(){
-		super(50, 50);
-		for(int i=0; i<50; i++){
-			for(int j=0; j<50; j++){
+		super(80, 80);
+		for(int i=0; i<80; i++){
+			for(int j=0; j<80; j++){
 				Random r = new Random();
 				int in = r.nextInt(190);
-				if(in<140){
+				if(in<110){
 					myCells.setCell(i, j, myFactory.makeGrassCell(i, j));
 				}
 				else if(in<184){

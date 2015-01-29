@@ -15,8 +15,8 @@ import ViewComponents.ViewComponent;
 
 public class ViewMap extends ViewComponent implements InputSensitive{
 
-	public static final int WIDTH = 23;
-	public static final int HEIGHT = 23;
+	public static final int WIDTH = 25;
+	public static final int HEIGHT = 27;
 	public static final int BORDER_WIDTH = 10;
 	private int x;
 	private int y;
@@ -25,6 +25,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private int xHover;
 	private int yHover;
 	private BufferedImage map;
+	private BufferedImage frame;
 	
 	private boolean loaded;
 	
@@ -62,15 +63,45 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		}
 		drawHoverTile(g, manager);
 		g.dispose();
-		BufferedImage frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
+		generateFrame();
 		g = frame.createGraphics();
+		g.drawImage(tempMap, BORDER_WIDTH, BORDER_WIDTH, null);
+		return frame;
+	}
+
+	private void generateFrame() {
+		if(!loaded){
 		try {
-			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")), 0, 0, null);
+			frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = frame.createGraphics();
+			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 0, 10, 10), 0, 0, null);
+			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 26, 10, 10),
+					BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*HEIGHT, null);
+			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 0, 10, 10),
+					BORDER_WIDTH + 16*WIDTH, 0, null);
+			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 26, 10, 10),
+					0, BORDER_WIDTH + 16*HEIGHT, null);
+			for(int i=0; i<WIDTH; i++){
+				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 10, 10, 16),
+						0, BORDER_WIDTH + 16*i, null);
+			}
+			for(int i=0; i<WIDTH; i++){
+				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 10, 10, 16),
+						BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*i, null);
+			}
+			for(int i=0; i<HEIGHT; i++){
+				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(10, 0, 16, 10),
+						BORDER_WIDTH + 16*i, 0, null);
+			}
+			for(int i=0; i<HEIGHT; i++){
+				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(10, 26, 16, 10),
+						BORDER_WIDTH + 16*i, BORDER_WIDTH + 16*HEIGHT, null);
+			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		g.drawImage(tempMap, BORDER_WIDTH, BORDER_WIDTH, null);
-		return frame;
+		}
+		loaded = true;
 	}
 
 	private void handleAnimation() {
@@ -123,7 +154,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		}
 		prevX = x;
 		prevY = y;
-		loaded = true;
 	}
 	
 	public void respond(){
