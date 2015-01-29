@@ -12,7 +12,7 @@ public class BasicMap extends ModelMap{
 			for(int j=0; j<50; j++){
 				Random r = new Random();
 				int in = r.nextInt(190);
-				if(in<110){
+				if(in<140){
 					myCells.setCell(i, j, myFactory.makeGrassCell(i, j));
 				}
 				else if(in<184){

@@ -37,8 +37,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 
 	@Override
 	public BufferedImage loadImage() {
-		x = ((ModelMap)myComponent).getX() - WIDTH/2 + 1;
-		y = ((ModelMap)myComponent).getY() - HEIGHT/2 + 1;
+		x = ((ModelMap)myComponent).getX() - WIDTH/2;
+		y = ((ModelMap)myComponent).getY() - HEIGHT/2;
 		if(!loaded){
 			loadMap();
 		}
@@ -83,11 +83,11 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		}
 		if(prevX!=x){
 			animateCounter = 8;
-			xDirection = (int)((prevX - x)*2.0);
+			xDirection = (int)((prevX - x)*1.5);
 		}
 		if(prevY!=y){
 			animateCounter = 8;
-			yDirection = (int)((prevY - y)*2.0);
+			yDirection = (int)((prevY - y)*1.5);
 		}
 		prevX = x;
 		prevY = y;
@@ -142,9 +142,21 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	public void useInput(int xx, int yy, boolean b) {
 		xHover = xx;
 		yHover = yy;
-		if(b){
-			int newX = ((ModelMap)myComponent).getCell(-1 + x + ((xx-BORDER_WIDTH)/16), -1 + y + ((yy-BORDER_WIDTH)/16)).getX();
-			int newY = ((ModelMap)myComponent).getCell(-1 + x + ((xx-BORDER_WIDTH)/16), -1 + y + ((yy-BORDER_WIDTH)/16)).getY();
+		if(b && animateCounter==0){
+			int newX = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getX();
+			int newY = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getY();
+			if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth()){
+				newX = ((ModelMap)myComponent).getWidth() - WIDTH/2 - 1;
+			}
+			if (newX - WIDTH/2 < 0){
+				newX = WIDTH/2;
+			}
+			if (newY + HEIGHT/2 >= ((ModelMap)myComponent).getHeight()){
+				newY = ((ModelMap)myComponent).getHeight() - HEIGHT/2 - 1;
+			}
+			if (newY - HEIGHT/2 < 0){
+				newY = HEIGHT/2;
+			}
 			((ModelMap)myComponent).setX(newX);
 			((ModelMap)myComponent).setY(newY);
 		}
