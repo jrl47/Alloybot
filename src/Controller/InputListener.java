@@ -7,8 +7,10 @@ import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 
+
 import View.ScreenBuilder;
 import View.View;
+import ViewComponents.InputSensitive;
 import ViewComponents.ViewComponent;
 
 /**
@@ -36,6 +38,10 @@ public class InputListener implements MouseListener, MouseMotionListener{
 				Shape s = v.getBounds();
 				if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
 					v.setHover(true);
+					if(v instanceof InputSensitive){
+						((InputSensitive) v).useInput((int)(mostRecentEvent.getX()/View.scale)-(int)(s.getBounds().x),
+								(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y));
+					}
 				}
 				else{
 					v.setHover(false);

@@ -9,21 +9,25 @@ import javax.imageio.ImageIO;
 import ModelComponents.ModelMap;
 import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
+import ViewComponents.InputSensitive;
 import ViewComponents.ViewComponent;
 
-public class ViewMap extends ViewComponent {
+public class ViewMap extends ViewComponent implements InputSensitive{
 
 	public static final int WIDTH = 23;
 	public static final int HEIGHT = 23;
 	public static final int BORDER_WIDTH = 10;
 	private int prevX;
 	private int prevY;
+	private int xHover;
+	private int yHover;
+	
 	private boolean loaded;
 	private int xDirect;
 	private int yDirect;
 	private int animateCounter;
 	public ViewMap(ModelComponent c, int xx, int yy) {
-		super(c, xx, yy);
+		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
 	}
 
 	@Override
@@ -57,9 +61,16 @@ public class ViewMap extends ViewComponent {
 		}
 		for(int i=-1; i<WIDTH+2; i++){
 			for(int j=-1; j<HEIGHT+2; j++){
-				if(i+x >= 0 && j+y >= 0 && i+x < ((ModelMap) myComponent).getWidth() && j+y < ((ModelMap) myComponent).getHeight())
+				if(i+x >= 0 && j+y >= 0 && i+x < ((ModelMap) myComponent).getWidth() && j+y < ((ModelMap) myComponent).getHeight()){
 					g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i+x, j+y)),
 							i*16, j*16, null);
+				}
+				if((isHover && animateCounter==0 && BORDER_WIDTH + (i-1)*16 <= xHover && BORDER_WIDTH + (i)*16 > xHover)
+						&& (isHover && animateCounter==0 && BORDER_WIDTH + (j-1)*16 <= yHover && BORDER_WIDTH + (j)*16 > yHover)){
+					g.drawImage(manager.getHoverTransparency(),
+							i*16, j*16, null);
+				}
+//				System.out.println(xHover + " " + BORDER_WIDTH + (i+x)*16);
 			}
 		}
 		g.dispose();
@@ -92,6 +103,12 @@ public class ViewMap extends ViewComponent {
 	@Override
 	public BufferedImage loadHover() {
 		return loadImage();
+	}
+
+	@Override
+	public void useInput(int x, int y) {
+		xHover = x;
+		yHover = y;
 	}
 
 }

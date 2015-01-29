@@ -27,6 +27,10 @@ public class DeciduousTileManager extends TileManager{
 			return generateLargeRocks(m);
 		return null;
 	}
+	
+	public BufferedImage getHoverTransparency(){
+		return myImage.getSubimage(3*16, 2*16, 16, 16);
+	}
 
 	private BufferedImage generateLargeRocks(MapCell m) {
 		return myImage.getSubimage(2*16, 0, 16, 16);

@@ -15,7 +15,7 @@ public abstract class ViewComponent {
 	private Shape myBounds;
 	private BufferedImage myImage;
 	private BufferedImage myHover;
-	private boolean isHover;
+	protected boolean isHover;
 	private boolean isLoaded;
 	private int x;
 	private int y;
@@ -24,6 +24,13 @@ public abstract class ViewComponent {
 		myComponent = c;
 		x = xx;
 		y = yy;
+	}
+	public ViewComponent(ModelComponent c, int xx, int yy, int width, int height){
+		isHover = false;
+		myComponent = c;
+		x = xx;
+		y = yy;
+		myBounds = new Rectangle(x, y, width, height);
 	}
 	public PixelArray getPixels(){
 		if(!isLoaded){
