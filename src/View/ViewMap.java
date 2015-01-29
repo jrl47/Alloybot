@@ -1,5 +1,6 @@
 package View;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -21,10 +22,13 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private int prevY;
 	private int xHover;
 	private int yHover;
+	private BufferedImage map;
 	
 	private boolean loaded;
-	private int xDirect;
-	private int yDirect;
+	
+	private boolean animateFinished;
+	private int xDirection;
+	private int yDirection;
 	private int animateCounter;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
@@ -32,47 +36,41 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 
 	@Override
 	public BufferedImage loadImage() {
-		BufferedImage frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
-		BufferedImage map = new BufferedImage(16*(WIDTH+2), 16*(WIDTH+2), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = map.createGraphics();
-		DeciduousTileManager manager = null;
+		if(!loaded){
+			loadMap();
+		}
 		int x = ((ModelMap)myComponent).getX() - WIDTH/2 + 1;
 		int y = ((ModelMap)myComponent).getY() - HEIGHT/2 + 1;
-		if(loaded){
+		if(animateFinished){
 			if(prevX!=x){
 				animateCounter = 8;
-				xDirect = -1;
+				xDirection = -1;
 				if(prevX>x)
-					xDirect = 1;
+					xDirection = 1;
 			}
 			if(prevY!=y){
 				animateCounter = 8;
-				yDirect = -1;
+				yDirection = -1;
 				if(prevY>y)
-					yDirect = 1;
+					yDirection = 1;
 			}
 		}
 		prevX = x;
 		prevY = y;
+		BufferedImage frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
+		System.out.println((x + animateCounter*xDirection*2) + " " + (y + animateCounter*yDirection*2));
+		BufferedImage tempMap = new BufferedImage(16*WIDTH, 16*HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		Graphics tempG = tempMap.createGraphics();
+		tempG.drawImage(map.getSubimage(x*16 + animateCounter*xDirection*2,  y*16 + animateCounter*yDirection*2, 16*WIDTH, 16*HEIGHT), 0, 0, null);
+		tempG.dispose();
+		Graphics2D g = tempMap.createGraphics();
+		DeciduousTileManager manager = null;
 		try {
 			manager = new DeciduousTileManager((ModelMap)myComponent);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for(int i=-1; i<WIDTH+2; i++){
-			for(int j=-1; j<HEIGHT+2; j++){
-				if(i+x >= 0 && j+y >= 0 && i+x < ((ModelMap) myComponent).getWidth() && j+y < ((ModelMap) myComponent).getHeight()){
-					g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i+x, j+y)),
-							i*16, j*16, null);
-				}
-				if((isHover && animateCounter==0 && BORDER_WIDTH + (i-1)*16 <= xHover && BORDER_WIDTH + (i)*16 > xHover)
-						&& (isHover && animateCounter==0 && BORDER_WIDTH + (j-1)*16 <= yHover && BORDER_WIDTH + (j)*16 > yHover)){
-					g.drawImage(manager.getHoverTransparency(),
-							i*16, j*16, null);
-				}
-//				System.out.println(xHover + " " + BORDER_WIDTH + (i+x)*16);
-			}
-		}
+		drawHoverTile(g, manager);
 		g.dispose();
 		g = frame.createGraphics();
 		try {
@@ -80,17 +78,47 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		map = map.getSubimage(16 + animateCounter*xDirect*2,  16 + animateCounter*yDirect*2, 16*WIDTH, 16*HEIGHT);
-		g.drawImage(map, BORDER_WIDTH, BORDER_WIDTH, null);
-		loaded = true;
+		g.drawImage(tempMap, BORDER_WIDTH, BORDER_WIDTH, null);
+		animateFinished = true;
 		if(animateCounter>0){
 			animateCounter--;
 		}
 		else{
-			xDirect = 0;
-			yDirect = 0;
+			xDirection = 0;
+			yDirection = 0;
 		}
 		return frame;
+	}
+
+	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
+		for(int i=-1; i<WIDTH+2; i++){
+			for(int j=-1; j<HEIGHT+2; j++){
+				if((isHover && animateCounter==0 && BORDER_WIDTH + (i)*16 <= xHover && BORDER_WIDTH + (i+1)*16 > xHover)
+						&& (isHover && animateCounter==0 && BORDER_WIDTH + (j)*16 <= yHover && BORDER_WIDTH + (j+1)*16 > yHover)){
+					g.drawImage(manager.getHoverTransparency(),
+						i*16, j*16, null);
+				}
+			}
+		}
+	}
+
+	private void loadMap() {
+		DeciduousTileManager manager = null;
+		try {
+			manager = new DeciduousTileManager(((ModelMap) myComponent));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		map = new BufferedImage(((ModelMap) myComponent).getWidth()*16, ((ModelMap) myComponent).getHeight()*16, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = map.createGraphics();
+		for(int i=0; i<((ModelMap) myComponent).getWidth(); i++){
+			for(int j=0; j<((ModelMap) myComponent).getHeight(); j++){
+				g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i, j)),
+					i*16, j*16, null);
+			}
+		}
+		loaded = true;
 	}
 	
 	public void respond(){
