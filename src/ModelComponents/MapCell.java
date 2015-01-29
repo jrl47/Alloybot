@@ -6,6 +6,10 @@ public class MapCell {
 	public static final String SMALL_ROCKS = "srocks";
 	public static final String LARGE_ROCKS = "lrocks";
 	public static final String WATER = "water";
+	public static final String FLOWERS = "flowers";
+	public static final String BRICKS = "bricks";
+	public static final String SHOALS = "shoals";
+	public static final String FOREST = "forest";
 	private String myID;
 	private int myX;
 	private int myY;

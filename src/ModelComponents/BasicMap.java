@@ -19,14 +19,25 @@ public class BasicMap extends ModelMap{
 			for(int j=0; j<getImage().getHeight(); j++){
 				if(getImage().getRGB(i, j)==-8421505)
 					myCells.setCell(i, j, myFactory.makeLargeRocksCell(i, j));
-				if(getImage().getRGB(i, j)==-3947581)
+				else if(getImage().getRGB(i, j)==-3947581)
 					myCells.setCell(i, j, myFactory.makeSmallRocksCell(i, j));
-				if(getImage().getRGB(i, j)==-4621737)
+				else if(getImage().getRGB(i, j)==-4621737)
 					myCells.setCell(i, j, myFactory.makeDirtCell(i, j));
-				if(getImage().getRGB(i, j)==-4856291)
+				else if(getImage().getRGB(i, j)==-4856291)
 					myCells.setCell(i, j, myFactory.makeGrassCell(i, j));
-				if(getImage().getRGB(i, j)==-16735512)
+				else if(getImage().getRGB(i, j)==-16735512)
 					myCells.setCell(i, j, myFactory.makeWaterCell(i, j));
+				else if(getImage().getRGB(i, j)==-20791)
+					myCells.setCell(i, j, myFactory.makeFlowersCell(i, j));
+				else if(getImage().getRGB(i, j)==-1)
+					myCells.setCell(i, j, myFactory.makeBricksCell(i, j));
+				else if(getImage().getRGB(i, j)==-12629812)
+					myCells.setCell(i, j, myFactory.makeShoalsCell(i, j));
+				else if(getImage().getRGB(i, j)==-14503604)
+					myCells.setCell(i, j, myFactory.makeForestCell(i, j));
+				else{
+//					System.out.println(getImage().getRGB(i, j));
+				}
 			}
 		}
 		setX(getImage().getWidth()/2);
