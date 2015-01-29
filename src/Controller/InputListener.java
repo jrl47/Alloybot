@@ -30,6 +30,10 @@ public class InputListener implements MouseListener, MouseMotionListener{
 				Shape s = v.getBounds();
 				if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
 					v.respond();
+					if(v instanceof InputSensitive){
+						((InputSensitive) v).useInput((int)(mostRecentEvent.getX()/View.scale)-(int)(s.getBounds().x),
+								(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y), true);
+					}
 				}
 			}
 		}
@@ -40,7 +44,7 @@ public class InputListener implements MouseListener, MouseMotionListener{
 					v.setHover(true);
 					if(v instanceof InputSensitive){
 						((InputSensitive) v).useInput((int)(mostRecentEvent.getX()/View.scale)-(int)(s.getBounds().x),
-								(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y));
+								(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y), false);
 					}
 				}
 				else{

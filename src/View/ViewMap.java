@@ -18,6 +18,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	public static final int WIDTH = 23;
 	public static final int HEIGHT = 23;
 	public static final int BORDER_WIDTH = 10;
+	private int x;
+	private int y;
 	private int prevX;
 	private int prevY;
 	private int xHover;
@@ -26,7 +28,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	
 	private boolean loaded;
 	
-	private boolean animateFinished;
 	private int xDirection;
 	private int yDirection;
 	private int animateCounter;
@@ -36,32 +37,21 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 
 	@Override
 	public BufferedImage loadImage() {
+		x = ((ModelMap)myComponent).getX() - WIDTH/2 + 1;
+		y = ((ModelMap)myComponent).getY() - HEIGHT/2 + 1;
 		if(!loaded){
 			loadMap();
 		}
-		int x = ((ModelMap)myComponent).getX() - WIDTH/2 + 1;
-		int y = ((ModelMap)myComponent).getY() - HEIGHT/2 + 1;
-		if(animateFinished){
-			if(prevX!=x){
-				animateCounter = 8;
-				xDirection = -1;
-				if(prevX>x)
-					xDirection = 1;
-			}
-			if(prevY!=y){
-				animateCounter = 8;
-				yDirection = -1;
-				if(prevY>y)
-					yDirection = 1;
-			}
-		}
-		prevX = x;
-		prevY = y;
-		BufferedImage frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
-		System.out.println((x + animateCounter*xDirection*2) + " " + (y + animateCounter*yDirection*2));
+		
+		handleAnimation();
+		
+		return drawVisibleMapRegion();
+	}
+
+	private BufferedImage drawVisibleMapRegion() {
 		BufferedImage tempMap = new BufferedImage(16*WIDTH, 16*HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics tempG = tempMap.createGraphics();
-		tempG.drawImage(map.getSubimage(x*16 + animateCounter*xDirection*2,  y*16 + animateCounter*yDirection*2, 16*WIDTH, 16*HEIGHT), 0, 0, null);
+		tempG.drawImage(map.getSubimage(x*16 + animateCounter*xDirection,  y*16 + animateCounter*yDirection, 16*WIDTH, 16*HEIGHT), 0, 0, null);
 		tempG.dispose();
 		Graphics2D g = tempMap.createGraphics();
 		DeciduousTileManager manager = null;
@@ -72,6 +62,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		}
 		drawHoverTile(g, manager);
 		g.dispose();
+		BufferedImage frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
 		g = frame.createGraphics();
 		try {
 			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")), 0, 0, null);
@@ -79,7 +70,10 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			e1.printStackTrace();
 		}
 		g.drawImage(tempMap, BORDER_WIDTH, BORDER_WIDTH, null);
-		animateFinished = true;
+		return frame;
+	}
+
+	private void handleAnimation() {
 		if(animateCounter>0){
 			animateCounter--;
 		}
@@ -87,7 +81,16 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			xDirection = 0;
 			yDirection = 0;
 		}
-		return frame;
+		if(prevX!=x){
+			animateCounter = 8;
+			xDirection = (int)((prevX - x)*2.0);
+		}
+		if(prevY!=y){
+			animateCounter = 8;
+			yDirection = (int)((prevY - y)*2.0);
+		}
+		prevX = x;
+		prevY = y;
 	}
 
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
@@ -118,6 +121,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 					i*16, j*16, null);
 			}
 		}
+		prevX = x;
+		prevY = y;
 		loaded = true;
 	}
 	
@@ -134,9 +139,15 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	}
 
 	@Override
-	public void useInput(int x, int y) {
-		xHover = x;
-		yHover = y;
+	public void useInput(int xx, int yy, boolean b) {
+		xHover = xx;
+		yHover = yy;
+		if(b){
+			int newX = ((ModelMap)myComponent).getCell(-1 + x + ((xx-BORDER_WIDTH)/16), -1 + y + ((yy-BORDER_WIDTH)/16)).getX();
+			int newY = ((ModelMap)myComponent).getCell(-1 + x + ((xx-BORDER_WIDTH)/16), -1 + y + ((yy-BORDER_WIDTH)/16)).getY();
+			((ModelMap)myComponent).setX(newX);
+			((ModelMap)myComponent).setY(newY);
+		}
 	}
 
 }
