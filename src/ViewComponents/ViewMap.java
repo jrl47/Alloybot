@@ -1,4 +1,4 @@
-package View;
+package ViewComponents;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,20 +10,21 @@ import javax.imageio.ImageIO;
 import ModelComponents.ModelMap;
 import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
-import ViewComponents.InputSensitive;
-import ViewComponents.ViewComponent;
+import View.DeciduousTileManager;
+import View.ScreenBuilder;
 
 public class ViewMap extends ViewComponent implements InputSensitive{
 
 	public static final int WIDTH = 31;
-	public static final int HEIGHT = 25;
-	public static final int BORDER_WIDTH = 10;
+	public static final int HEIGHT = 27;
+	public static final int BORDER_WIDTH = 9;
 	private int x;
 	private int y;
 	private int prevX;
 	private int prevY;
 	private int xHover;
 	private int yHover;
+	private int hoverCounter;
 	private BufferedImage map;
 	private BufferedImage frame;
 	
@@ -77,32 +78,35 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		try {
 			frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = frame.createGraphics();
-			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 0, 10, 10), 0, 0, null);
-			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 26, 10, 10),
+			BufferedImage myBacking = ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png"));
+			int farside = myBacking.getHeight() - BORDER_WIDTH;
+			g.drawImage(myBacking.getSubimage(0, 0, BORDER_WIDTH, BORDER_WIDTH), 0, 0, null);
+			g.drawImage(myBacking.getSubimage(farside, farside, BORDER_WIDTH, BORDER_WIDTH),
 					BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*HEIGHT, null);
-			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 0, 10, 10),
+			g.drawImage(myBacking.getSubimage(farside, 0, BORDER_WIDTH, BORDER_WIDTH),
 					BORDER_WIDTH + 16*WIDTH, 0, null);
-			g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 26, 10, 10),
+			g.drawImage(myBacking.getSubimage(0, farside, BORDER_WIDTH, BORDER_WIDTH),
 					0, BORDER_WIDTH + 16*HEIGHT, null);
 			for(int i=0; i<WIDTH; i++){
-				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(10, 0, 16, 10),
+				g.drawImage(myBacking.getSubimage(BORDER_WIDTH, 0, 16, BORDER_WIDTH),
 						BORDER_WIDTH + 16*i, 0, null);
 			}
 			for(int i=0; i<WIDTH; i++){
-				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(10, 26, 16, 10),
+				g.drawImage(myBacking.getSubimage(BORDER_WIDTH, farside, 16, BORDER_WIDTH),
 						BORDER_WIDTH + 16*i, BORDER_WIDTH + 16*HEIGHT, null);
 			}
 			for(int i=0; i<HEIGHT; i++){
-				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(0, 10, 10, 16),
+				g.drawImage(myBacking.getSubimage(0, BORDER_WIDTH, BORDER_WIDTH, 16),
 						0, BORDER_WIDTH + 16*i, null);
 			}
 			for(int i=0; i<HEIGHT; i++){
-				g.drawImage(ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png")).getSubimage(26, 10, 10, 16),
+				g.drawImage(myBacking.getSubimage(farside, BORDER_WIDTH, BORDER_WIDTH, 16),
 						BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*i, null);
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+		hoverCounter=0;
 		}
 		loaded = true;
 	}
@@ -142,6 +146,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		}
 		prevX = x;
 		prevY = y;
+		hoverCounter++;
+		hoverCounter = hoverCounter % 140;
 	}
 
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
@@ -149,7 +155,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			for(int j=-1; j<HEIGHT+2; j++){
 				if((isHover && animateXCounter==0 && animateYCounter==0 && BORDER_WIDTH + (i)*16 <= xHover && BORDER_WIDTH + (i+1)*16 > xHover)
 						&& (isHover && animateXCounter==0 && animateYCounter==0  && BORDER_WIDTH + (j)*16 <= yHover && BORDER_WIDTH + (j+1)*16 > yHover)){
-					g.drawImage(manager.getHoverTransparency(),
+					g.drawImage(manager.getHoverTransparency(hoverCounter),
 						i*16, j*16, null);
 				}
 			}
@@ -161,7 +167,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		try {
 			manager = new DeciduousTileManager(((ModelMap) myComponent));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		map = new BufferedImage(((ModelMap) myComponent).getWidth()*16, ((ModelMap) myComponent).getHeight()*16, BufferedImage.TYPE_INT_ARGB);

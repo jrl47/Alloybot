@@ -16,6 +16,7 @@ import ViewComponents.AlloyText;
 import ViewComponents.Background;
 import ViewComponents.Button;
 import ViewComponents.ViewComponent;
+import ViewComponents.ViewMap;
 
 public class ScreenBuilder {
 
@@ -90,7 +91,7 @@ public class ScreenBuilder {
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 670, 404, "END GAME", 2));
-			myComponents.add(new ViewMap(myData.getComponents().get(1), 146, 14));
+			myComponents.add(new ViewMap(myData.getComponents().get(1), 146, 0));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

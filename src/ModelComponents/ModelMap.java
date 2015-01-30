@@ -10,6 +10,10 @@ public abstract class ModelMap extends ModelComponent{
 	protected MapCellFactory myFactory;
 	protected int x;
 	protected int y;
+	
+	protected int xTile;
+	protected int yTile;
+	
 	protected int myWidth;
 	protected int myHeight;
 	public ModelMap(int width, int height){
@@ -46,6 +50,18 @@ public abstract class ModelMap extends ModelComponent{
 	}
 	public void incrementY(int yinc){
 		y += yinc;
+	}
+	public int getXTile(){
+		return xTile;
+	}
+	public void setXTile(int x){
+		xTile = x;
+	}
+	public int getYTile(){
+		return yTile;
+	}
+	public void setYTile(int y){
+		yTile = y;
 	}
 	public int getWidth(){
 		return myWidth;
