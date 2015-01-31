@@ -197,6 +197,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	public void useInput(int xx, int yy, boolean b) {
 		xHover = xx;
 		yHover = yy;
+		((ModelMap)myComponent).setXTile(x + ((xx-BORDER_WIDTH)/16));
+		((ModelMap)myComponent).setYTile(y + ((yy-BORDER_WIDTH)/16));
 		if(b && animateXCounter==0 && animateYCounter==0 && xx >= 9 && yy >= 9 &&
 				xx < 9 + WIDTH*16 && yy < 9 + HEIGHT*16){
 			int newX = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getX();
@@ -217,5 +219,4 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			((ModelMap)myComponent).setY(newY);
 		}
 	}
-
 }

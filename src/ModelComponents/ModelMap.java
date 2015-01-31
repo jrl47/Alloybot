@@ -63,6 +63,9 @@ public abstract class ModelMap extends ModelComponent{
 	public void setYTile(int y){
 		yTile = y;
 	}
+	public MapCell getCurrentHighlightedCell(){
+		return myCells.getCell(xTile, yTile);
+	}
 	public int getWidth(){
 		return myWidth;
 	}

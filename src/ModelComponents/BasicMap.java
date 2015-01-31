@@ -38,6 +38,7 @@ public class BasicMap extends ModelMap{
 				else{
 //					System.out.println(getImage().getRGB(i, j));
 				}
+				myCells.getCell(i, j).setOil(getOilImage().getRGB(i, j));
 			}
 		}
 		setX(getImage().getWidth()/2);
@@ -47,6 +48,16 @@ public class BasicMap extends ModelMap{
 		if(dataImage==null){
 		try {
 			dataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMap.png"));
+		} catch (IOException e) {
+			return null;
+		}
+		}
+		return dataImage;
+	}
+	public static BufferedImage getOilImage(){
+		if(dataImage==null){
+		try {
+			dataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapOil.png"));
 		} catch (IOException e) {
 			return null;
 		}

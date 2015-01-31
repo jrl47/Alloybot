@@ -13,6 +13,7 @@ public class MapCell {
 	private String myID;
 	private int myX;
 	private int myY;
+	private int myOil;
 	public MapCell(String id, int x, int y){
 		myX = x;
 		myY = y;
@@ -26,5 +27,11 @@ public class MapCell {
 	}
 	public int getY(){
 		return myY;
+	}
+	public int getOil(){
+		return myOil;
+	}
+	public void setOil(int o){
+		myOil = o;
 	}
 }
