@@ -37,5 +37,10 @@ public class Robot extends MapCellObject{
 		myLocation.addObject(this);
 		enabled = false;
 	}
-
+	public int getX(){
+		return myX;
+	}
+	public int getY(){
+		return myY;
+	}
 }

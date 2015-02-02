@@ -4,12 +4,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import ModelComponents.MapCellObject;
 import ModelComponents.ModelMap;
 import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
+import ModelComponents.Robot;
 import View.DeciduousTileManager;
 import View.ScreenBuilder;
 
@@ -28,6 +32,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private BufferedImage frame;
 	
 	private boolean loaded;
+	private Robot selectedRobot;
+	private List<MapCellObject> myObjects;
 	
 	private double xDirection;
 	private double yDirection;
@@ -37,6 +43,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private double yCounterDecrement;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
+		selectedRobot = null;
+		myObjects = new ArrayList<MapCellObject>();
 	}
 
 	@Override
@@ -55,7 +63,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private BufferedImage drawVisibleMapRegion() {
 		BufferedImage tempMap = new BufferedImage(16*WIDTH, 16*HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics tempG = tempMap.createGraphics();
-		tempG.drawImage(map.getSubimage(x*16 + (int)(animateXCounter*xDirection),  y*16 + (int)(animateYCounter*yDirection), 16*WIDTH, 16*HEIGHT), 0, 0, null);
+		tempG.drawImage(map.getSubimage(getAnimateX(),  getAnimateY(), 16*WIDTH, 16*HEIGHT), 0, 0, null);
 		tempG.dispose();
 		Graphics2D g = tempMap.createGraphics();
 		DeciduousTileManager manager = null;
@@ -65,6 +73,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			e.printStackTrace(); 
 		}
 		drawHoverTile(g, manager);
+		drawRobot(g, manager);
 		g.dispose();
 		generateFrame();
 		g = frame.createGraphics();
@@ -147,17 +156,33 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	}
 
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
-		for(int i=-1; i<WIDTH+2; i++){
-			for(int j=-1; j<HEIGHT+2; j++){
-				if((isHover && animateXCounter==0 && animateYCounter==0 && BORDER_WIDTH + (i)*16 <= xHover && BORDER_WIDTH + (i+1)*16 > xHover)
-						&& (isHover && animateXCounter==0 && animateYCounter==0  && BORDER_WIDTH + (j)*16 <= yHover && BORDER_WIDTH + (j+1)*16 > yHover)){
-					g.drawImage(manager.getHoverTransparency(),
-						i*16, j*16, null);
-				}
+		g.drawImage(manager.getHoverTransparency(),	pixelsToCellX(xHover)*16 - getAnimateX(), pixelsToCellY(yHover)*16 -getAnimateY(), null);
+	}
+	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
+		if(selectedRobot!=null){
+			g.drawImage(manager.getHighlightTransparency(),selectedRobot.getX()*16 - getAnimateX(), selectedRobot.getY()*16 - getAnimateY(), null);
+		}
+		for(MapCellObject m: myObjects){
+			if(m instanceof Robot){
+				Robot r = (Robot)m;
+				g.drawImage(manager.generateRobot(),r.getX()*16 - getAnimateX(),r.getY()*16 - getAnimateY(), null);
 			}
 		}
 	}
-
+	
+	private int getAnimateX(){
+		return x*16 + (int)(animateXCounter*xDirection);
+	}
+	private int getAnimateY(){
+		return y*16 + (int)(animateYCounter*yDirection);
+	}
+	private int pixelsToCellX(int xx){
+		return x + ((xx-BORDER_WIDTH)/16);
+	}
+	private int pixelsToCellY(int yy){
+		return y + ((yy-BORDER_WIDTH)/16);
+	}
+	
 	private void loadMap() {
 		DeciduousTileManager manager = null;
 		try {
@@ -171,6 +196,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			for(int j=0; j<((ModelMap) myComponent).getHeight(); j++){
 				g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i, j)),
 					i*16, j*16, null);
+				myObjects.addAll(((ModelMap) myComponent).getCell(i, j).getObjects());
 			}
 		}
 		prevX = x;
@@ -213,6 +239,17 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			}
 			((ModelMap)myComponent).setX(newX);
 			((ModelMap)myComponent).setY(newY);
+			xHover = -100;
+			yHover = -100;
+			if(selectedRobot != null){
+				selectedRobot.move(newX, newY);
+				selectedRobot = null;
+			}
+			else {for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
+				if(m instanceof Robot){
+					selectedRobot = (Robot)m;
+				}
+			}}
 		}
 	}
 }

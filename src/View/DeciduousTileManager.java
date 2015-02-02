@@ -7,7 +7,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import ModelComponents.MapCell;
+import ModelComponents.MapCellObject;
 import ModelComponents.ModelMap;
+import ModelComponents.Robot;
 
 public class DeciduousTileManager extends TileManager{
 
@@ -17,6 +19,10 @@ public class DeciduousTileManager extends TileManager{
 
 	@Override
 	public BufferedImage getImage(MapCell m) {
+		BufferedImage bb = doBackground(m);
+		return bb;
+	}
+	public BufferedImage doBackground(MapCell m){
 		if(m.getID().equals(MapCell.GRASS))
 			return generateGrass();
 		if(m.getID().equals(MapCell.DIRT))
@@ -38,11 +44,16 @@ public class DeciduousTileManager extends TileManager{
 		return null;
 	}
 	
+	public BufferedImage generateRobot() {
+		return myImage.getSubimage(9*16, 1*16, 16, 16);
+	}
+
 	private BufferedImage generateFlowers(MapCell m) {
 		BufferedImage bb = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bb.getGraphics();
 		g.drawImage(myImage.getSubimage(0*16, 1*16, 16, 16), 0, 0, null);
 		fuzzBorderWithGrass(m, g);
+		g.dispose();
 		return bb;
 	}
 	
@@ -51,6 +62,7 @@ public class DeciduousTileManager extends TileManager{
 		Graphics g = bb.getGraphics();
 		g.drawImage(myImage.getSubimage(3*16, 1*16, 16, 16), 0, 0, null);
 		fuzzBorderWithForest(m, g);
+		g.dispose();
 		return bb;
 	}
 	
@@ -59,6 +71,7 @@ public class DeciduousTileManager extends TileManager{
 		Graphics g = bb.getGraphics();
 		g.drawImage(myImage.getSubimage(1*16, 1*16, 16, 16), 0, 0, null);
 		fuzzBorderWithGrass(m, g);
+		g.dispose();
 		return bb;
 	}
 	
@@ -67,11 +80,15 @@ public class DeciduousTileManager extends TileManager{
 		Graphics g = bb.getGraphics();
 		g.drawImage(myImage.getSubimage(9*16, 0, 16, 16), 0, 0, null);
 		fuzzBorderWithGrass(m, g);
+		g.dispose();
 		return bb;
 	}
 
 	public BufferedImage getHoverTransparency(){
 		return myImage.getSubimage(8*16, 1*16, 16, 16);
+	}
+	public BufferedImage getHighlightTransparency(){
+		return myImage.getSubimage(7*16, 0*16, 16, 16);
 	}
 
 	private BufferedImage generateLargeRocks(MapCell m) {
@@ -87,6 +104,7 @@ public class DeciduousTileManager extends TileManager{
 		Graphics g = bb.getGraphics();
 		g.drawImage(myImage.getSubimage(8*16, 0, 16, 16), 0, 0, null);
 		fuzzBorderWithGrass(m, g);
+		g.dispose();
 		return bb;
 	}
 
@@ -150,6 +168,7 @@ public class DeciduousTileManager extends TileManager{
 		if(r){
 			g.drawImage(myImage.getSubimage(7*16, 1*16, 16, 16), 0, 0, null);
 		}
+		g.dispose();
 	}
 
 	private BufferedImage generateGrass() {
