@@ -16,6 +16,7 @@ public class ModelData {
 	
 	private HashMap<String, ScreenData> screens;
 	private State state;
+	private ResourceManager manager;
 	private List<ModelComponent> myComponents;
 	
 	public ModelData(){
@@ -30,7 +31,7 @@ public class ModelData {
 	private void loadMap() {
 		List<ModelComponent> mapComp = new ArrayList<ModelComponent>();
 		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
-		BasicMap b = new BasicMap();
+		BasicMap b = new BasicMap(manager);
 		mapComp.add(b);
 		myComponents.addAll(mapComp);
 		screens.put(MAP_EXPLORATION_STATE, new ScreenData(MAP_EXPLORATION_STATE, mapComp));

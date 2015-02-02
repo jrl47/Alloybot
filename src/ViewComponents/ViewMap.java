@@ -24,7 +24,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private int prevY;
 	private int xHover;
 	private int yHover;
-	private int hoverCounter;
 	private BufferedImage map;
 	private BufferedImage frame;
 	
@@ -106,7 +105,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		hoverCounter=0;
 		}
 		loaded = true;
 	}
@@ -146,8 +144,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		}
 		prevX = x;
 		prevY = y;
-		hoverCounter++;
-		hoverCounter = hoverCounter % 140;
 	}
 
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
@@ -155,7 +151,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			for(int j=-1; j<HEIGHT+2; j++){
 				if((isHover && animateXCounter==0 && animateYCounter==0 && BORDER_WIDTH + (i)*16 <= xHover && BORDER_WIDTH + (i+1)*16 > xHover)
 						&& (isHover && animateXCounter==0 && animateYCounter==0  && BORDER_WIDTH + (j)*16 <= yHover && BORDER_WIDTH + (j+1)*16 > yHover)){
-					g.drawImage(manager.getHoverTransparency(hoverCounter),
+					g.drawImage(manager.getHoverTransparency(),
 						i*16, j*16, null);
 				}
 			}

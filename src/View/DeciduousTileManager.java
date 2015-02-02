@@ -70,9 +70,7 @@ public class DeciduousTileManager extends TileManager{
 		return bb;
 	}
 
-	public BufferedImage getHoverTransparency(int hoverCounter){
-		if(hoverCounter < 70)
-			return myImage.getSubimage(7*16, 0, 16, 16);
+	public BufferedImage getHoverTransparency(){
 		return myImage.getSubimage(8*16, 1*16, 16, 16);
 	}
 

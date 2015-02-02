@@ -1,5 +1,8 @@
 package ModelComponents;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapCell {
 	public static final String GRASS = "grass";
 	public static final String DIRT = "dirt";
@@ -10,6 +13,8 @@ public class MapCell {
 	public static final String BRICKS = "bricks";
 	public static final String SHOALS = "shoals";
 	public static final String FOREST = "forest";
+	
+	private List<MapCellObject> myObjects;
 	private String myID;
 	private int myX;
 	private int myY;
@@ -18,6 +23,7 @@ public class MapCell {
 		myX = x;
 		myY = y;
 		myID = id;
+		myObjects = new ArrayList<MapCellObject>();
 	}
 	public String getID(){
 		return myID;
@@ -33,5 +39,14 @@ public class MapCell {
 	}
 	public void setOil(int o){
 		myOil = o;
+	}
+	public List<MapCellObject> getObjects(){
+		return myObjects;
+	}
+	public void addObject(MapCellObject m){
+		myObjects.add(m);
+	}
+	public void removeObject(MapCellObject m){
+		myObjects.remove(m);
 	}
 }
