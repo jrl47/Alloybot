@@ -221,10 +221,22 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		yHover = yy;
 		((ModelMap)myComponent).setXTile(x + ((xx-BORDER_WIDTH)/16));
 		((ModelMap)myComponent).setYTile(y + ((yy-BORDER_WIDTH)/16));
-		if(b && animateXCounter==0 && animateYCounter==0 && xx >= 9 && yy >= 9 &&
+		int newX = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getX();
+		int newY = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getY();
+		if(b && selectedRobot != null){
+			selectedRobot.move(newX, newY);
+			selectedRobot = null;
+			return;
+		}
+		else if(b){
+			for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
+				if(m instanceof Robot){
+					selectedRobot = (Robot)m;
+				}
+			}
+		}
+		if(b  && selectedRobot == null && animateXCounter==0 && animateYCounter==0 && xx >= 9 && yy >= 9 &&
 				xx < 9 + WIDTH*16 && yy < 9 + HEIGHT*16){
-			int newX = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getX();
-			int newY = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getY();
 			if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth()){
 				newX = ((ModelMap)myComponent).getWidth() - WIDTH/2 - 1;
 			}
@@ -241,15 +253,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			((ModelMap)myComponent).setY(newY);
 			xHover = -100;
 			yHover = -100;
-			if(selectedRobot != null){
-				selectedRobot.move(newX, newY);
-				selectedRobot = null;
-			}
-			else {for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
-				if(m instanceof Robot){
-					selectedRobot = (Robot)m;
-				}
-			}}
 		}
 	}
 }

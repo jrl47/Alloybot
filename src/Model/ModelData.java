@@ -59,4 +59,7 @@ public class ModelData {
 	public String getState(){
 		return state.getState();
 	}
+	public ResourceManager getResources(){
+		return manager;
+	}
 }

@@ -15,6 +15,8 @@ import ViewComponents.AlloyButton;
 import ViewComponents.AlloyText;
 import ViewComponents.Background;
 import ViewComponents.Button;
+import ViewComponents.ResourcesInfoScreen;
+import ViewComponents.RobotActionScreen;
 import ViewComponents.TileInfoScreen;
 import ViewComponents.ViewComponent;
 import ViewComponents.ViewMap;
@@ -94,6 +96,8 @@ public class ScreenBuilder {
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "END GAME", 1));
 			myComponents.add(new ViewMap(myData.getComponents().get(1), 146, 0));
 			myComponents.add(new TileInfoScreen(myData.getComponents().get(1), 660, 0));
+			myComponents.add(new ResourcesInfoScreen(null, 0, 0));
+			myComponents.add(new RobotActionScreen(null, 0, 300));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
