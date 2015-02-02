@@ -24,12 +24,7 @@ public class BorderedFixedFont extends FixedFont{
 		BufferedImage bb = new BufferedImage((myWidth+1)*s.length()-1, myHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bb.getGraphics();
 		for(int i=0; i<s.length(); i++){
-			if((s.charAt(i)==' ')){
-				g.drawImage(myImages.get(26), (myWidth+1)*i, 0, null);
-			}
-			else{
-				g.drawImage(myImages.get((int)s.charAt(i)-65), (myWidth+1)*i, 0, null);
-			}
+			g.drawImage(myImages.get((int)s.charAt(i)-32), (myWidth+1)*i, 0, null);
 		}
 		BufferedImage sc = new BufferedImage(bb.getWidth()*scale, bb.getHeight()*scale,BufferedImage.TYPE_INT_ARGB);
 		g = sc.createGraphics();

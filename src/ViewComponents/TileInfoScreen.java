@@ -42,10 +42,9 @@ public class TileInfoScreen extends ViewComponent{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		g.drawImage(font.getStringImage("OIL ", 1), 10, 10, null);
+		g.drawImage(font.getStringImage("OIL:", 1), 10, 10, null);
 		String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil() + "";
-		g.drawString(s, 40, 10);
-//		g.drawImage(font.getStringImage(s, 1), 40, 10, null);
+		g.drawImage(font.getStringImage(s, 1), 40, 10, null);
 		return myImage;
 	}
 

@@ -15,7 +15,7 @@ public class FixedFont {
 		myWidth = width;
 		myHeight = font.getHeight();
 		myImages = new ArrayList<BufferedImage>();
-		for(int i=0; i<27; i++){
+		for(int i=0; i<60; i++){
 			if(i*(width+1)<font.getWidth()){
 			BufferedImage bb = font.getSubimage((width+1)*i, 0, width+1, font.getHeight());
 			myImages.add(bb);
@@ -26,12 +26,7 @@ public class FixedFont {
 		BufferedImage bb = new BufferedImage((myWidth+1)*s.length()-1, myHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bb.getGraphics();
 		for(int i=0; i<s.length(); i++){
-			if((s.charAt(i)==' ')){
-				g.drawImage(myImages.get(26), (myWidth+1)*i, 0, null);
-			}
-			else{
-				g.drawImage(myImages.get((int)s.charAt(i)-65), (myWidth+1)*i, 0, null);
-			}
+				g.drawImage(myImages.get((int)s.charAt(i)-32), (myWidth+1)*i, 0, null);
 		}
 		BufferedImage sc = new BufferedImage(bb.getWidth()*scale, bb.getHeight()*scale,BufferedImage.TYPE_INT_ARGB);
 		Graphics2D gg = sc.createGraphics();

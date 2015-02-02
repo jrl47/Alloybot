@@ -12,7 +12,8 @@ import View.ScreenBuilder;
 
 public class BasicMap extends ModelMap{
 
-	private static BufferedImage dataImage;
+	private static BufferedImage terrainDataImage;
+	private static BufferedImage oilDataImage;
 	public BasicMap(){
 		super(getImage().getWidth(), getImage().getHeight());
 		for(int i=0; i<getImage().getWidth(); i++){
@@ -38,31 +39,31 @@ public class BasicMap extends ModelMap{
 				else{
 //					System.out.println(getImage().getRGB(i, j));
 				}
-				myCells.getCell(i, j).setOil(getOilImage().getRGB(i, j));
+				myCells.getCell(i, j).setOil(getOilImage().getRGB(i, j)>>16 & 255);
 			}
 		}
 		setX(getImage().getWidth()/2);
 		setY(getImage().getHeight()/2);
 	}
 	public static BufferedImage getImage(){
-		if(dataImage==null){
+		if(terrainDataImage==null){
 		try {
-			dataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMap.png"));
+			terrainDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMap.png"));
 		} catch (IOException e) {
 			return null;
 		}
 		}
-		return dataImage;
+		return terrainDataImage;
 	}
 	public static BufferedImage getOilImage(){
-		if(dataImage==null){
+		if(oilDataImage==null){
 		try {
-			dataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapOil.png"));
+			oilDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapOil.png"));
 		} catch (IOException e) {
 			return null;
 		}
 		}
-		return dataImage;
+		return oilDataImage;
 	}
 	@Override
 	public void step() {
