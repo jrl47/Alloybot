@@ -21,6 +21,7 @@ public class ModelData {
 	
 	public ModelData(){
 		myComponents = new ArrayList<ModelComponent>();
+		manager = new ResourceManager();
 		screens = new HashMap<String, ScreenData>();
 		state = new State(START_MENU_STATE);
 		loadStart();
@@ -34,7 +35,9 @@ public class ModelData {
 		BasicMap b = new BasicMap(manager);
 		mapComp.add(b);
 		myComponents.addAll(mapComp);
-		screens.put(MAP_EXPLORATION_STATE, new ScreenData(MAP_EXPLORATION_STATE, mapComp));
+		ScreenData s = new ScreenData(MAP_EXPLORATION_STATE, mapComp);
+		s.addResources(manager);
+		screens.put(MAP_EXPLORATION_STATE, s);
 	}
 
 	private void loadEnd() {

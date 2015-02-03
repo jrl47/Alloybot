@@ -40,13 +40,12 @@ public class ResourcesInfoScreen extends ViewComponent{
 		try {
 			font = new AlloyFont();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		g.drawImage(font.getStringImage("TILE RESOURCES", 1), 10, 10, null);
+		g.drawImage(font.getStringImage("INVENTORY", 1), 10, 10, null);
 		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-//		String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil() + "";
-//		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
+		String s = myManager.getOil() + "";
+		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
 		return myImage;
 	}
 	@Override

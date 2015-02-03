@@ -39,8 +39,8 @@ public class RobotActionScreen extends ViewComponent{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		g.drawImage(font.getStringImage("TILE RESOURCES", 1), 10, 10, null);
-		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
+//		g.drawImage(font.getStringImage("TILE RESOURCES", 1), 10, 10, null);
+//		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
 //		String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil() + "";
 //		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
 		return myImage;

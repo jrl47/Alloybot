@@ -4,7 +4,7 @@ public class ResourceManager {
 	
 	private int myOil;
 	public ResourceManager(){
-		
+		myOil = 30000;
 	}
 	public int getOil() {
 		return myOil;
