@@ -32,17 +32,14 @@ public class RobotActionScreen extends ViewComponent{
 			e.printStackTrace();
 		}
 		}
-		BufferedImage image = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = image.getGraphics();
+		myImage = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = myImage.getGraphics();
 		g.drawImage(myBackground, 0, 0, null);
 		drawComponents();
-		return image;
+		return myImage;
 	}
 	@Override
 	public BufferedImage loadHover() {
 		return loadImage();
-	}
-	public void addComponent(ViewComponent v){
-		myComponents.add(v);
 	}
 }

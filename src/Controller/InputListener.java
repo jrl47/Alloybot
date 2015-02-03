@@ -27,34 +27,48 @@ public class InputListener implements MouseListener, MouseMotionListener{
 	public void step(List<ViewComponent> screenComponents) {
 		if(clicked){
 			for(ViewComponent v: screenComponents){
-				Shape s = v.getBounds();
-				if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
-					v.respond();
-					if(v instanceof InputSensitive){
-						((InputSensitive) v).useInput((int)(mostRecentEvent.getX()/View.scale)-(int)(s.getBounds().x),
-								(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y), true);
-					}
-				}
+				doClick(v);
 			}
 		}
 		if(moved){
 			for(ViewComponent v: screenComponents){
-				Shape s = v.getBounds();
-				if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
-					v.setHover(true);
-					if(v instanceof InputSensitive){
-						((InputSensitive) v).useInput((int)(mostRecentEvent.getX()/View.scale)-(int)(s.getBounds().x),
-								(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y), false);
-					}
-				}
-				else{
-					v.setHover(false);
-				}
+				doHover(v);
 			}
 		}
 		mostRecentEvent = null;
 		clicked = false;
 		moved = false;
+	}
+
+	private void doHover(ViewComponent v) {
+		Shape s = v.getBounds();
+		if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
+			for(ViewComponent vv: v.getComponents()){
+				doHover(vv);
+			}
+			v.setHover(true);
+			if(v instanceof InputSensitive){
+				((InputSensitive) v).useInput((int)(mostRecentEvent.getX()/View.scale)-(int)(s.getBounds().x),
+						(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y), false);
+			}
+		}
+		else{
+			v.setHover(false);
+		}
+	}
+
+	private void doClick(ViewComponent v) {
+		Shape s = v.getBounds();
+		if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
+			for(ViewComponent vv: v.getComponents()){
+				doClick(vv);
+			}
+			v.respond();
+			if(v instanceof InputSensitive){
+				((InputSensitive) v).useInput((int)(mostRecentEvent.getX()/View.scale)-(int)(s.getBounds().x),
+						(int)(mostRecentEvent.getY()/View.scale)-(int)(s.getBounds().y), true);
+			}
+		}
 	}
 	
 	@Override

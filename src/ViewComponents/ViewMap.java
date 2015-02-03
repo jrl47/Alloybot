@@ -156,7 +156,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	}
 
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
-		if(animateXCounter==0 && animateYCounter==0)
+		if(animateXCounter==0 && animateYCounter==0 && isHover)
 			g.drawImage(manager.getHoverTransparency(),	pixelsToCellX(xHover)*16 - getAnimateX(), pixelsToCellY(yHover)*16 -getAnimateY(), null);
 	}
 	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {

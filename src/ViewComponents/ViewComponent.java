@@ -20,25 +20,31 @@ public abstract class ViewComponent {
 	protected boolean isHover;
 	private int x;
 	private int y;
+	private int absoluteX;
+	private int absoluteY;
 	public ViewComponent(ModelComponent c, int xx, int yy){
 		isHover = false;
 		myComponent = c;
 		myComponents = new ArrayList<ViewComponent>();
 		x = xx;
+		absoluteX = x;
 		y = yy;
+		absoluteY = y;
 	}
 	public ViewComponent(ModelComponent c, int xx, int yy, int width, int height){
 		isHover = false;
 		myComponent = c;
 		x = xx;
+		absoluteX = x;
 		y = yy;
+		absoluteY = y;
 		myComponents = new ArrayList<ViewComponent>();
 		myBounds = new Rectangle(x, y, width, height);
 	}
 	public BufferedImage getImage(){
 		myImage = loadImage();
 		myHoverImage = loadHover();
-		myBounds = new Rectangle(x, y, myImage.getWidth(), myImage.getHeight());
+		myBounds = new Rectangle(absoluteX, absoluteY, myImage.getWidth(), myImage.getHeight());
 		if(!isHover){
 			return myImage;
 		}
@@ -50,6 +56,18 @@ public abstract class ViewComponent {
 	public int getY() {
 		return y;
 	}
+	public int getAbsoluteX(){
+		return absoluteX;
+	}
+	public void setAbsoluteX(int newX){
+		absoluteX = newX;
+	}
+	public int getAbsoluteY(){
+		return absoluteY;
+	}
+	public void setAbsoluteY(int newY){
+		absoluteY = newY;
+	}
 	public Shape getBounds(){
 		return myBounds;
 	}
@@ -60,6 +78,8 @@ public abstract class ViewComponent {
 	}
 	private void addParentComponent(ViewComponent v){
 		parentComponent = v;
+		absoluteX = x + v.getAbsoluteX();
+		absoluteY = y + v.getAbsoluteY();
 	}
 	public void addComponent(ViewComponent v){
 		v.addParentComponent(this);

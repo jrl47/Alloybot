@@ -78,7 +78,7 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new TileInfoScreen(myData.getComponents().get(1), 660, 0));
 			myComponents.add(new ResourcesInfoScreen((ResourceManager)(myData.getComponents().get(2)), 0, 0));
 			RobotActionScreen r = new RobotActionScreen(null, 0, 300);
-			r.addComponent(new AlloyBorderedButton(myData.getComponents().get(0), 10, 10, "END GAME", 1));
+			r.addComponent(new AlloyBorderedButton(myData.getComponents().get(2), 10, 10, "MINE", 1));
 			myComponents.add(r);
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -8,6 +8,7 @@ import ModelComponents.BasicMap;
 import ModelComponents.MapMoveButton;
 import ModelComponents.ModelComponent;
 import ModelComponents.ResourceManager;
+import ModelComponents.RobotEnableButton;
 import ModelComponents.StateChangeButton;
 
 public class ModelData {
@@ -35,6 +36,7 @@ public class ModelData {
 		BasicMap b = new BasicMap((ResourceManager)myComponents.get(0));
 		mapComp.add(b);
 		mapComp.add((ResourceManager)myComponents.get(0));
+		mapComp.add(new RobotEnableButton(b.getRobot()));
 		myComponents.addAll(mapComp);
 		ScreenData s = new ScreenData(MAP_EXPLORATION_STATE, mapComp);
 		screens.put(MAP_EXPLORATION_STATE, s);
