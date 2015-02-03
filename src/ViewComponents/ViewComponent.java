@@ -1,13 +1,18 @@
 package ViewComponents;
 
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import ModelComponents.ModelComponent;
 
 public abstract class ViewComponent {
 	
+	protected List<ViewComponent> myComponents;
+	protected ViewComponent parentComponent;
 	protected ModelComponent myComponent;
 	protected BufferedImage myImage;
 	protected BufferedImage myHoverImage;
@@ -18,6 +23,7 @@ public abstract class ViewComponent {
 	public ViewComponent(ModelComponent c, int xx, int yy){
 		isHover = false;
 		myComponent = c;
+		myComponents = new ArrayList<ViewComponent>();
 		x = xx;
 		y = yy;
 	}
@@ -26,6 +32,7 @@ public abstract class ViewComponent {
 		myComponent = c;
 		x = xx;
 		y = yy;
+		myComponents = new ArrayList<ViewComponent>();
 		myBounds = new Rectangle(x, y, width, height);
 	}
 	public BufferedImage getImage(){
@@ -51,8 +58,29 @@ public abstract class ViewComponent {
 			myComponent.respond();
 		}
 	}
+	private void addParentComponent(ViewComponent v){
+		parentComponent = v;
+	}
+	public void addComponent(ViewComponent v){
+		v.addParentComponent(this);
+		myComponents.add(v);
+	}
 	public abstract BufferedImage loadImage();
 	public abstract BufferedImage loadHover();
+	public void drawComponents() {
+		for(int i=0; i<myComponents.size(); i++){
+			drawComponent(myComponents.get(i));
+		}
+	}
+	public void drawComponent(ViewComponent v){
+		if(myImage!=null){
+			Graphics2D g = (Graphics2D) myImage.getGraphics();
+			g.drawImage(v.getImage(), v.getX(), v.getY(), null);
+		}
+	}
+	public List<ViewComponent> getComponents(){
+		return myComponents;
+	}
 	public void setHover(boolean b){
 		isHover = b;
 	}

@@ -13,33 +13,30 @@ import View.AlloyFont;
 import View.ScreenBuilder;
 
 public class RobotActionScreen extends ViewComponent{
-	private List<ViewComponent> myComponents;
+	private BufferedImage myBackground;
 	public RobotActionScreen(ModelComponent m, int xx, int yy){
 		super(null, xx, yy, 100, 300);
-		myComponents = new ArrayList<ViewComponent>();
-	}
-	
-	public void drawComponents() {
-		for(int i=0; i<myComponents.size(); i++){
-//			drawComponent(myComponents.get(i));
-		}
 	}
 	
 	@Override
 	public BufferedImage loadImage() {
-		drawComponents();
-		AlloyFont font = null;
+		if(myBackground==null){
 		try {
-			font = new AlloyFont();
+			myBackground = ImageIO.read(ScreenBuilder.class.getResource("/robotactionbackground.png"));
+			BufferedImage bb = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics g = bb.getGraphics();
+			g.drawImage(myBackground, 0, 0, null);
+			myBackground = bb;
+			g.dispose();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		g.drawImage(font.getStringImage("TILE RESOURCES", 1), 10, 10, null);
-//		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-//		String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil() + "";
-//		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
-		return myImage;
+		}
+		BufferedImage image = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = image.getGraphics();
+		g.drawImage(myBackground, 0, 0, null);
+		drawComponents();
+		return image;
 	}
 	@Override
 	public BufferedImage loadHover() {

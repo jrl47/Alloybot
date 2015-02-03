@@ -34,8 +34,8 @@ public class ResourcesInfoScreen extends ViewComponent{
 			e.printStackTrace();
 		}
 		}
-		BufferedImage myImage = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = myImage.getGraphics();
+		BufferedImage image = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = image.getGraphics();
 		g.drawImage(myBackground, 0, 0, null);
 		AlloyFont font = null;
 		try {
@@ -47,7 +47,7 @@ public class ResourcesInfoScreen extends ViewComponent{
 		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
 		String s = myManager.getOil() + "";
 		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
-		return myImage;
+		return image;
 	}
 	@Override
 	public BufferedImage loadHover() {

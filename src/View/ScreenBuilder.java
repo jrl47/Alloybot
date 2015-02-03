@@ -24,13 +24,11 @@ import ViewComponents.TileInfoScreen;
 import ViewComponents.ViewComponent;
 import ViewComponents.ViewMap;
 
-public class ScreenBuilder {
-
-	private List<ViewComponent> myComponents;
-	private BufferedImage myImage;
+public class ScreenBuilder extends ViewComponent{
+	
 	private ScreenData myData;
 	public ScreenBuilder(ScreenData data, BufferedImage b) {
-		myComponents = new ArrayList<ViewComponent>();
+		super(null, 0, 0);
 		myImage = b;
 		myData = data;
 		if(myData!=null){
@@ -54,19 +52,6 @@ public class ScreenBuilder {
 		}
 		drawComponents();
 		
-	}
-	public void drawComponents() {
-		for(int i=0; i<myComponents.size(); i++){
-			drawComponent(myComponents.get(i));
-		}
-	}
-	public List<ViewComponent> getComponents(){
-		return myComponents;
-	}
-	
-	public void drawComponent(ViewComponent v){
-		Graphics2D g = (Graphics2D) myImage.getGraphics();
-		g.drawImage(v.getImage(), v.getX(), v.getY(), null);
 	}
 	public void buildStart(){
 		try {
@@ -93,10 +78,18 @@ public class ScreenBuilder {
 			myComponents.add(new TileInfoScreen(myData.getComponents().get(1), 660, 0));
 			myComponents.add(new ResourcesInfoScreen((ResourceManager)(myData.getComponents().get(2)), 0, 0));
 			RobotActionScreen r = new RobotActionScreen(null, 0, 300);
-			r.addComponent(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
-//			myComponents.add(r);
+			r.addComponent(new AlloyBorderedButton(myData.getComponents().get(0), 0, 0, "END GAME", 1));
+			myComponents.add(r);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	@Override
+	public BufferedImage loadImage() {
+		return myImage;
+	}
+	@Override
+	public BufferedImage loadHover() {
+		return loadImage();
 	}
 }
