@@ -24,9 +24,9 @@ public class InputListener implements MouseListener, MouseMotionListener{
 	private MouseEvent mostRecentEvent = null;
 	private boolean clicked = false;
 	private boolean moved = false;
-	public void step(List<ViewComponent> list) {
+	public void step(List<ViewComponent> screenComponents) {
 		if(clicked){
-			for(ViewComponent v: list){
+			for(ViewComponent v: screenComponents){
 				Shape s = v.getBounds();
 				if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
 					v.respond();
@@ -38,7 +38,7 @@ public class InputListener implements MouseListener, MouseMotionListener{
 			}
 		}
 		if(moved){
-			for(ViewComponent v: list){
+			for(ViewComponent v: screenComponents){
 				Shape s = v.getBounds();
 				if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
 					v.setHover(true);
