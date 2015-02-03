@@ -11,9 +11,7 @@ public abstract class ViewComponent {
 	protected ModelComponent myComponent;
 	protected BufferedImage myImage;
 	protected BufferedImage myHoverImage;
-	private ViewComponent myParentComponent;
 	private Shape myBounds;
-	private BufferedImage myHover;
 	protected boolean isHover;
 	private int x;
 	private int y;
@@ -32,7 +30,7 @@ public abstract class ViewComponent {
 	}
 	public BufferedImage getImage(){
 		myImage = loadImage();
-		myHover = loadHover();
+		myHoverImage = loadHover();
 		myBounds = new Rectangle(x, y, myImage.getWidth(), myImage.getHeight());
 		if(!isHover){
 			return myImage;
@@ -52,9 +50,6 @@ public abstract class ViewComponent {
 		if(myComponent!=null){
 			myComponent.respond();
 		}
-	}
-	public void addParent(ViewComponent v){
-		myParentComponent = v;
 	}
 	public abstract BufferedImage loadImage();
 	public abstract BufferedImage loadHover();
