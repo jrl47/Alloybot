@@ -7,6 +7,7 @@ import java.util.List;
 import ModelComponents.BasicMap;
 import ModelComponents.MapMoveButton;
 import ModelComponents.ModelComponent;
+import ModelComponents.ResourceManager;
 import ModelComponents.StateChangeButton;
 
 public class ModelData {
@@ -16,12 +17,11 @@ public class ModelData {
 	
 	private HashMap<String, ScreenData> screens;
 	private State state;
-	private ResourceManager manager;
 	private List<ModelComponent> myComponents;
 	
 	public ModelData(){
 		myComponents = new ArrayList<ModelComponent>();
-		manager = new ResourceManager();
+		myComponents.add(new ResourceManager());
 		screens = new HashMap<String, ScreenData>();
 		state = new State(START_MENU_STATE);
 		loadStart();
@@ -32,11 +32,11 @@ public class ModelData {
 	private void loadMap() {
 		List<ModelComponent> mapComp = new ArrayList<ModelComponent>();
 		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
-		BasicMap b = new BasicMap(manager);
+		BasicMap b = new BasicMap((ResourceManager)myComponents.get(0));
 		mapComp.add(b);
+		mapComp.add((ResourceManager)myComponents.get(0));
 		myComponents.addAll(mapComp);
 		ScreenData s = new ScreenData(MAP_EXPLORATION_STATE, mapComp);
-		s.addResources(manager);
 		screens.put(MAP_EXPLORATION_STATE, s);
 	}
 
@@ -61,8 +61,5 @@ public class ModelData {
 	
 	public String getState(){
 		return state.getState();
-	}
-	public ResourceManager getResources(){
-		return manager;
 	}
 }

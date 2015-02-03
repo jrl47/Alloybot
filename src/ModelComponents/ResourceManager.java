@@ -1,6 +1,7 @@
-package Model;
+package ModelComponents;
 
-public class ResourceManager {
+
+public class ResourceManager extends ModelComponent{
 	
 	private int myOil;
 	public ResourceManager(){
@@ -11,5 +12,13 @@ public class ResourceManager {
 	}
 	public void setOil(int oil) {
 		myOil = oil;
+	}
+	@Override
+	public void step() {
+		
+	}
+	@Override
+	public void respond() {
+
 	}
 }

@@ -8,7 +8,6 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import Model.ResourceManager;
 import View.ScreenBuilder;
 
 public class BasicMap extends ModelMap{

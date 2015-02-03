@@ -24,7 +24,6 @@ public class View {
 	private JFrame frame;
 	private Canvas canvas;
 	private BufferedImage image;
-	private PixelArray pixels;
 	private ScreenBuilder myScreen;
 	private String state;
 	public View(InputListener l){
@@ -44,7 +43,6 @@ public class View {
     	frame.setVisible(true);
 		frame.setFocusable(true);
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		pixels = new PixelArray(image);
 	}
 	public void render(ScreenData data) {
     	BufferStrategy bs = canvas.getBufferStrategy();
@@ -53,7 +51,7 @@ public class View {
     		return;
     	}
     	if(!state.equals(data.getID())){
-    		myScreen = new ScreenBuilder(data, pixels);
+    		myScreen = new ScreenBuilder(data, image);
     		state = data.getID();
     	}
     	myScreen.drawComponents();

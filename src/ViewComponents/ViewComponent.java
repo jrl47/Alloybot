@@ -5,18 +5,16 @@ import java.awt.Shape;
 import java.awt.image.BufferedImage;
 
 import ModelComponents.ModelComponent;
-import View.PixelArray;
 
 public abstract class ViewComponent {
 	
 	protected ModelComponent myComponent;
-	private PixelArray myPixels;
-	private PixelArray myHoverPixels;
+	protected BufferedImage myImage;
+	protected BufferedImage myHoverImage;
+	private ViewComponent myParentComponent;
 	private Shape myBounds;
-	private BufferedImage myImage;
 	private BufferedImage myHover;
 	protected boolean isHover;
-	private boolean isLoaded;
 	private int x;
 	private int y;
 	public ViewComponent(ModelComponent c, int xx, int yy){
@@ -32,17 +30,14 @@ public abstract class ViewComponent {
 		y = yy;
 		myBounds = new Rectangle(x, y, width, height);
 	}
-	public PixelArray getPixels(){
-		if(!isLoaded){
-			myImage = loadImage();
-			myPixels = new PixelArray(myImage);
-			myHover = loadHover();
-			myHoverPixels = new PixelArray(myHover);
-			myBounds = new Rectangle(x, y, myImage.getWidth(), myImage.getHeight());
+	public BufferedImage getImage(){
+		myImage = loadImage();
+		myHover = loadHover();
+		myBounds = new Rectangle(x, y, myImage.getWidth(), myImage.getHeight());
+		if(!isHover){
+			return myImage;
 		}
-		if(!isHover)
-			return myPixels;
-		return myHoverPixels;
+		return myHoverImage;
 	}
 	public int getX() {
 		return x;
@@ -58,12 +53,12 @@ public abstract class ViewComponent {
 			myComponent.respond();
 		}
 	}
+	public void addParent(ViewComponent v){
+		myParentComponent = v;
+	}
 	public abstract BufferedImage loadImage();
 	public abstract BufferedImage loadHover();
 	public void setHover(boolean b){
 		isHover = b;
-	}
-	public void setLoaded(boolean b){
-		isLoaded = b;
 	}
 }

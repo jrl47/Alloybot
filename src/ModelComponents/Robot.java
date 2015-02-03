@@ -1,6 +1,5 @@
 package ModelComponents;
 
-import Model.ResourceManager;
 
 public class Robot extends MapCellObject{
 	

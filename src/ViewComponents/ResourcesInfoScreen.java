@@ -3,21 +3,22 @@ package ViewComponents;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import Model.ResourceManager;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
+import ModelComponents.ResourceManager;
 import View.AlloyFont;
 import View.ScreenBuilder;
 
 public class ResourcesInfoScreen extends ViewComponent{
 	private BufferedImage myBackground;
 	private ResourceManager myManager;
-	public ResourcesInfoScreen(ResourceManager r, int xx, int yy){
+	public ResourcesInfoScreen(ResourceManager resourceManager, int xx, int yy){
 		super(null, xx, yy, 100, 300);
-		myManager = r;
+		myManager = resourceManager;
 	}
 	@Override
 	public BufferedImage loadImage() {
