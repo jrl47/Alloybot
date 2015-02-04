@@ -9,13 +9,16 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import ModelComponents.ModelComponent;
+import ModelComponents.ModelMap;
 import View.AlloyFont;
 import View.ScreenBuilder;
 
 public class RobotActionScreen extends ViewComponent{
 	private BufferedImage myBackground;
+	private ModelMap myMap;
 	public RobotActionScreen(ModelComponent m, int xx, int yy){
 		super(null, xx, yy, 100, 300);
+		myMap = (ModelMap)m;
 	}
 	
 	@Override

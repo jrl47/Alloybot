@@ -53,7 +53,13 @@ public class InputListener implements MouseListener, MouseMotionListener{
 			}
 		}
 		else{
-			v.setHover(false);
+			undoHover(v);
+		}
+	}
+	private void undoHover(ViewComponent v){
+		v.setHover(false);
+		for(ViewComponent vv: v.getComponents()){
+			undoHover(vv);
 		}
 	}
 

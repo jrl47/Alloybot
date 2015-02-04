@@ -1,5 +1,8 @@
 package ModelComponents;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Robot extends MapCellObject{
 	
@@ -8,12 +11,16 @@ public class Robot extends MapCellObject{
 	private int myX;
 	private int myY;
 	private ResourceManager myResources;
+	private List<ModelButton> myManagerButtons;
 	private boolean enabled;
-	public Robot(ModelMap map, ResourceManager resources, int x, int y){
-		myMap = map;
-		myResources = resources;
+	public Robot(){
+		myManagerButtons = new ArrayList<ModelButton>();
+	}
+	public void addToMap(ModelMap m, int x, int y){
 		myX = x;
 		myY = y;
+		myMap = m;
+		myResources = m.getResources();
 		myLocation = myMap.getCell(myX, myY);
 		myLocation.addObject(this);
 	}
@@ -41,5 +48,15 @@ public class Robot extends MapCellObject{
 	}
 	public int getY(){
 		return myY;
+	}
+	public void addButton(ModelButton b){
+		myManagerButtons.add(b);
+	}
+	public List<ModelButton> getButtons(){
+		return myManagerButtons;
+	}
+	@Override
+	public void respond() {
+
 	}
 }

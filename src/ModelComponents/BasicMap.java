@@ -14,10 +14,8 @@ public class BasicMap extends ModelMap{
 
 	private static BufferedImage terrainDataImage;
 	private static BufferedImage oilDataImage;
-	private ResourceManager myManager;
-	private List<Robot> myRobots;
-	public BasicMap(ResourceManager manager){
-		super(getImage().getWidth(), getImage().getHeight());
+	public BasicMap(ResourceManager r){
+		super(getImage().getWidth(), getImage().getHeight(), r);
 		for(int i=0; i<getImage().getWidth(); i++){
 			for(int j=0; j<getImage().getHeight(); j++){
 				if(getImage().getRGB(i, j)==-8421505)
@@ -46,9 +44,6 @@ public class BasicMap extends ModelMap{
 		}
 		setX(getImage().getWidth()/2);
 		setY(getImage().getHeight()/2);
-		myManager = manager;
-		myRobots = new ArrayList<Robot>();
-		myRobots.add(new Robot(this, myManager, 50, 50));
 	}
 	public static BufferedImage getImage(){
 		if(terrainDataImage==null){
@@ -70,8 +65,15 @@ public class BasicMap extends ModelMap{
 		}
 		return oilDataImage;
 	}
-	public Robot getRobot(){
-		return myRobots.get(0);
+	public List<Robot> getRobots(){
+		return myRobots;
+	}
+	public Robot getRobot(int x, int y){
+		for(MapCellObject m: myCells.getCell(x, y).getObjects()){
+			if(m instanceof Robot)
+				return (Robot)m;
+		}
+		return null;
 	}
 	@Override
 	public void step() {

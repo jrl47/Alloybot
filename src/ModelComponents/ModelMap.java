@@ -8,6 +8,8 @@ import Model.MapCellFactory;
 public abstract class ModelMap extends ModelComponent{
 	protected MapCellArray myCells;
 	protected MapCellFactory myFactory;
+	protected List<Robot> myRobots;
+	protected ResourceManager myManager;
 	protected int x;
 	protected int y;
 	
@@ -16,7 +18,7 @@ public abstract class ModelMap extends ModelComponent{
 	
 	protected int myWidth;
 	protected int myHeight;
-	public ModelMap(int width, int height){
+	public ModelMap(int width, int height, ResourceManager m){
 		List<List<MapCell>> myList = new ArrayList<List<MapCell>>();
 		for(int i=0; i<width; i++){
 			List<MapCell> newList = new ArrayList<MapCell>();
@@ -29,9 +31,18 @@ public abstract class ModelMap extends ModelComponent{
 		myHeight = height;
 		myCells = new MapCellArray(myList);
 		myFactory = new MapCellFactory();
+		myManager = m;
+		myRobots = new ArrayList<Robot>();
 	}
 	public MapCell getCell(int i, int j){
 		return myCells.getCell(i, j);
+	}
+	public ResourceManager getResources(){
+		return myManager;
+	}
+	public void addRobot(Robot r, int x, int y){
+		myRobots.add(r);
+		r.addToMap(this, x, y);
 	}
 	public int getX(){
 		return x;

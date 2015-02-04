@@ -1,6 +1,5 @@
 package ModelComponents;
 
-import Model.ModelData;
 import Model.State;
 
 public class StateChangeButton extends ModelButton{

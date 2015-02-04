@@ -1,5 +1,5 @@
 package ModelComponents;
 
-public abstract class MapCellObject {
+public abstract class MapCellObject extends ModelComponent{
 
 }

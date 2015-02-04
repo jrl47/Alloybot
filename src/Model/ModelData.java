@@ -2,12 +2,15 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ModelComponents.BasicMap;
 import ModelComponents.MapMoveButton;
 import ModelComponents.ModelComponent;
 import ModelComponents.ResourceManager;
+import ModelComponents.Robot;
 import ModelComponents.RobotEnableButton;
 import ModelComponents.StateChangeButton;
 
@@ -18,11 +21,13 @@ public class ModelData {
 	
 	private HashMap<String, ScreenData> screens;
 	private State state;
-	private List<ModelComponent> myComponents;
+	private ResourceManager manager;
+	private Set<ModelComponent> myComponents;
 	
 	public ModelData(){
-		myComponents = new ArrayList<ModelComponent>();
-		myComponents.add(new ResourceManager());
+		myComponents = new HashSet<ModelComponent>();
+		manager = new ResourceManager();
+		myComponents.add(manager);
 		screens = new HashMap<String, ScreenData>();
 		state = new State(START_MENU_STATE);
 		loadStart();
@@ -33,10 +38,13 @@ public class ModelData {
 	private void loadMap() {
 		List<ModelComponent> mapComp = new ArrayList<ModelComponent>();
 		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
-		BasicMap b = new BasicMap((ResourceManager)myComponents.get(0));
+		BasicMap b = new BasicMap(manager);
+		Robot r = new Robot();
+		r.addButton(new RobotEnableButton(r));
+		b.addRobot(r, 50, 50);
+		myComponents.add(r);
 		mapComp.add(b);
-		mapComp.add((ResourceManager)myComponents.get(0));
-		mapComp.add(new RobotEnableButton(b.getRobot()));
+		mapComp.add(manager);
 		myComponents.addAll(mapComp);
 		ScreenData s = new ScreenData(MAP_EXPLORATION_STATE, mapComp);
 		screens.put(MAP_EXPLORATION_STATE, s);
@@ -53,7 +61,7 @@ public class ModelData {
 		screens.put(START_MENU_STATE, new ScreenData(START_MENU_STATE, startComp));
 	}
 
-	public List<ModelComponent> getComponents() {
+	public Set<ModelComponent> getComponents() {
 		return myComponents;
 	}
 	public ScreenData getScreenData() {

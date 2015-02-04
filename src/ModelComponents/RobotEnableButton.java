@@ -6,6 +6,7 @@ public class RobotEnableButton extends ModelButton{
 	public RobotEnableButton(Robot r){
 		myRobot = r;
 	}
+	@Override
 	public void respond() {
 		myRobot.enabled();
 	}
