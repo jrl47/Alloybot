@@ -34,6 +34,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private boolean loaded;
 	private List<MapCellObject> myObjects;
 	
+	private int robotAnimCounter;
 	private double xDirection;
 	private double yDirection;
 	private double animateXCounter;
@@ -61,6 +62,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			myMap.undoHighlight();
 		}
 		handleAnimation();
+		robotAnimCounter++;
+		robotAnimCounter = robotAnimCounter % 100;
 		
 		return drawVisibleMapRegion();
 	}
@@ -209,7 +212,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		for(MapCellObject m: myObjects){
 			if(m instanceof Robot){
 				Robot r = (Robot)m;
-				g.drawImage(manager.generateRobot(),r.getX()*16 - getAnimateX(),r.getY()*16 - getAnimateY(), null);
+				g.drawImage(manager.generateRobot(robotAnimCounter),r.getX()*16 - getAnimateX(),r.getY()*16 - getAnimateY(), null);
 			}
 		}
 	}

@@ -13,8 +13,10 @@ import ModelComponents.Robot;
 
 public class DeciduousTileManager extends TileManager{
 
+	private BufferedImage myRobotSprite;
 	public DeciduousTileManager(ModelMap m) throws IOException {
 		super(ImageIO.read(ScreenBuilder.class.getResource("/deciduousspritesheet.png")), m);
+		myRobotSprite = ImageIO.read(ScreenBuilder.class.getResource("/genericrobot.png"));
 	}
 
 	@Override
@@ -44,8 +46,11 @@ public class DeciduousTileManager extends TileManager{
 		return null;
 	}
 	
-	public BufferedImage generateRobot() {
-		return myImage.getSubimage(9*16, 1*16, 16, 16);
+	public BufferedImage generateRobot(int robotAnimCounter) {
+		if(robotAnimCounter >= 75)
+			return myRobotSprite.getSubimage(1*16, 0, 16, 16);
+		return myRobotSprite.getSubimage((robotAnimCounter/25)*16, 0, 16, 16);
+//		return myImage.getSubimage(9*16, 1*16, 16, 16);
 	}
 
 	private BufferedImage generateFlowers(MapCell m) {
