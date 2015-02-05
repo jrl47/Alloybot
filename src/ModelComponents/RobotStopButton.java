@@ -1,14 +1,13 @@
 package ModelComponents;
 
-public class RobotEnableButton extends ModelButton{
-	
+public class RobotStopButton extends ModelButton{
 	Robot myRobot;
-	public RobotEnableButton(Robot r){
+	public RobotStopButton(Robot r){
 		myRobot = r;
 	}
 	@Override
 	public void respond() {
-		myRobot.enabled();
 		myRobot.deselect();
+		myRobot.disabled();
 	}
 }

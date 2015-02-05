@@ -19,14 +19,20 @@ public class RobotActionScreen extends ViewComponent{
 	private BufferedImage myBackground;
 	private ModelMap myMap;
 	private AlloyBorderedButton myMineButton;
+	private AlloyBorderedButton myDeselectButton;
+	private AlloyBorderedButton myStopButton;
 	private boolean needsButton;
 	public RobotActionScreen(ModelComponent m, int xx, int yy){
 		super(null, xx, yy, 100, 300);
 		myMap = (ModelMap)m;
 		needsButton = true;
 		myMineButton = null;
+		myDeselectButton = null;
+		myStopButton = null;
 		try {
 			myMineButton = new AlloyBorderedButton(null, 10, 10, "MINE", 1);
+			myDeselectButton = new AlloyBorderedButton(null, 10, 34, "DESELECT", 1);
+			myStopButton = new AlloyBorderedButton(null, 10, 58, "STOP", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -53,11 +59,17 @@ public class RobotActionScreen extends ViewComponent{
 			if(needsButton){
 			myMineButton.setComponent(myMap.getSelectedRobot().getButtons().get(0));
 			addComponent(myMineButton);
+			myDeselectButton.setComponent(myMap.getSelectedRobot().getButtons().get(1));
+			addComponent(myDeselectButton);
+			myStopButton.setComponent(myMap.getSelectedRobot().getButtons().get(2));
+			addComponent(myStopButton);
 			needsButton = false;
 			}
 		}
 		else{
 			removeComponent(myMineButton);
+			removeComponent(myDeselectButton);
+			removeComponent(myStopButton);
 			needsButton = true;
 		}
 		drawComponents();

@@ -11,7 +11,9 @@ import ModelComponents.MapMoveButton;
 import ModelComponents.ModelComponent;
 import ModelComponents.ResourceManager;
 import ModelComponents.Robot;
+import ModelComponents.RobotDeselectButton;
 import ModelComponents.RobotEnableButton;
+import ModelComponents.RobotStopButton;
 import ModelComponents.StateChangeButton;
 
 public class ModelData {
@@ -41,6 +43,8 @@ public class ModelData {
 		BasicMap b = new BasicMap(manager);
 		Robot r = new Robot();
 		r.addButton(new RobotEnableButton(r));
+		r.addButton(new RobotDeselectButton(r));
+		r.addButton(new RobotStopButton(r));
 		b.addRobot(r, 50, 50);
 		myComponents.add(r);
 		mapComp.add(b);
