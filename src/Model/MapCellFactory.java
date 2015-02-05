@@ -17,11 +17,15 @@ public class MapCellFactory {
 	}
 	
 	public MapCell makeLargeRocksCell(int x, int y) {
-		return new MapCell(MapCell.LARGE_ROCKS, x, y);
+		MapCell m = new MapCell(MapCell.LARGE_ROCKS, x, y);
+		m.setImpassable();
+		return m;
 	}
 	
 	public MapCell makeWaterCell(int x, int y) {
-		return new MapCell(MapCell.WATER, x, y);
+		MapCell m = new MapCell(MapCell.WATER, x, y);
+		m.setImpassable();
+		return m;
 	}
 
 	public MapCell makeFlowersCell(int x, int y) {
@@ -33,7 +37,9 @@ public class MapCellFactory {
 	}
 	
 	public MapCell makeShoalsCell(int x, int y) {
-		return new MapCell(MapCell.SHOALS, x, y);
+		MapCell m = new MapCell(MapCell.SHOALS, x, y);
+		m.setImpassable();
+		return m;
 	}
 	
 	public MapCell makeForestCell(int x, int y) {

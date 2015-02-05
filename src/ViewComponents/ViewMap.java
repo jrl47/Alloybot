@@ -189,7 +189,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			int tileY = pixelsToCellY(yHover);
 			for(int i=-5; i<=5; i++){
 				for(int j=-5; j<=5; j++){
-					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000)){
+					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000) && myMap.getCell(i + currentlySelectedRobot().getX(),
+							j + currentlySelectedRobot().getY()).isPassable()){
 						g.drawImage(manager.getHighlightTransparency(),(currentlySelectedRobot().getX()+i)*16 - getAnimateX(),
 								(currentlySelectedRobot().getY()+j)*16 - getAnimateY(), null);
 					}
@@ -256,7 +257,9 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		if(b && currentlySelectedRobot() != null){
 			if(currentlySelectedRobot().movable()){
 				if(Math.abs(newX - currentlySelectedRobot().getX()) + 
-						Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000)){
+						Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000) &&
+						Math.abs(newX - currentlySelectedRobot().getX()) + 
+						Math.abs(newY - currentlySelectedRobot().getY()) > 0 && myMap.getCell(newX, newY).isPassable()){
 //					List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
 //					if(path!=null && path.size()!=0){
 						currentlySelectedRobot().move(newX, newY);
