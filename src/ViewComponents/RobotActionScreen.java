@@ -18,6 +18,7 @@ import View.ScreenBuilder;
 public class RobotActionScreen extends ViewComponent{
 	private BufferedImage myBackground;
 	private ModelMap myMap;
+	private AlloyBorderedButton myMoveButton;
 	private AlloyBorderedButton myMineButton;
 	private AlloyBorderedButton myDeselectButton;
 	private AlloyBorderedButton myStopButton;
@@ -26,13 +27,15 @@ public class RobotActionScreen extends ViewComponent{
 		super(null, xx, yy, 100, 300);
 		myMap = (ModelMap)m;
 		needsButton = true;
+		myMoveButton = null;
 		myMineButton = null;
 		myDeselectButton = null;
 		myStopButton = null;
 		try {
-			myMineButton = new AlloyBorderedButton(null, 10, 10, "MINE", 1);
-			myDeselectButton = new AlloyBorderedButton(null, 10, 34, "DESELECT", 1);
-			myStopButton = new AlloyBorderedButton(null, 10, 58, "STOP", 1);
+			myMoveButton = new AlloyBorderedButton(null, 10, 10, "MOVE", 1);
+			myMineButton = new AlloyBorderedButton(null, 10, 34, "MINE", 1);
+			myDeselectButton = new AlloyBorderedButton(null, 10, 58, "DESELECT", 1);
+			myStopButton = new AlloyBorderedButton(null, 10, 82, "STOP", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -57,16 +60,19 @@ public class RobotActionScreen extends ViewComponent{
 		g.drawImage(myBackground, 0, 0, null);
 		if(myMap.getSelectedRobot()!=null){
 			if(needsButton){
-			myMineButton.setComponent(myMap.getSelectedRobot().getButtons().get(0));
-			addComponent(myMineButton);
-			myDeselectButton.setComponent(myMap.getSelectedRobot().getButtons().get(1));
-			addComponent(myDeselectButton);
-			myStopButton.setComponent(myMap.getSelectedRobot().getButtons().get(2));
-			addComponent(myStopButton);
-			needsButton = false;
+				myMoveButton.setComponent(myMap.getSelectedRobot().getButtons().get(0));
+				addComponent(myMoveButton);
+				myMineButton.setComponent(myMap.getSelectedRobot().getButtons().get(1));
+				addComponent(myMineButton);
+				myDeselectButton.setComponent(myMap.getSelectedRobot().getButtons().get(2));
+				addComponent(myDeselectButton);
+				myStopButton.setComponent(myMap.getSelectedRobot().getButtons().get(3));
+				addComponent(myStopButton);
+				needsButton = false;
 			}
 		}
 		else{
+			removeComponent(myMoveButton);
 			removeComponent(myMineButton);
 			removeComponent(myDeselectButton);
 			removeComponent(myStopButton);

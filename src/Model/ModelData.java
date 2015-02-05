@@ -13,6 +13,7 @@ import ModelComponents.ResourceManager;
 import ModelComponents.Robot;
 import ModelComponents.RobotDeselectButton;
 import ModelComponents.RobotEnableButton;
+import ModelComponents.RobotMoveButton;
 import ModelComponents.RobotStopButton;
 import ModelComponents.StateChangeButton;
 
@@ -42,6 +43,7 @@ public class ModelData {
 		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
 		BasicMap b = new BasicMap(manager);
 		Robot r = new Robot();
+		r.addButton(new RobotMoveButton(r));
 		r.addButton(new RobotEnableButton(r));
 		r.addButton(new RobotDeselectButton(r));
 		r.addButton(new RobotStopButton(r));

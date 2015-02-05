@@ -13,6 +13,7 @@ public class Robot extends MapCellObject{
 	private ResourceManager myResources;
 	private List<ModelButton> myManagerButtons;
 	private boolean enabled;
+	private boolean readyToMove;
 	public Robot(){
 		myManagerButtons = new ArrayList<ModelButton>();
 	}
@@ -35,6 +36,15 @@ public class Robot extends MapCellObject{
 	public void disabled(){
 		enabled = false;
 	}
+	public void prepareMove(){
+		readyToMove = true;
+	}
+	public boolean movable(){
+		return readyToMove;
+	}
+	public void stopMove(){
+		readyToMove = false;
+	}
 	public void move(int x, int y){
 		myLocation.removeObject(this);
 		myX = x;
@@ -42,6 +52,7 @@ public class Robot extends MapCellObject{
 		myLocation = myMap.getCell(myX, myY);
 		myLocation.addObject(this);
 		enabled = false;
+		readyToMove = false;
 	}
 	public int getX(){
 		return myX;
