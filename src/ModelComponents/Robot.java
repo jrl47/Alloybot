@@ -15,6 +15,7 @@ public class Robot extends MapCellObject{
 	private boolean enabled;
 	private boolean readyToMove;
 	public Robot(){
+		super(false);
 		myManagerButtons = new ArrayList<ModelButton>();
 	}
 	public void addToMap(ModelMap m, int x, int y){

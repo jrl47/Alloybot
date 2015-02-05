@@ -124,4 +124,33 @@ public abstract class ModelMap extends ModelComponent{
 		xHover = -1;
 		yHover = -1;
 	}
+//	public List<Character> getPath(int startX, int startY, int endX, int endY) {
+//		List<List<Character>> possibleRoutes = new ArrayList<List<Character>>();
+//		List<Character> u = buildPath(startX, startY, endX, endY, 'u');
+//		List<Character> r = buildPath(startX, startY, endX, endY, 'r');
+//		List<Character> d = buildPath(startX, startY, endX, endY, 'd');
+//		List<Character> l = buildPath(startX, startY, endX, endY, 'l');
+//		if(u!=null)
+//			possibleRoutes.add(u);
+//		if(r!=null)
+//			possibleRoutes.add(r);
+//		if(d!=null)
+//			possibleRoutes.add(d);
+//		if(l!=null)
+//			possibleRoutes.add(l);
+//		if(endX - startX < 0 && l!=null){
+//			possibleRoutes.remove(l);
+//			possibleRoutes.add(0, l);
+//		}
+//		if(endY - startY > 0 && d!=null){
+//			possibleRoutes.remove(d);
+//			possibleRoutes.add(0, d);
+//		}
+//		if(possibleRoutes.size()>0)
+//			return possibleRoutes.get(0);
+//		return null;
+//	}
+//	private List<Character> buildPath(int startX, int startY, int endX, int endY, char c){
+//		
+//	}
 }

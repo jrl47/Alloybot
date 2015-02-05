@@ -257,7 +257,10 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			if(currentlySelectedRobot().movable()){
 				if(Math.abs(newX - currentlySelectedRobot().getX()) + 
 						Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000)){
-					currentlySelectedRobot().move(newX, newY);
+//					List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
+//					if(path!=null && path.size()!=0){
+						currentlySelectedRobot().move(newX, newY);
+//					}
 				}
 			}
 			if(currentlySelectedRobot()!=null){

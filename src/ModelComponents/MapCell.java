@@ -15,6 +15,7 @@ public class MapCell {
 	public static final String FOREST = "forest";
 	
 	private List<MapCellObject> myObjects;
+	private boolean impassable;
 	private String myID;
 	private int myX;
 	private int myY;
@@ -48,5 +49,18 @@ public class MapCell {
 	}
 	public void removeObject(MapCellObject m){
 		myObjects.remove(m);
+	}
+	public void setImpassable(){
+		impassable = true;
+	}
+	public boolean isPassable(){
+		if(impassable){
+			return false;
+		}
+		for(MapCellObject m : myObjects){
+			if(!m.isPassable())
+				return false;
+		}
+		return true;
 	}
 }
