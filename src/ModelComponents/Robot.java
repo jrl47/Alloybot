@@ -47,6 +47,7 @@ public class Robot extends MapCellObject{
 	}
 	public void move(int x, int y){
 		myLocation.removeObject(this);
+		myResources.setOil(myResources.getOil() - 1000*(Math.abs(myX - x) + Math.abs(myY - y)));
 		myX = x;
 		myY = y;
 		myLocation = myMap.getCell(myX, myY);

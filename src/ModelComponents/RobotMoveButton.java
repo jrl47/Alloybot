@@ -7,7 +7,6 @@ public class RobotMoveButton extends ModelButton{
 	}
 	@Override
 	public void respond() {
-		myRobot.disabled();
 		myRobot.prepareMove();
 	}
 }

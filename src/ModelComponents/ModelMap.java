@@ -100,7 +100,14 @@ public abstract class ModelMap extends ModelComponent{
 		return null;
 	}
 	public MapCell getCurrentHighlightedCell(){
+		if(xHover==-1 || yHover == -1)
+			return null;
 		return myCells.getCell(xHover, yHover);
+	}
+	public MapCell getSelectedCell(){
+		if(xSelect==-1 || ySelect == -1)
+			return null;
+		return myCells.getCell(xSelect, ySelect);
 	}
 	public Robot getSelectedRobot(){
 		if(xSelect==-1 || ySelect == -1)
@@ -112,5 +119,9 @@ public abstract class ModelMap extends ModelComponent{
 	}
 	public int getHeight(){
 		return myHeight;
+	}
+	public void undoHighlight() {
+		xHover = -1;
+		yHover = -1;
 	}
 }

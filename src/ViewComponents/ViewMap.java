@@ -57,6 +57,9 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			loadMap();
 		}
 		
+		if(!isHover){
+			myMap.undoHighlight();
+		}
 		handleAnimation();
 		
 		return drawVisibleMapRegion();
@@ -183,7 +186,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			int tileY = pixelsToCellY(yHover);
 			for(int i=-5; i<=5; i++){
 				for(int j=-5; j<=5; j++){
-					if(Math.abs(i)+Math.abs(j)<=5){
+					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000)){
 						g.drawImage(manager.getHighlightTransparency(),(currentlySelectedRobot().getX()+i)*16 - getAnimateX(),
 								(currentlySelectedRobot().getY()+j)*16 - getAnimateY(), null);
 					}
@@ -193,8 +196,9 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	}
 	
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
-		if(animateXCounter==0 && animateYCounter==0 && isHover)
+		if(animateXCounter==0 && animateYCounter==0 && isHover){
 			g.drawImage(manager.getHoverTransparency(),	pixelsToCellX(xHover)*16 - getAnimateX(), pixelsToCellY(yHover)*16 -getAnimateY(), null);
+		}
 		drawMoveRange(g, manager);
 	}
 	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
@@ -248,7 +252,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		int newY = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getY();
 		if(b && currentlySelectedRobot() != null){
 			if(currentlySelectedRobot().movable()){
-				if(Math.abs(newX - currentlySelectedRobot().getX()) + Math.abs(newY - currentlySelectedRobot().getY()) <= 5){
+				if(Math.abs(newX - currentlySelectedRobot().getX()) + 
+						Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000)){
 					currentlySelectedRobot().move(newX, newY);
 				}
 			}

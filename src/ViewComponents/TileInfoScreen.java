@@ -43,9 +43,20 @@ public class TileInfoScreen extends ViewComponent{
 			e.printStackTrace();
 		}
 		g.drawImage(font.getStringImage("TILE RESOURCES", 1), 10, 10, null);
-		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-		String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil() + "";
-		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
+
+		if(((ModelMap)myComponent).getCurrentHighlightedCell()!=null){
+			g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
+			String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil()*60 + "";
+			g.drawImage(font.getStringImage(s, 1), 40, 30, null);
+		}
+		else if(((ModelMap)myComponent).getSelectedCell()!=null){
+			g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
+			String s = ((ModelMap)myComponent).getSelectedCell().getOil()*60 + "";
+			g.drawImage(font.getStringImage(s, 1), 40, 30, null);
+		}
+		else{
+			g.drawImage(font.getStringImage("NO TILE SELECTED", 1), 10, 30, null);
+		}	
 		return image;
 	}
 
