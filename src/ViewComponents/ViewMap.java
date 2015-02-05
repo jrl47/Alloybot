@@ -32,7 +32,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private BufferedImage frame;
 	
 	private boolean loaded;
-	private Robot selectedRobot;
 	private List<MapCellObject> myObjects;
 	
 	private double xDirection;
@@ -41,10 +40,13 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private double animateYCounter;
 	private double xCounterDecrement;
 	private double yCounterDecrement;
+	private ModelMap myMap;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
-		selectedRobot = null;
 		myObjects = new ArrayList<MapCellObject>();
+		myMap = (ModelMap)myComponent;
+		myMap.setXSelect(-1);
+		myMap.setYSelect(-1);
 	}
 
 	@Override
@@ -160,8 +162,9 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			g.drawImage(manager.getHoverTransparency(),	pixelsToCellX(xHover)*16 - getAnimateX(), pixelsToCellY(yHover)*16 -getAnimateY(), null);
 	}
 	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
-		if(selectedRobot!=null){
-			g.drawImage(manager.getHighlightTransparency(),selectedRobot.getX()*16 - getAnimateX(), selectedRobot.getY()*16 - getAnimateY(), null);
+		if(currentlySelectedRobot()!=null){
+			g.drawImage(manager.getHighlightTransparency(),currentlySelectedRobot().getX()*16 - getAnimateX(),
+					currentlySelectedRobot().getY()*16 - getAnimateY(), null);
 		}
 		for(MapCellObject m: myObjects){
 			if(m instanceof Robot){
@@ -184,6 +187,12 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		return y + ((yy-BORDER_WIDTH)/16);
 	}
 	
+	private Robot currentlySelectedRobot(){
+		if(myMap.getXSelect() == -1 || myMap.getYSelect() == -1)
+			return null;
+		return ((ModelMap)(myComponent)).getRobot(myMap.getXSelect(), myMap.getYSelect());
+	}
+	
 	private void loadMap() {
 		DeciduousTileManager manager = null;
 		try {
@@ -204,13 +213,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		prevY = y;
 	}
 	
-	public void respond(){
-		if(myComponent!=null){
-			if(animateXCounter==0 && animateYCounter==0)
-				myComponent.respond();
-		}
-	}
-
 	@Override
 	public BufferedImage loadHover() {
 		return loadImage();
@@ -225,19 +227,23 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		((ModelMap)myComponent).setYTile(y + ((yy-BORDER_WIDTH)/16));
 		int newX = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getX();
 		int newY = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getY();
-		if(b && selectedRobot != null){
-			selectedRobot.move(newX, newY);
-			selectedRobot = null;
+		if(b && currentlySelectedRobot() != null){
+			currentlySelectedRobot().move(newX, newY);
+//			currentlySelectedRobot() = null;
+			myMap.setXSelect(-1);
+			myMap.setYSelect(-1);
 			return;
 		}
 		else if(b){
 			for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
 				if(m instanceof Robot){
-					selectedRobot = (Robot)m;
+					myMap.setXSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getX());
+					myMap.setYSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getY());
+					return;
 				}
 			}
 		}
-		if(b  && selectedRobot == null && animateXCounter==0 && animateYCounter==0 && xx >= 9 && yy >= 9 &&
+		if(b && animateXCounter==0 && animateYCounter==0 && xx >= 9 && yy >= 9 &&
 				xx < 9 + WIDTH*16 && yy < 9 + HEIGHT*16){
 			if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth()){
 				newX = ((ModelMap)myComponent).getWidth() - WIDTH/2 - 1;

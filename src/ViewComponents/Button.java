@@ -35,5 +35,8 @@ public class Button extends ViewComponent{
 		FixedFont f = new FixedFont(myHoverFont, 6);
 		return f.getStringImage(myString, mySize);
 	}
+	public void setComponent(ModelComponent c){
+		myComponent = c;
+	}
 
 }

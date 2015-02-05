@@ -13,8 +13,11 @@ public abstract class ModelMap extends ModelComponent{
 	protected int x;
 	protected int y;
 	
-	protected int xTile;
-	protected int yTile;
+	protected int xHover;
+	protected int yHover;
+	
+	protected int xSelect;
+	protected int ySelect;
 	
 	protected int myWidth;
 	protected int myHeight;
@@ -63,19 +66,46 @@ public abstract class ModelMap extends ModelComponent{
 		y += yinc;
 	}
 	public int getXTile(){
-		return xTile;
+		return xHover;
 	}
 	public void setXTile(int x){
-		xTile = x;
+		xHover = x;
 	}
 	public int getYTile(){
-		return yTile;
+		return yHover;
 	}
 	public void setYTile(int y){
-		yTile = y;
+		yHover = y;
+	}
+	public int getXSelect(){
+		return xSelect;
+	}
+	public void setXSelect(int x){
+		xSelect = x;
+	}
+	public int getYSelect(){
+		return ySelect;
+	}
+	public void setYSelect(int y){
+		ySelect = y;
+	}
+	public List<Robot> getRobots(){
+		return myRobots;
+	}
+	public Robot getRobot(int x, int y){
+		for(MapCellObject m: myCells.getCell(x, y).getObjects()){
+			if(m instanceof Robot)
+				return (Robot)m;
+		}
+		return null;
 	}
 	public MapCell getCurrentHighlightedCell(){
-		return myCells.getCell(xTile, yTile);
+		return myCells.getCell(xHover, yHover);
+	}
+	public Robot getSelectedRobot(){
+		if(xSelect==-1 || ySelect == -1)
+			return null;
+		return getRobot(xSelect, ySelect);
 	}
 	public int getWidth(){
 		return myWidth;

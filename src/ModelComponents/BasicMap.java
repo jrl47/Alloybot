@@ -65,16 +65,6 @@ public class BasicMap extends ModelMap{
 		}
 		return oilDataImage;
 	}
-	public List<Robot> getRobots(){
-		return myRobots;
-	}
-	public Robot getRobot(int x, int y){
-		for(MapCellObject m: myCells.getCell(x, y).getObjects()){
-			if(m instanceof Robot)
-				return (Robot)m;
-		}
-		return null;
-	}
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub

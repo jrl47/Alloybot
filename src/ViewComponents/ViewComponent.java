@@ -77,13 +77,24 @@ public abstract class ViewComponent {
 		}
 	}
 	private void addParentComponent(ViewComponent v){
-		parentComponent = v;
-		absoluteX = x + v.getAbsoluteX();
-		absoluteY = y + v.getAbsoluteY();
+		if(v==null){
+			absoluteX =x;
+			absoluteY =y;
+			parentComponent = null;
+		}
+		else{
+			parentComponent = v;
+			absoluteX = x + v.getAbsoluteX();
+			absoluteY = y + v.getAbsoluteY();
+		}
 	}
 	public void addComponent(ViewComponent v){
 		v.addParentComponent(this);
 		myComponents.add(v);
+	}
+	public void removeComponent(ViewComponent v){
+		v.addParentComponent(null);
+		myComponents.remove(v);
 	}
 	public abstract BufferedImage loadImage();
 	public abstract BufferedImage loadHover();
