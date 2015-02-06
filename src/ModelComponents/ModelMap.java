@@ -2,6 +2,7 @@ package ModelComponents;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import Model.MapCellFactory;
 
@@ -124,91 +125,24 @@ public abstract class ModelMap extends ModelComponent{
 		xHover = -1;
 		yHover = -1;
 	}
-	public List<Character> getPath(int startX, int startY, int endX, int endY) {
-		List<Character> possibleRoutes = new ArrayList<Character>();
-		possibleRoutes.add('u');
-		possibleRoutes.add('r');
-		possibleRoutes.add('d');
-		possibleRoutes.add('l');
-		if(endX - startX < 0){
-			possibleRoutes.remove((Character)'l');
-			possibleRoutes.add(0, 'l');
-		}
-		if(endY - startY > 0){
-			possibleRoutes.remove((Character)'d');
-			possibleRoutes.add(0, 'd');
-		}
-		for(int i=0; i<4; i++){
-			char c = possibleRoutes.get(i);
-			List<Character> possiblePath = null;
-			if(c=='u' && startY - 1 >= 0){
-				possiblePath = buildPath(startX, startY-1, endX, endY, possibleRoutes.get(i), 1);
-			}
-			if(c=='d' && startY + 1 < myHeight){
-				possiblePath = buildPath(startX, startY+1, endX, endY, possibleRoutes.get(i), 1);
-			}
-			if(c=='l' && startX - 1 >= 0){
-				possiblePath = buildPath(startX-1, startY, endX, endY, possibleRoutes.get(i), 1);
-			}
-			if(c=='r' && startX + 1 < myWidth){
-				possiblePath = buildPath(startX+1, startY, endX, endY, possibleRoutes.get(i), 1);
-			}
-			if(possiblePath!=null){
-				return possiblePath;
-			}
-		}
-		return null;
+	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y) {
+		ArrayList<Character> u = new ArrayList<Character>();
+		u.add('u');
+		loadPaths(myPaths, x, y, u);
+		ArrayList<Character> d = new ArrayList<Character>();
+		d.add('d');
+		loadPaths(myPaths, x, y, d);
+		ArrayList<Character> l = new ArrayList<Character>();
+		l.add('l');
+		loadPaths(myPaths, x, y, l);
+		ArrayList<Character> r = new ArrayList<Character>();
+		r.add('r');
+		loadPaths(myPaths, x, y, r);
 	}
-	private List<Character> buildPath(int startX, int startY, int endX, int endY, char c, int depth){
-		// Base Case
-		if(!myCells.getCell(startX, startY).isPassable()){
-			return null;
+	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, List<Character> c){
+		MapCell currentCell = myCells.getCell(x, y);
+		if(!myPaths.containsKey(currentCell)){
+			myPaths.put(currentCell, c);
 		}
-		if(depth > 20){
-			return null;
-		}
-		if(startX == endX && startY == endY){
-			List<Character> result = new ArrayList<Character>();
-			result.add(c);
-			return result;
-		}
-		
-		// Induction
-		List<Character> possibleRoutes = new ArrayList<Character>();
-		possibleRoutes.add('u');
-		possibleRoutes.add('r');
-		possibleRoutes.add('d');
-		possibleRoutes.add('l');
-		if(endX - startX < 0){
-			possibleRoutes.remove((Character)'l');
-			possibleRoutes.add(0, 'l');
-		}
-		if(endY - startY > 0){
-			possibleRoutes.remove((Character)'d');
-			possibleRoutes.add(0, 'd');
-		}
-		for(int i=0; i<4; i++){
-			char cc = possibleRoutes.get(i);
-			List<Character> possiblePath = null;
-			if(c=='u' && startY - 1 >= 0){
-				possiblePath = buildPath(startX, startY-1, endX, endY, possibleRoutes.get(i), depth+1);
-			}
-			if(c=='d' && startY + 1 < myHeight){
-				possiblePath = buildPath(startX, startY+1, endX, endY, possibleRoutes.get(i), depth+1);
-			}
-			if(c=='l' && startX - 1 >= 0){
-				possiblePath = buildPath(startX-1, startY, endX, endY, possibleRoutes.get(i), depth+1);
-			}
-			if(c=='r' && startX + 1 < myWidth){
-				possiblePath = buildPath(startX+1, startY, endX, endY, possibleRoutes.get(i), depth+1);
-			}
-			if(possiblePath!=null){
-				ArrayList<Character> result = new ArrayList<Character>();
-				result.add(c);
-				result.addAll(possiblePath);
-				return result;
-			}
-		}
-		return null;
 	}
 }

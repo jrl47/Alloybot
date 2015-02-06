@@ -5,7 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -26,10 +28,12 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private ViewMapAnimationHandler animation;
 	private ViewMapGraphicsHandler graphics;
 	private ModelMap myMap;
+	private Map<MapCell, List<Character>> myPaths;
 	private boolean moveLoaded;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
 		animation = new ViewMapAnimationHandler();
+		myPaths = new HashMap<MapCell, List<Character>>();
 		myMap = (ModelMap)myComponent;
 		myMap.setXSelect(-1);
 		myMap.setYSelect(-1);
@@ -77,11 +81,9 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			if(b && currentlySelectedRobot() != null){
 				if(currentlySelectedRobot().movable() && !moveLoaded){
 					moveLoaded = true;
-					if(Math.abs(newX - currentlySelectedRobot().getX()) + 
-							Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000) &&
-							Math.abs(newX - currentlySelectedRobot().getX()) + 
-							Math.abs(newY - currentlySelectedRobot().getY()) > 0 && myMap.getCell(newX, newY).isPassable()){
-						List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
+					loadPaths();
+					if(myPaths.get(myMap.getCell(newX, newY)).size()!=0){
+						List<Character> path = myPaths.get(myMap.getCell(newX, newY));
 						if(path!=null && path.size()!=0){
 							currentlySelectedRobot().move(newX, newY);
 							moveLoaded = false;
@@ -92,17 +94,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 					currentlySelectedRobot().stopMove();
 					currentlySelectedRobot().deselect();
 				}
-//				if(currentlySelectedRobot().movable()){
-//				if(Math.abs(newX - currentlySelectedRobot().getX()) + 
-//						Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000) &&
-//						Math.abs(newX - currentlySelectedRobot().getX()) + 
-//						Math.abs(newY - currentlySelectedRobot().getY()) > 0 && myMap.getCell(newX, newY).isPassable()){
-//					List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
-//					if(path!=null && path.size()!=0){
-//						currentlySelectedRobot().move(newX, newY);
-//					}
-//				}
-//			}
 				myMap.setXSelect(-1);
 				myMap.setYSelect(-1);
 				return;
@@ -135,5 +126,10 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 				graphics.setYHover(-100);
 			}
 		}
+	}
+
+	private void loadPaths() {
+		myPaths.clear();
+		myMap.loadPaths(myPaths, currentlySelectedRobot().getX(), currentlySelectedRobot().getY());
 	}
 }

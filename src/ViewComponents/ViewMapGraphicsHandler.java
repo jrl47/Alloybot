@@ -89,20 +89,27 @@ public class ViewMapGraphicsHandler {
 	}
 	
 	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
-		if(currentRobot!=null && currentRobot.movable() /* && !moveLoaded*/ ){
-			int tileX = animation.pixelsToCellX(xHover);
-			int tileY = animation.pixelsToCellY(yHover);
-			for(int i=-5; i<=5; i++){
-				for(int j=-5; j<=5; j++){
-					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000) && myMap.getCell(i + currentRobot.getX(),
-							j + currentRobot.getY()).isPassable()){
-						g.drawImage(manager.getHighlightTransparency(),(currentRobot.getX()+i)*16 - animation.getAnimateX(),
-								(currentRobot.getY()+j)*16 - animation.getAnimateY(), null);
-					}
-				}
-			}
+		for(MapCell m: myMoves){
+			g.drawImage(manager.getHighlightTransparency(),(m.getX())*16 - animation.getAnimateX(),
+					(m.getY())*16 - animation.getAnimateY(), null);
 		}
 	}
+	
+//	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
+//		if(currentRobot!=null && currentRobot.movable() /* && !moveLoaded*/ ){
+//			int tileX = animation.pixelsToCellX(xHover);
+//			int tileY = animation.pixelsToCellY(yHover);
+//			for(int i=-5; i<=5; i++){
+//				for(int j=-5; j<=5; j++){
+//					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000) && myMap.getCell(i + currentRobot.getX(),
+//							j + currentRobot.getY()).isPassable()){
+//						g.drawImage(manager.getHighlightTransparency(),(currentRobot.getX()+i)*16 - animation.getAnimateX(),
+//								(currentRobot.getY()+j)*16 - animation.getAnimateY(), null);
+//					}
+//				}
+//			}
+//		}
+//	}
 	
 	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
 		if(currentRobot!=null){
