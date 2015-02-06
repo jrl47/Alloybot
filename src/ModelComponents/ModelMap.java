@@ -128,21 +128,54 @@ public abstract class ModelMap extends ModelComponent{
 	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y) {
 		ArrayList<Character> u = new ArrayList<Character>();
 		u.add('u');
-		loadPaths(myPaths, x, y, u);
+		loadPaths(myPaths, x, y-1, u);
 		ArrayList<Character> d = new ArrayList<Character>();
 		d.add('d');
-		loadPaths(myPaths, x, y, d);
+		loadPaths(myPaths, x, y+1, d);
 		ArrayList<Character> l = new ArrayList<Character>();
 		l.add('l');
-		loadPaths(myPaths, x, y, l);
+		loadPaths(myPaths, x-1, y, l);
 		ArrayList<Character> r = new ArrayList<Character>();
 		r.add('r');
-		loadPaths(myPaths, x, y, r);
+		loadPaths(myPaths, x+1, y, r);
 	}
 	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, List<Character> c){
+		if(x < 0 || y < 0 || x >= myWidth || y >= myHeight){
+			return;
+		}
 		MapCell currentCell = myCells.getCell(x, y);
+		if(!currentCell.isPassable()){
+			return;
+		}
+		if(c.size() > 8){
+			return;
+		}
 		if(!myPaths.containsKey(currentCell)){
 			myPaths.put(currentCell, c);
 		}
+		else{
+			if(myPaths.get(currentCell).size() > c.size()){
+				myPaths.put(currentCell, c);
+			}
+			else{
+				return;
+			}
+		}
+		ArrayList<Character> u = new ArrayList<Character>();
+		u.addAll(c);
+		u.add('u');
+		loadPaths(myPaths, x, y-1, u);
+		ArrayList<Character> d = new ArrayList<Character>();
+		d.addAll(c);
+		d.add('d');
+		loadPaths(myPaths, x, y+1, d);
+		ArrayList<Character> l = new ArrayList<Character>();
+		l.addAll(c);
+		l.add('l');
+		loadPaths(myPaths, x-1, y, l);
+		ArrayList<Character> r = new ArrayList<Character>();
+		r.addAll(c);
+		r.add('r');
+		loadPaths(myPaths, x+1, y, r);
 	}
 }

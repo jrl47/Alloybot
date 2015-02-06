@@ -5,7 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -25,13 +27,15 @@ public class ViewMapGraphicsHandler {
 	private int yHover;
 	private boolean loaded;
 	private boolean isHover;
+	private boolean moveLoaded;
 	private Robot currentRobot;
 	private List<MapCellObject> myObjects;
-	private List<MapCell> myMoves;
+	private Set<MapCell> myMoves;
 	
 	public ViewMapGraphicsHandler(ViewMapAnimationHandler a, ModelMap m){
 		animation = a;
 		myMap = m;
+		myMoves = new HashSet<MapCell>();
 		myObjects = new ArrayList<MapCellObject>();
 	}
 	
@@ -55,8 +59,9 @@ public class ViewMapGraphicsHandler {
 		animation.setPrevY(animation.getY());
 	}
 	
-	BufferedImage drawVisibleMapRegion(boolean hover, Robot selectedRobot) {
+	BufferedImage drawVisibleMapRegion(boolean hover, boolean moveload, Robot selectedRobot) {
 		isHover = hover;
+		moveLoaded = moveload;
 		currentRobot = selectedRobot;
 		BufferedImage tempMap = new BufferedImage(16*ViewMap.WIDTH, 16*ViewMap.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics tempG = tempMap.createGraphics();
@@ -89,27 +94,13 @@ public class ViewMapGraphicsHandler {
 	}
 	
 	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
+		if(moveLoaded){
 		for(MapCell m: myMoves){
 			g.drawImage(manager.getHighlightTransparency(),(m.getX())*16 - animation.getAnimateX(),
 					(m.getY())*16 - animation.getAnimateY(), null);
 		}
+		}
 	}
-	
-//	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
-//		if(currentRobot!=null && currentRobot.movable() /* && !moveLoaded*/ ){
-//			int tileX = animation.pixelsToCellX(xHover);
-//			int tileY = animation.pixelsToCellY(yHover);
-//			for(int i=-5; i<=5; i++){
-//				for(int j=-5; j<=5; j++){
-//					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000) && myMap.getCell(i + currentRobot.getX(),
-//							j + currentRobot.getY()).isPassable()){
-//						g.drawImage(manager.getHighlightTransparency(),(currentRobot.getX()+i)*16 - animation.getAnimateX(),
-//								(currentRobot.getY()+j)*16 - animation.getAnimateY(), null);
-//					}
-//				}
-//			}
-//		}
-//	}
 	
 	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
 		if(currentRobot!=null){
@@ -170,5 +161,8 @@ public class ViewMapGraphicsHandler {
 
 	public boolean isLoaded() {
 		return loaded;
+	}
+	public void setMoves(Set<MapCell> m){
+		myMoves = m;
 	}
 }
