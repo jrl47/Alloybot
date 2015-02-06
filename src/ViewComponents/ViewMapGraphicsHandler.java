@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import ModelComponents.MapCell;
 import ModelComponents.MapCellObject;
 import ModelComponents.ModelMap;
 import ModelComponents.Robot;
@@ -26,7 +27,7 @@ public class ViewMapGraphicsHandler {
 	private boolean isHover;
 	private Robot currentRobot;
 	private List<MapCellObject> myObjects;
-	private boolean moveLoaded;
+	private List<MapCell> myMoves;
 	
 	public ViewMapGraphicsHandler(ViewMapAnimationHandler a, ModelMap m){
 		animation = a;
@@ -68,13 +69,52 @@ public class ViewMapGraphicsHandler {
 		} catch (IOException e) {
 			e.printStackTrace(); 
 		}
+		
 		drawHoverTile(g, manager);
+		drawMoveRange(g, manager);
 		drawRobot(g, manager);
-		g.dispose();
 		generateFrame();
+		
+		g.dispose();
 		g = frame.createGraphics();
 		g.drawImage(tempMap, ViewMap.BORDER_WIDTH, ViewMap.BORDER_WIDTH, null);
 		return frame;
+	}
+	
+	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
+		if(!animation.inAnimation() && isHover){
+			g.drawImage(manager.getHoverTransparency(),	animation.pixelsToCellX(xHover)*16 - animation.getAnimateX(),
+					animation.pixelsToCellY(yHover)*16 -animation.getAnimateY(), null);
+		}
+	}
+	
+	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
+		if(currentRobot!=null && currentRobot.movable() /* && !moveLoaded*/ ){
+			int tileX = animation.pixelsToCellX(xHover);
+			int tileY = animation.pixelsToCellY(yHover);
+			for(int i=-5; i<=5; i++){
+				for(int j=-5; j<=5; j++){
+					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000) && myMap.getCell(i + currentRobot.getX(),
+							j + currentRobot.getY()).isPassable()){
+						g.drawImage(manager.getHighlightTransparency(),(currentRobot.getX()+i)*16 - animation.getAnimateX(),
+								(currentRobot.getY()+j)*16 - animation.getAnimateY(), null);
+					}
+				}
+			}
+		}
+	}
+	
+	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
+		if(currentRobot!=null){
+			g.drawImage(manager.getHighlightTransparency(),currentRobot.getX()*16 - animation.getAnimateX(),
+					currentRobot.getY()*16 - animation.getAnimateY(), null);
+		}
+		for(MapCellObject m: myObjects){
+			if(m instanceof Robot){
+				Robot r = (Robot)m;
+				g.drawImage(manager.generateRobot(animation.getRobotAnimCounter()),r.getX()*16 - animation.getAnimateX(),r.getY()*16 - animation.getAnimateY(), null);
+			}
+		}
 	}
 	
 	private void generateFrame() {
@@ -113,43 +153,7 @@ public class ViewMapGraphicsHandler {
 		}
 		loaded = true;
 	}
-	
-	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
-		if(!animation.inAnimation() && isHover){
-			g.drawImage(manager.getHoverTransparency(),	animation.pixelsToCellX(xHover)*16 - animation.getAnimateX(),
-					animation.pixelsToCellY(yHover)*16 -animation.getAnimateY(), null);
-		}
-		drawMoveRange(g, manager);
-	}
-	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
-		if(currentRobot!=null){
-			g.drawImage(manager.getHighlightTransparency(),currentRobot.getX()*16 - animation.getAnimateX(),
-					currentRobot.getY()*16 - animation.getAnimateY(), null);
-		}
-		for(MapCellObject m: myObjects){
-			if(m instanceof Robot){
-				Robot r = (Robot)m;
-				g.drawImage(manager.generateRobot(animation.getRobotAnimCounter()),r.getX()*16 - animation.getAnimateX(),r.getY()*16 - animation.getAnimateY(), null);
-			}
-		}
-	}
 
-	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
-		if(currentRobot!=null && currentRobot.movable() /* && !moveLoaded*/ ){
-			int tileX = animation.pixelsToCellX(xHover);
-			int tileY = animation.pixelsToCellY(yHover);
-			for(int i=-5; i<=5; i++){
-				for(int j=-5; j<=5; j++){
-					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000) && myMap.getCell(i + currentRobot.getX(),
-							j + currentRobot.getY()).isPassable()){
-						g.drawImage(manager.getHighlightTransparency(),(currentRobot.getX()+i)*16 - animation.getAnimateX(),
-								(currentRobot.getY()+j)*16 - animation.getAnimateY(), null);
-					}
-				}
-			}
-			moveLoaded = true;
-		}
-	}
 	public void setXHover(int x){
 		xHover = x;
 	}
@@ -159,9 +163,5 @@ public class ViewMapGraphicsHandler {
 
 	public boolean isLoaded() {
 		return loaded;
-	}
-
-	public void setMoveLoaded(boolean b) {
-		moveLoaded = b;
 	}
 }

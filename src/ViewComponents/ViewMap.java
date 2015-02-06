@@ -26,6 +26,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private ViewMapAnimationHandler animation;
 	private ViewMapGraphicsHandler graphics;
 	private ModelMap myMap;
+	private boolean moveLoaded;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
 		animation = new ViewMapAnimationHandler();
@@ -71,8 +72,11 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			((ModelMap)myComponent).setYTile(animation.getY() + ((yy-BORDER_WIDTH)/16));
 			int newX = ((ModelMap)myComponent).getCell(animation.getX() + ((xx-BORDER_WIDTH)/16), animation.getY() + ((yy-BORDER_WIDTH)/16)).getX();
 			int newY = ((ModelMap)myComponent).getCell(animation.getX() + ((xx-BORDER_WIDTH)/16), animation.getY() + ((yy-BORDER_WIDTH)/16)).getY();
+			
+			// If we've got a click and a robot
 			if(b && currentlySelectedRobot() != null){
-				if(currentlySelectedRobot().movable()){
+				if(currentlySelectedRobot().movable() && !moveLoaded){
+					moveLoaded = true;
 					if(Math.abs(newX - currentlySelectedRobot().getX()) + 
 							Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000) &&
 							Math.abs(newX - currentlySelectedRobot().getX()) + 
@@ -80,7 +84,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 						List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
 						if(path!=null && path.size()!=0){
 							currentlySelectedRobot().move(newX, newY);
-							graphics.setMoveLoaded(false);
+							moveLoaded = false;
 						}
 					}
 				}
@@ -88,10 +92,23 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 					currentlySelectedRobot().stopMove();
 					currentlySelectedRobot().deselect();
 				}
+//				if(currentlySelectedRobot().movable()){
+//				if(Math.abs(newX - currentlySelectedRobot().getX()) + 
+//						Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000) &&
+//						Math.abs(newX - currentlySelectedRobot().getX()) + 
+//						Math.abs(newY - currentlySelectedRobot().getY()) > 0 && myMap.getCell(newX, newY).isPassable()){
+//					List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
+//					if(path!=null && path.size()!=0){
+//						currentlySelectedRobot().move(newX, newY);
+//					}
+//				}
+//			}
 				myMap.setXSelect(-1);
 				myMap.setYSelect(-1);
 				return;
 			}
+			
+			// If we've got a click and no robot
 			else if(b){
 				for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
 					if(m instanceof Robot){
@@ -101,20 +118,17 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 					}
 				}
 			}
+			// If we've got a click, and we haven't already returned due to robot schenanigans, move screen
 			if(b && !animation.inAnimation() && xx >= 9 && yy >= 9 &&
 					xx < 9 + WIDTH*16 && yy < 9 + HEIGHT*16){
-				if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth()){
+				if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth())
 					newX = ((ModelMap)myComponent).getWidth() - WIDTH/2 - 1;
-				}
-				if (newX - WIDTH/2 < 0){
+				if (newX - WIDTH/2 < 0)
 					newX = WIDTH/2;
-				}
-				if (newY + HEIGHT/2 >= ((ModelMap)myComponent).getHeight()){
+				if (newY + HEIGHT/2 >= ((ModelMap)myComponent).getHeight())
 					newY = ((ModelMap)myComponent).getHeight() - HEIGHT/2 - 1;
-				}
-				if (newY - HEIGHT/2 < 0){
+				if (newY - HEIGHT/2 < 0)
 					newY = HEIGHT/2;
-				}
 				((ModelMap)myComponent).setX(newX);
 				((ModelMap)myComponent).setY(newY);
 				graphics.setXHover(-100);
