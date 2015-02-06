@@ -47,9 +47,9 @@ public class DeciduousTileManager extends TileManager{
 	}
 	
 	public BufferedImage generateRobot(int robotAnimCounter) {
-		if(robotAnimCounter >= 75)
+		if(robotAnimCounter >= 60)
 			return myRobotSprite.getSubimage(1*16, 0, 16, 16);
-		return myRobotSprite.getSubimage((robotAnimCounter/25)*16, 0, 16, 16);
+		return myRobotSprite.getSubimage((robotAnimCounter/20)*16, 0, 16, 16);
 //		return myImage.getSubimage(9*16, 1*16, 16, 16);
 	}
 

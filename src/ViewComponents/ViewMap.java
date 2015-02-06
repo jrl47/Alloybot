@@ -29,7 +29,9 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private ViewMapGraphicsHandler graphics;
 	private ModelMap myMap;
 	private Map<MapCell, List<Character>> myPaths;
+	private List<Character> currentPath;
 	private boolean moveLoaded;
+	private Robot movementRobot;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
 		animation = new ViewMapAnimationHandler();
@@ -52,13 +54,25 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			myMap.undoHighlight();
 		}
 		animation.handleAnimation();
+		if(animation.getMovementStatus()){
+			if(currentPath.get(0)=='u')
+				movementRobot.move(movementRobot.getX(), movementRobot.getY()-1);
+			if(currentPath.get(0)=='d')
+				movementRobot.move(movementRobot.getX(), movementRobot.getY()+1);
+			if(currentPath.get(0)=='l')
+				movementRobot.move(movementRobot.getX()-1, movementRobot.getY());
+			if(currentPath.get(0)=='r')
+				movementRobot.move(movementRobot.getX()+1, movementRobot.getY());
+			currentPath.remove(0);
+		}
 		
 		if(currentlySelectedRobot()!=null && currentlySelectedRobot().movable() && !moveLoaded){
 			moveLoaded = true;
 			loadPaths();
+			graphics.setMoves(myPaths.keySet());
 		}
 		
-		return graphics.drawVisibleMapRegion(isHover, moveLoaded, currentlySelectedRobot());
+		return graphics.drawVisibleMapRegion(isHover, moveLoaded && currentlySelectedRobot()!=null && currentlySelectedRobot().movable(), currentlySelectedRobot());
 	}
 	
 	private Robot currentlySelectedRobot(){
@@ -85,21 +99,16 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			// If we've got a click and a robot
 			if(b && currentlySelectedRobot() != null){
 				if(currentlySelectedRobot().movable()){
-					if(!moveLoaded){
-						moveLoaded = true;
-						loadPaths();
-					}
-					graphics.setMoves(myPaths.keySet());
-					if(myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){
-						List<Character> path = myPaths.get(myMap.getCell(newX, newY));
-						if(path!=null && path.size()!=0){
-							currentlySelectedRobot().move(newX, newY);
+					if(currentPath == null && myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){
+						currentPath = myPaths.get(myMap.getCell(newX, newY));
+						if(currentPath!=null && currentPath.size()!=0){
+							animation.setMovementCounter(currentPath.size()*30+30);
+							movementRobot = currentlySelectedRobot();
 							moveLoaded = false;
 						}
 					}
 				}
 				if(currentlySelectedRobot()!=null){
-					currentlySelectedRobot().stopMove();
 					currentlySelectedRobot().deselect();
 					moveLoaded = false;
 				}
@@ -108,7 +117,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 				return;
 			}
 			
-			// If we've got a click and no robot
+			// If we've got a click and no robot, we might be selecting one
 			else if(b){
 				for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
 					if(m instanceof Robot){
@@ -139,6 +148,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 
 	private void loadPaths() {
 		myPaths.clear();
-		myMap.loadPaths(myPaths, currentlySelectedRobot().getX(), currentlySelectedRobot().getY());
+		myMap.loadPaths(myPaths, currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), Math.min(10, myMap.getResources().getOil()/1000));
 	}
 }

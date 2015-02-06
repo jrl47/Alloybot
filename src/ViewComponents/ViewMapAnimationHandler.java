@@ -13,6 +13,7 @@ public class ViewMapAnimationHandler {
 	private int prevX;
 	private int prevY;
 	private int robotAnimCounter;
+	private int movementCounter;
 	
 	public ViewMapAnimationHandler(){
 		
@@ -20,7 +21,9 @@ public class ViewMapAnimationHandler {
 	
 	void handleAnimation() {
 		robotAnimCounter++;
-		robotAnimCounter = robotAnimCounter % 100;
+		robotAnimCounter = robotAnimCounter % 80;
+		if(movementCounter > 0)
+			movementCounter--;
 		if(animateXCounter>0){
 			animateXCounter-=xCounterDecrement;
 		}
@@ -102,5 +105,11 @@ public class ViewMapAnimationHandler {
 
 	public int getRobotAnimCounter() {
 		return robotAnimCounter;
+	}
+	public void setMovementCounter(int m){
+		movementCounter = m;
+	}
+	public boolean getMovementStatus(){
+		return (movementCounter % 30 == 0 && movementCounter!=0);
 	}
 }

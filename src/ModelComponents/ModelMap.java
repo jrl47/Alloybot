@@ -125,21 +125,21 @@ public abstract class ModelMap extends ModelComponent{
 		xHover = -1;
 		yHover = -1;
 	}
-	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y) {
+	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, int cap) {
 		ArrayList<Character> u = new ArrayList<Character>();
 		u.add('u');
-		loadPaths(myPaths, x, y-1, u);
+		loadPaths(myPaths, x, y-1, cap, u);
 		ArrayList<Character> d = new ArrayList<Character>();
 		d.add('d');
-		loadPaths(myPaths, x, y+1, d);
+		loadPaths(myPaths, x, y+1, cap, d);
 		ArrayList<Character> l = new ArrayList<Character>();
 		l.add('l');
-		loadPaths(myPaths, x-1, y, l);
+		loadPaths(myPaths, x-1, y, cap, l);
 		ArrayList<Character> r = new ArrayList<Character>();
 		r.add('r');
-		loadPaths(myPaths, x+1, y, r);
+		loadPaths(myPaths, x+1, y, cap, r);
 	}
-	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, List<Character> c){
+	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, int cap, List<Character> c){
 		if(x < 0 || y < 0 || x >= myWidth || y >= myHeight){
 			return;
 		}
@@ -147,7 +147,7 @@ public abstract class ModelMap extends ModelComponent{
 		if(!currentCell.isPassable()){
 			return;
 		}
-		if(c.size() > 8){
+		if(c.size() > cap){
 			return;
 		}
 		if(!myPaths.containsKey(currentCell)){
@@ -164,18 +164,18 @@ public abstract class ModelMap extends ModelComponent{
 		ArrayList<Character> u = new ArrayList<Character>();
 		u.addAll(c);
 		u.add('u');
-		loadPaths(myPaths, x, y-1, u);
+		loadPaths(myPaths, x, y-1, cap, u);
 		ArrayList<Character> d = new ArrayList<Character>();
 		d.addAll(c);
 		d.add('d');
-		loadPaths(myPaths, x, y+1, d);
+		loadPaths(myPaths, x, y+1, cap, d);
 		ArrayList<Character> l = new ArrayList<Character>();
 		l.addAll(c);
 		l.add('l');
-		loadPaths(myPaths, x-1, y, l);
+		loadPaths(myPaths, x-1, y, cap, l);
 		ArrayList<Character> r = new ArrayList<Character>();
 		r.addAll(c);
 		r.add('r');
-		loadPaths(myPaths, x+1, y, r);
+		loadPaths(myPaths, x+1, y, cap, r);
 	}
 }

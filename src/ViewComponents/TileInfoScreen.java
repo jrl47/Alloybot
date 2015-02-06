@@ -46,12 +46,12 @@ public class TileInfoScreen extends ViewComponent{
 
 		if(((ModelMap)myComponent).getCurrentHighlightedCell()!=null){
 			g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-			String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil()*60 + "";
+			String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil()*30 + "";
 			g.drawImage(font.getStringImage(s, 1), 40, 30, null);
 		}
 		else if(((ModelMap)myComponent).getSelectedCell()!=null){
 			g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-			String s = ((ModelMap)myComponent).getSelectedCell().getOil()*60 + "";
+			String s = ((ModelMap)myComponent).getSelectedCell().getOil()*30 + "";
 			g.drawImage(font.getStringImage(s, 1), 40, 30, null);
 		}
 		else{
