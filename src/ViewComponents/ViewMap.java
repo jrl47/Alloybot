@@ -22,159 +22,33 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	public static final int WIDTH = 31;
 	public static final int HEIGHT = 27;
 	public static final int BORDER_WIDTH = 9;
-	private int x;
-	private int y;
-	private int prevX;
-	private int prevY;
-	private int xHover;
-	private int yHover;
-	private BufferedImage map;
-	private BufferedImage frame;
 	
-	private boolean loaded;
-	private List<MapCellObject> myObjects;
-	
-	private int robotAnimCounter;
-	private double xDirection;
-	private double yDirection;
-	private double animateXCounter;
-	private double animateYCounter;
-	private double xCounterDecrement;
-	private double yCounterDecrement;
+	private ViewMapAnimationHandler animation;
+	private ViewMapGraphicsHandler graphics;
 	private ModelMap myMap;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
-		myObjects = new ArrayList<MapCellObject>();
+		animation = new ViewMapAnimationHandler();
 		myMap = (ModelMap)myComponent;
 		myMap.setXSelect(-1);
 		myMap.setYSelect(-1);
+		graphics = new ViewMapGraphicsHandler(animation, myMap);
 	}
 
 	@Override
 	public BufferedImage loadImage() {
-		x = ((ModelMap)myComponent).getX() - WIDTH/2;
-		y = ((ModelMap)myComponent).getY() - HEIGHT/2;
-		if(!loaded){
-			loadMap();
+		animation.setX(((ModelMap)myComponent).getX() - WIDTH/2);
+		animation.setY(((ModelMap)myComponent).getY() - HEIGHT/2);
+		if(!graphics.isLoaded()){
+			graphics.loadMap();
 		}
 		
 		if(!isHover){
 			myMap.undoHighlight();
 		}
-		handleAnimation();
-		robotAnimCounter++;
-		robotAnimCounter = robotAnimCounter % 100;
+		animation.handleAnimation();
 		
-		return drawVisibleMapRegion();
-	}
-
-	private BufferedImage drawVisibleMapRegion() {
-		BufferedImage tempMap = new BufferedImage(16*WIDTH, 16*HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		Graphics tempG = tempMap.createGraphics();
-		tempG.drawImage(map.getSubimage(getAnimateX(),  getAnimateY(), 16*WIDTH, 16*HEIGHT), 0, 0, null);
-		tempG.dispose();
-		Graphics2D g = tempMap.createGraphics();
-		DeciduousTileManager manager = null;
-		try {
-			manager = new DeciduousTileManager((ModelMap)myComponent);
-		} catch (IOException e) {
-			e.printStackTrace(); 
-		}
-		drawHoverTile(g, manager);
-		drawRobot(g, manager);
-		g.dispose();
-		generateFrame();
-		g = frame.createGraphics();
-		g.drawImage(tempMap, BORDER_WIDTH, BORDER_WIDTH, null);
-		return frame;
-	}
-
-	private void generateFrame() {
-		if(!loaded){
-		try {
-			frame = new BufferedImage(16*WIDTH + BORDER_WIDTH*2, 16*HEIGHT + BORDER_WIDTH*2, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = frame.createGraphics();
-			BufferedImage myBacking = ImageIO.read(ScreenBuilder.class.getResource("/mapbacking.png"));
-			int farside = myBacking.getHeight() - BORDER_WIDTH;
-			g.drawImage(myBacking.getSubimage(0, 0, BORDER_WIDTH, BORDER_WIDTH), 0, 0, null);
-			g.drawImage(myBacking.getSubimage(farside, farside, BORDER_WIDTH, BORDER_WIDTH),
-					BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*HEIGHT, null);
-			g.drawImage(myBacking.getSubimage(farside, 0, BORDER_WIDTH, BORDER_WIDTH),
-					BORDER_WIDTH + 16*WIDTH, 0, null);
-			g.drawImage(myBacking.getSubimage(0, farside, BORDER_WIDTH, BORDER_WIDTH),
-					0, BORDER_WIDTH + 16*HEIGHT, null);
-			for(int i=0; i<WIDTH; i++){
-				g.drawImage(myBacking.getSubimage(BORDER_WIDTH, 0, 16, BORDER_WIDTH),
-						BORDER_WIDTH + 16*i, 0, null);
-			}
-			for(int i=0; i<WIDTH; i++){
-				g.drawImage(myBacking.getSubimage(BORDER_WIDTH, farside, 16, BORDER_WIDTH),
-						BORDER_WIDTH + 16*i, BORDER_WIDTH + 16*HEIGHT, null);
-			}
-			for(int i=0; i<HEIGHT; i++){
-				g.drawImage(myBacking.getSubimage(0, BORDER_WIDTH, BORDER_WIDTH, 16),
-						0, BORDER_WIDTH + 16*i, null);
-			}
-			for(int i=0; i<HEIGHT; i++){
-				g.drawImage(myBacking.getSubimage(farside, BORDER_WIDTH, BORDER_WIDTH, 16),
-						BORDER_WIDTH + 16*WIDTH, BORDER_WIDTH + 16*i, null);
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		}
-		loaded = true;
-	}
-
-	private void handleAnimation() {
-		if(animateXCounter>0){
-			animateXCounter-=xCounterDecrement;
-		}
-		if(animateYCounter>0){
-			animateYCounter-=yCounterDecrement;
-		}
-		if(animateXCounter==0 && animateYCounter==0){
-		xDirection = 0;
-		yDirection = 0;
-		}
-		if(prevX!=x){
-			animateXCounter = 16;
-			xDirection = (int)((prevX - x)*1);
-		}
-		if(prevY!=y){
-			animateYCounter = 16;
-			yDirection = (int)((prevY - y)*1);
-		}
-		if(animateXCounter != animateYCounter){
-			if(animateXCounter > animateYCounter){
-				xCounterDecrement = 1;
-				yCounterDecrement = 1.0*(animateYCounter/animateXCounter);
-			}
-			else{
-				yCounterDecrement = 1;
-				xCounterDecrement = 1.0*(animateXCounter/animateYCounter);
-			}
-		}
-		else{
-			xCounterDecrement = 1;
-			yCounterDecrement = 1;
-		}
-		prevX = x;
-		prevY = y;
-	}
-
-	
-	private int getAnimateX(){
-		return x*16 + (int)(animateXCounter*xDirection);
-	}
-	private int getAnimateY(){
-		return y*16 + (int)(animateYCounter*yDirection);
-	}
-	private int pixelsToCellX(int xx){
-		return x + ((xx-BORDER_WIDTH)/16);
-	}
-	private int pixelsToCellY(int yy){
-		return y + ((yy-BORDER_WIDTH)/16);
+		return graphics.drawVisibleMapRegion(isHover, currentlySelectedRobot());
 	}
 	
 	private Robot currentlySelectedRobot(){
@@ -183,63 +57,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		return ((ModelMap)(myComponent)).getRobot(myMap.getXSelect(), myMap.getYSelect());
 	}
 	
-	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
-		if(currentlySelectedRobot()!=null && currentlySelectedRobot().movable()){
-			int tileX = pixelsToCellX(xHover);
-			int tileY = pixelsToCellY(yHover);
-			for(int i=-5; i<=5; i++){
-				for(int j=-5; j<=5; j++){
-					if(Math.abs(i)+Math.abs(j)<=Math.min(5, myMap.getResources().getOil()/1000) && myMap.getCell(i + currentlySelectedRobot().getX(),
-							j + currentlySelectedRobot().getY()).isPassable()){
-						g.drawImage(manager.getHighlightTransparency(),(currentlySelectedRobot().getX()+i)*16 - getAnimateX(),
-								(currentlySelectedRobot().getY()+j)*16 - getAnimateY(), null);
-					}
-				}
-			}
-		}
-	}
-	
-	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
-		if(animateXCounter==0 && animateYCounter==0 && isHover){
-			g.drawImage(manager.getHoverTransparency(),	pixelsToCellX(xHover)*16 - getAnimateX(), pixelsToCellY(yHover)*16 -getAnimateY(), null);
-		}
-		drawMoveRange(g, manager);
-	}
-	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
-		if(currentlySelectedRobot()!=null){
-			g.drawImage(manager.getHighlightTransparency(),currentlySelectedRobot().getX()*16 - getAnimateX(),
-					currentlySelectedRobot().getY()*16 - getAnimateY(), null);
-		}
-		for(MapCellObject m: myObjects){
-			if(m instanceof Robot){
-				Robot r = (Robot)m;
-				g.drawImage(manager.generateRobot(robotAnimCounter),r.getX()*16 - getAnimateX(),r.getY()*16 - getAnimateY(), null);
-			}
-		}
-	}
-	
-	private void loadMap() {
-		DeciduousTileManager manager = null;
-		try {
-			manager = new DeciduousTileManager(((ModelMap) myComponent));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		map = new BufferedImage(((ModelMap) myComponent).getWidth()*16, ((ModelMap) myComponent).getHeight()*16, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = map.createGraphics();
-		for(int i=0; i<((ModelMap) myComponent).getWidth(); i++){
-			for(int j=0; j<((ModelMap) myComponent).getHeight(); j++){
-				g.drawImage(manager.getImage(((ModelMap) myComponent).getCell(i, j)),
-					i*16, j*16, null);
-				myObjects.addAll(((ModelMap) myComponent).getCell(i, j).getObjects());
-			}
-		}
-		prevX = x;
-		prevY = y;
-	}
-	
-	
-	
 	@Override
 	public BufferedImage loadHover() {
 		return loadImage();
@@ -247,61 +64,62 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 
 	@Override
 	public void useInput(int xx, int yy, boolean b) {
-		if(animateXCounter==0 && animateYCounter==0){
-		xHover = xx;
-		yHover = yy;
-		((ModelMap)myComponent).setXTile(x + ((xx-BORDER_WIDTH)/16));
-		((ModelMap)myComponent).setYTile(y + ((yy-BORDER_WIDTH)/16));
-		int newX = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getX();
-		int newY = ((ModelMap)myComponent).getCell(x + ((xx-BORDER_WIDTH)/16), y + ((yy-BORDER_WIDTH)/16)).getY();
-		if(b && currentlySelectedRobot() != null){
-			if(currentlySelectedRobot().movable()){
-				if(Math.abs(newX - currentlySelectedRobot().getX()) + 
-						Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000) &&
-						Math.abs(newX - currentlySelectedRobot().getX()) + 
-						Math.abs(newY - currentlySelectedRobot().getY()) > 0 && myMap.getCell(newX, newY).isPassable()){
-//					List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
-//					if(path!=null && path.size()!=0){
-						currentlySelectedRobot().move(newX, newY);
-//					}
+		if(!animation.inAnimation()){
+			graphics.setXHover(xx);
+			graphics.setYHover(yy);
+			((ModelMap)myComponent).setXTile(animation.getX() + ((xx-BORDER_WIDTH)/16));
+			((ModelMap)myComponent).setYTile(animation.getY() + ((yy-BORDER_WIDTH)/16));
+			int newX = ((ModelMap)myComponent).getCell(animation.getX() + ((xx-BORDER_WIDTH)/16), animation.getY() + ((yy-BORDER_WIDTH)/16)).getX();
+			int newY = ((ModelMap)myComponent).getCell(animation.getX() + ((xx-BORDER_WIDTH)/16), animation.getY() + ((yy-BORDER_WIDTH)/16)).getY();
+			if(b && currentlySelectedRobot() != null){
+				if(currentlySelectedRobot().movable()){
+					if(Math.abs(newX - currentlySelectedRobot().getX()) + 
+							Math.abs(newY - currentlySelectedRobot().getY()) <= Math.min(5, myMap.getResources().getOil()/1000) &&
+							Math.abs(newX - currentlySelectedRobot().getX()) + 
+							Math.abs(newY - currentlySelectedRobot().getY()) > 0 && myMap.getCell(newX, newY).isPassable()){
+						List<Character> path = myMap.getPath(currentlySelectedRobot().getX(), currentlySelectedRobot().getY(), newX, newY);
+						if(path!=null && path.size()!=0){
+							currentlySelectedRobot().move(newX, newY);
+							graphics.setMoveLoaded(false);
+						}
+					}
+				}
+				if(currentlySelectedRobot()!=null){
+					currentlySelectedRobot().stopMove();
+					currentlySelectedRobot().deselect();
+				}
+				myMap.setXSelect(-1);
+				myMap.setYSelect(-1);
+				return;
+			}
+			else if(b){
+				for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
+					if(m instanceof Robot){
+						myMap.setXSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getX());
+						myMap.setYSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getY());
+						return;
+					}
 				}
 			}
-			if(currentlySelectedRobot()!=null){
-				currentlySelectedRobot().stopMove();
-				currentlySelectedRobot().deselect();
-			}
-			myMap.setXSelect(-1);
-			myMap.setYSelect(-1);
-			return;
-		}
-		else if(b){
-			for(MapCellObject m: ((ModelMap)myComponent).getCurrentHighlightedCell().getObjects()){
-				if(m instanceof Robot){
-					myMap.setXSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getX());
-					myMap.setYSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getY());
-					return;
+			if(b && !animation.inAnimation() && xx >= 9 && yy >= 9 &&
+					xx < 9 + WIDTH*16 && yy < 9 + HEIGHT*16){
+				if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth()){
+					newX = ((ModelMap)myComponent).getWidth() - WIDTH/2 - 1;
 				}
+				if (newX - WIDTH/2 < 0){
+					newX = WIDTH/2;
+				}
+				if (newY + HEIGHT/2 >= ((ModelMap)myComponent).getHeight()){
+					newY = ((ModelMap)myComponent).getHeight() - HEIGHT/2 - 1;
+				}
+				if (newY - HEIGHT/2 < 0){
+					newY = HEIGHT/2;
+				}
+				((ModelMap)myComponent).setX(newX);
+				((ModelMap)myComponent).setY(newY);
+				graphics.setXHover(-100);
+				graphics.setYHover(-100);
 			}
-		}
-		if(b && animateXCounter==0 && animateYCounter==0 && xx >= 9 && yy >= 9 &&
-				xx < 9 + WIDTH*16 && yy < 9 + HEIGHT*16){
-			if (newX + WIDTH/2 >= ((ModelMap)myComponent).getWidth()){
-				newX = ((ModelMap)myComponent).getWidth() - WIDTH/2 - 1;
-			}
-			if (newX - WIDTH/2 < 0){
-				newX = WIDTH/2;
-			}
-			if (newY + HEIGHT/2 >= ((ModelMap)myComponent).getHeight()){
-				newY = ((ModelMap)myComponent).getHeight() - HEIGHT/2 - 1;
-			}
-			if (newY - HEIGHT/2 < 0){
-				newY = HEIGHT/2;
-			}
-			((ModelMap)myComponent).setX(newX);
-			((ModelMap)myComponent).setY(newY);
-			xHover = -100;
-			yHover = -100;
-		}
 		}
 	}
 }

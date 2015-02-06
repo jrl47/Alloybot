@@ -75,5 +75,6 @@ public class Robot extends MapCellObject{
 	public void deselect() {
 		myMap.setXSelect(-1);
 		myMap.setYSelect(-1);
+		stopMove();
 	}
 }

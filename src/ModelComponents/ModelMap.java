@@ -142,16 +142,16 @@ public abstract class ModelMap extends ModelComponent{
 			char c = possibleRoutes.get(i);
 			List<Character> possiblePath = null;
 			if(c=='u' && startY - 1 >= 0){
-				possiblePath = buildPath(startX, startY-1, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX, startY-1, endX, endY, possibleRoutes.get(i), 1);
 			}
 			if(c=='d' && startY + 1 < myHeight){
-				possiblePath = buildPath(startX, startY+1, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX, startY+1, endX, endY, possibleRoutes.get(i), 1);
 			}
 			if(c=='l' && startX - 1 >= 0){
-				possiblePath = buildPath(startX-1, startY, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX-1, startY, endX, endY, possibleRoutes.get(i), 1);
 			}
 			if(c=='r' && startX + 1 < myWidth){
-				possiblePath = buildPath(startX+1, startY, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX+1, startY, endX, endY, possibleRoutes.get(i), 1);
 			}
 			if(possiblePath!=null){
 				return possiblePath;
@@ -159,9 +159,12 @@ public abstract class ModelMap extends ModelComponent{
 		}
 		return null;
 	}
-	private List<Character> buildPath(int startX, int startY, int endX, int endY, char c){
+	private List<Character> buildPath(int startX, int startY, int endX, int endY, char c, int depth){
 		// Base Case
 		if(!myCells.getCell(startX, startY).isPassable()){
+			return null;
+		}
+		if(depth > 20){
 			return null;
 		}
 		if(startX == endX && startY == endY){
@@ -188,16 +191,16 @@ public abstract class ModelMap extends ModelComponent{
 			char cc = possibleRoutes.get(i);
 			List<Character> possiblePath = null;
 			if(c=='u' && startY - 1 >= 0){
-				possiblePath = buildPath(startX, startY-1, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX, startY-1, endX, endY, possibleRoutes.get(i), depth+1);
 			}
 			if(c=='d' && startY + 1 < myHeight){
-				possiblePath = buildPath(startX, startY+1, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX, startY+1, endX, endY, possibleRoutes.get(i), depth+1);
 			}
 			if(c=='l' && startX - 1 >= 0){
-				possiblePath = buildPath(startX-1, startY, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX-1, startY, endX, endY, possibleRoutes.get(i), depth+1);
 			}
 			if(c=='r' && startX + 1 < myWidth){
-				possiblePath = buildPath(startX+1, startY, endX, endY, possibleRoutes.get(i));
+				possiblePath = buildPath(startX+1, startY, endX, endY, possibleRoutes.get(i), depth+1);
 			}
 			if(possiblePath!=null){
 				ArrayList<Character> result = new ArrayList<Character>();
