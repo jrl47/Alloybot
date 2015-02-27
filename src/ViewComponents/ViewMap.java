@@ -3,21 +3,15 @@ package ViewComponents;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import ModelComponents.MapCellObject;
 import ModelComponents.ModelMap;
 import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
 import ModelComponents.Robot;
-import View.DeciduousTileManager;
-import View.ScreenBuilder;
 
 public class ViewMap extends ViewComponent implements InputSensitive{
 
@@ -54,15 +48,28 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			myMap.undoHighlight();
 		}
 		animation.handleAnimation();
+		
+		if(animation.isDone() && movementRobot!=null){
+			movementRobot.setDirection('d');
+		}
+		
 		if(animation.getMovementStatus()){
-			if(currentPath.get(0)=='u')
+			if(currentPath.get(0)=='u'){
+				movementRobot.setDirection('u');
 				movementRobot.move(movementRobot.getX(), movementRobot.getY()-1);
-			if(currentPath.get(0)=='d')
+			}
+			if(currentPath.get(0)=='d'){
+				movementRobot.setDirection('d');
 				movementRobot.move(movementRobot.getX(), movementRobot.getY()+1);
-			if(currentPath.get(0)=='l')
+			}
+			if(currentPath.get(0)=='l'){
+				movementRobot.setDirection('l');
 				movementRobot.move(movementRobot.getX()-1, movementRobot.getY());
-			if(currentPath.get(0)=='r')
+			}
+			if(currentPath.get(0)=='r'){
+				movementRobot.setDirection('r');
 				movementRobot.move(movementRobot.getX()+1, movementRobot.getY());
+			}
 			currentPath.remove(0);
 		}
 		
@@ -102,7 +109,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 					if(currentPath == null && myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){
 						currentPath = myPaths.get(myMap.getCell(newX, newY));
 						if(currentPath!=null && currentPath.size()!=0){
-							animation.setMovementCounter(currentPath.size()*30+30);
+							animation.setMovementCounter(currentPath.size()*32+32);
+							animation.setRobot(currentlySelectedRobot());
 							movementRobot = currentlySelectedRobot();
 							moveLoaded = false;
 						}

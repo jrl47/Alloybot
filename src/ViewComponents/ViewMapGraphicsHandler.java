@@ -65,7 +65,7 @@ public class ViewMapGraphicsHandler {
 		currentRobot = selectedRobot;
 		BufferedImage tempMap = new BufferedImage(16*ViewMap.WIDTH, 16*ViewMap.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics tempG = tempMap.createGraphics();
-		tempG.drawImage(map.getSubimage(animation.getAnimateX(),  animation.getAnimateY(), 16*ViewMap.WIDTH, 16*ViewMap.HEIGHT), 0, 0, null);
+		tempG.drawImage(map.getSubimage(animation.getOriginX(),  animation.getOriginY(), 16*ViewMap.WIDTH, 16*ViewMap.HEIGHT), 0, 0, null);
 		tempG.dispose();
 		Graphics2D g = tempMap.createGraphics();
 		DeciduousTileManager manager = null;
@@ -88,29 +88,30 @@ public class ViewMapGraphicsHandler {
 	
 	private void drawHoverTile(Graphics2D g, DeciduousTileManager manager) {
 		if(!animation.inAnimation() && isHover){
-			g.drawImage(manager.getHoverTransparency(),	animation.pixelsToCellX(xHover)*16 - animation.getAnimateX(),
-					animation.pixelsToCellY(yHover)*16 -animation.getAnimateY(), null);
+			g.drawImage(manager.getHoverTransparency(),	animation.pixelsToCellX(xHover)*16 - animation.getOriginX(),
+					animation.pixelsToCellY(yHover)*16 -animation.getOriginY(), null);
 		}
 	}
 	
 	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager){
 		if(moveLoaded){
 		for(MapCell m: myMoves){
-			g.drawImage(manager.getHighlightTransparency(),(m.getX())*16 - animation.getAnimateX(),
-					(m.getY())*16 - animation.getAnimateY(), null);
+			g.drawImage(manager.getHighlightTransparency(),(m.getX())*16 - animation.getOriginX(),
+					(m.getY())*16 - animation.getOriginY(), null);
 		}
 		}
 	}
 	
 	private void drawRobot(Graphics2D g, DeciduousTileManager manager) {
 		if(currentRobot!=null){
-			g.drawImage(manager.getHighlightTransparency(),currentRobot.getX()*16 - animation.getAnimateX(),
-					currentRobot.getY()*16 - animation.getAnimateY(), null);
+			g.drawImage(manager.getHighlightTransparency(),currentRobot.getX()*16 - animation.getOriginX(),
+					currentRobot.getY()*16 - animation.getOriginY(), null);
 		}
 		for(MapCellObject m: myObjects){
 			if(m instanceof Robot){
 				Robot r = (Robot)m;
-				g.drawImage(manager.generateRobot(animation.getRobotAnimCounter()),r.getX()*16 - animation.getAnimateX(),r.getY()*16 - animation.getAnimateY(), null);
+				g.drawImage(manager.generateRobot(animation.getRobotAnimCounter(), r.getDirection()), animation.getRobotX(r) - animation.getOriginX(),
+						animation.getRobotX(r) - animation.getOriginY(), null);
 			}
 		}
 	}

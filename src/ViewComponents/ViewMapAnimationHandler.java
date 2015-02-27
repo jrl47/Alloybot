@@ -1,5 +1,9 @@
 package ViewComponents;
 
+import java.util.List;
+
+import ModelComponents.Robot;
+
 public class ViewMapAnimationHandler {
 	
 	private double xDirection;
@@ -8,22 +12,23 @@ public class ViewMapAnimationHandler {
 	private double animateYCounter;
 	private double xCounterDecrement;
 	private double yCounterDecrement;
-	private int x;
-	private int y;
-	private int prevX;
-	private int prevY;
-	private int robotAnimCounter;
-	private int movementCounter;
+	private int xOrigin;
+	private int yOrigin;
+	private int prevXOrigin;
+	private int prevYOrigin;
+	private int robotIdleCounter;
+	private int robotMovementCounter;
+	private Robot myRobot;
 	
 	public ViewMapAnimationHandler(){
 		
 	}
 	
 	void handleAnimation() {
-		robotAnimCounter++;
-		robotAnimCounter = robotAnimCounter % 80;
-		if(movementCounter > 0)
-			movementCounter--;
+		robotIdleCounter++;
+		robotIdleCounter = robotIdleCounter % 80;
+		if(robotMovementCounter > 0)
+			robotMovementCounter--;
 		if(animateXCounter>0){
 			animateXCounter-=xCounterDecrement;
 		}
@@ -34,13 +39,13 @@ public class ViewMapAnimationHandler {
 		xDirection = 0;
 		yDirection = 0;
 		}
-		if(prevX!=x){
+		if(prevXOrigin!=xOrigin){
 			animateXCounter = 16;
-			xDirection = (int)((prevX - x)*1);
+			xDirection = (int)((prevXOrigin - xOrigin)*1);
 		}
-		if(prevY!=y){
+		if(prevYOrigin!=yOrigin){
 			animateYCounter = 16;
-			yDirection = (int)((prevY - y)*1);
+			yDirection = (int)((prevYOrigin - yOrigin)*1);
 		}
 		if(animateXCounter != animateYCounter){
 			if(animateXCounter > animateYCounter){
@@ -56,21 +61,21 @@ public class ViewMapAnimationHandler {
 			xCounterDecrement = 1;
 			yCounterDecrement = 1;
 		}
-		prevX = x;
-		prevY = y;
+		prevXOrigin = xOrigin;
+		prevYOrigin = yOrigin;
 	}
 	
-	int getAnimateX(){
-		return x*16 + (int)(animateXCounter*xDirection);
+	int getOriginX(){
+		return xOrigin*16 + (int)(animateXCounter*xDirection);
 	}
-	int getAnimateY(){
-		return y*16 + (int)(animateYCounter*yDirection);
+	int getOriginY(){
+		return yOrigin*16 + (int)(animateYCounter*yDirection);
 	}
 	int pixelsToCellX(int xx){
-		return x + ((xx-ViewMap.BORDER_WIDTH)/16);
+		return xOrigin + ((xx-ViewMap.BORDER_WIDTH)/16);
 	}
 	int pixelsToCellY(int yy){
-		return y + ((yy-ViewMap.BORDER_WIDTH)/16);
+		return yOrigin + ((yy-ViewMap.BORDER_WIDTH)/16);
 	}
 	boolean inAnimation(){
 		if(animateXCounter==0 && animateYCounter==0){
@@ -79,37 +84,68 @@ public class ViewMapAnimationHandler {
 		return true;
 	}
 	int getX(){
-		return x;
+		return xOrigin;
 	}
 	void setX(int xx){
-		x = xx;
+		xOrigin = xx;
 	}
 	int getPrevX(){
-		return prevX;
+		return prevXOrigin;
 	}
 	void setPrevX(int xx){
-		prevX = xx;
+		prevXOrigin = xx;
 	}
 	int getY(){
-		return y;
+		return yOrigin;
 	}
 	void setY(int yy){
-		y = yy;
+		yOrigin = yy;
 	}
 	int getPrevY(){
-		return prevY;
+		return prevYOrigin;
 	}
 	void setPrevY(int yy){
-		prevY = yy;
+		prevYOrigin = yy;
+	}
+	int getRobotX(Robot r){
+		if(r!=myRobot){
+			return 16*r.getX();
+		}
+		if(myRobot.getDirection()=='l'){
+			return 16*myRobot.getX() - ((robotMovementCounter % 32) / 2);
+		}
+		if(myRobot.getDirection()=='r'){
+			return 16*myRobot.getX() + ((robotMovementCounter % 32) / 2);
+		}
+		return 16*myRobot.getX();
+	}
+	int getRobotY(Robot r){
+		if(r!=myRobot){
+			return 16*r.getY();
+		}
+		if(myRobot.getDirection()=='u'){
+			return 16*myRobot.getY() - ((robotMovementCounter % 32) / 2);
+		}
+		if(myRobot.getDirection()=='d'){
+			return 16*myRobot.getY() + ((robotMovementCounter % 32) / 2);
+		}
+		return 16*myRobot.getY();
 	}
 
 	public int getRobotAnimCounter() {
-		return robotAnimCounter;
+		return robotIdleCounter;
 	}
 	public void setMovementCounter(int m){
-		movementCounter = m;
+		robotMovementCounter = m;
 	}
 	public boolean getMovementStatus(){
-		return (movementCounter % 30 == 0 && movementCounter!=0);
+		return (robotMovementCounter % 32 == 0 && robotMovementCounter!=0);
+	}
+	public boolean isDone(){
+		return (robotMovementCounter<=0);
+	}
+
+	public void setRobot(Robot currentlySelectedRobot) {
+		myRobot = currentlySelectedRobot;
 	}
 }

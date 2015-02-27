@@ -46,11 +46,28 @@ public class DeciduousTileManager extends TileManager{
 		return null;
 	}
 	
-	public BufferedImage generateRobot(int robotAnimCounter) {
-		if(robotAnimCounter >= 60)
-			return myRobotSprite.getSubimage(1*16, 0, 16, 16);
-		return myRobotSprite.getSubimage((robotAnimCounter/20)*16, 0, 16, 16);
-//		return myImage.getSubimage(9*16, 1*16, 16, 16);
+	public BufferedImage generateRobot(int robotAnimCounter, char robotDirection) {
+		if(robotAnimCounter >= 60){
+			if(robotDirection == 'd')
+				return myRobotSprite.getSubimage(1*16, 0, 16, 16);
+			if(robotDirection == 'l')
+				return myRobotSprite.getSubimage(1*16, 16, 16, 16);
+			if(robotDirection == 'r')
+				return myRobotSprite.getSubimage(1*16, 32, 16, 16);
+			if(robotDirection == 'u')
+				return myRobotSprite.getSubimage(1*16, 48, 16, 16);
+		}
+		else{
+			if(robotDirection == 'd')
+				return myRobotSprite.getSubimage((robotAnimCounter/20)*16, 0, 16, 16);
+			if(robotDirection == 'l')
+				return myRobotSprite.getSubimage((robotAnimCounter/20)*16, 16, 16, 16);
+			if(robotDirection == 'r')
+				return myRobotSprite.getSubimage((robotAnimCounter/20)*16, 32, 16, 16);
+			if(robotDirection == 'u')
+				return myRobotSprite.getSubimage((robotAnimCounter/20)*16, 48, 16, 16);
+		}
+		return myRobotSprite.getSubimage(1*16, 0, 16, 16);
 	}
 
 	private BufferedImage generateFlowers(MapCell m) {

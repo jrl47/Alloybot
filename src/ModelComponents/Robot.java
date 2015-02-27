@@ -10,6 +10,7 @@ public class Robot extends MapCellObject{
 	private MapCell myLocation;
 	private int myX;
 	private int myY;
+	private char myDirection;
 	private ResourceManager myResources;
 	private List<ModelButton> myManagerButtons;
 	private boolean enabled;
@@ -25,6 +26,7 @@ public class Robot extends MapCellObject{
 		myResources = m.getResources();
 		myLocation = myMap.getCell(myX, myY);
 		myLocation.addObject(this);
+		myDirection = 'd';
 	}
 	public void step(){
 		if(enabled){
@@ -36,6 +38,12 @@ public class Robot extends MapCellObject{
 	}
 	public void disabled(){
 		enabled = false;
+	}
+	public void setDirection(char c){
+		myDirection = c;
+	}
+	public char getDirection(){
+		return myDirection;
 	}
 	public void prepareMove(){
 		readyToMove = true;
