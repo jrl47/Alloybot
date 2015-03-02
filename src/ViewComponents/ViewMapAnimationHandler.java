@@ -1,9 +1,5 @@
 package ViewComponents;
 
-import java.util.List;
-
-import ModelComponents.Robot;
-
 public class ViewMapAnimationHandler {
 	
 	private double xDirection;
@@ -16,19 +12,8 @@ public class ViewMapAnimationHandler {
 	private int yOrigin;
 	private int prevXOrigin;
 	private int prevYOrigin;
-	private int robotIdleCounter;
-	private int robotMovementCounter;
-	private Robot myRobot;
-	
-	public ViewMapAnimationHandler(){
-		
-	}
-	
+
 	void handleAnimation() {
-		robotIdleCounter++;
-		robotIdleCounter = robotIdleCounter % 80;
-		if(robotMovementCounter > 0)
-			robotMovementCounter--;
 		if(animateXCounter>0){
 			animateXCounter-=xCounterDecrement;
 		}
@@ -106,46 +91,5 @@ public class ViewMapAnimationHandler {
 	}
 	void setPrevY(int yy){
 		prevYOrigin = yy;
-	}
-	int getRobotX(Robot r){
-		if(r!=myRobot){
-			return 16*r.getX();
-		}
-		if(myRobot.getDirection()=='l'){
-			return 16*myRobot.getX() - ((robotMovementCounter % 32) / 2);
-		}
-		if(myRobot.getDirection()=='r'){
-			return 16*myRobot.getX() + ((robotMovementCounter % 32) / 2);
-		}
-		return 16*myRobot.getX();
-	}
-	int getRobotY(Robot r){
-		if(r!=myRobot){
-			return 16*r.getY();
-		}
-		if(myRobot.getDirection()=='u'){
-			return 16*myRobot.getY() - ((robotMovementCounter % 32) / 2);
-		}
-		if(myRobot.getDirection()=='d'){
-			return 16*myRobot.getY() + ((robotMovementCounter % 32) / 2);
-		}
-		return 16*myRobot.getY();
-	}
-
-	public int getRobotAnimCounter() {
-		return robotIdleCounter;
-	}
-	public void setMovementCounter(int m){
-		robotMovementCounter = m;
-	}
-	public boolean getMovementStatus(){
-		return (robotMovementCounter % 32 == 0 && robotMovementCounter!=0);
-	}
-	public boolean isDone(){
-		return (robotMovementCounter<=0);
-	}
-
-	public void setRobot(Robot currentlySelectedRobot) {
-		myRobot = currentlySelectedRobot;
 	}
 }
