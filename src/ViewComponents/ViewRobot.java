@@ -59,7 +59,7 @@ public class ViewRobot extends ViewMapObject{
 			myRobot.select();
 		}
 		if(myRobot.movable()){
-			if(currentPath == null && myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){
+			if(myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){
 				currentPath = myPaths.get(myMap.getCell(newX, newY));
 				if(currentPath!=null && currentPath.size()!=0){
 					movementCounter = currentPath.size()*32;
@@ -69,7 +69,9 @@ public class ViewRobot extends ViewMapObject{
 		}
 	}
 	public void draw(Graphics2D g, DeciduousTileManager manager, ViewMapAnimationHandler animation) {
-//		System.out.println(myPaths.keySet().size());
+		if(myRobot.isSelected()){
+			loadPaths();
+		}
 		g.drawImage(manager.generateRobot(idleCounter, myDirection), getRobotX() - animation.getOriginX(),
 				getRobotY() - animation.getOriginY(), null);
 		if(myRobot.isSelected()){
@@ -77,15 +79,12 @@ public class ViewRobot extends ViewMapObject{
 			if(myRobot.movable())
 				drawMoveRange(g, manager, animation);
 		}
-		// If it's one of the times the robot is supposed to move, make it move here!
-		// aka
 		if(movementCounter % 32 == 0 && movementCounter>0)
 			doMovement();
 		idleCounter++;
 		idleCounter = idleCounter % 80;
 		if(movementCounter > 0)
 			movementCounter--;
-		
 	}
 	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager, ViewMapAnimationHandler animation){
 		for(MapCell m: myMoves){
@@ -96,21 +95,38 @@ public class ViewRobot extends ViewMapObject{
 	public void doMovement(){
 		if(currentPath.get(0)=='u'){
 			myDirection = 'u';
-			myRobot.move(myRobot.getX(), myRobot.getY()-1);
+			if(!myRobot.move(myRobot.getX(), myRobot.getY()-1)){
+				endMove();
+				return;
+			}
 		}
 		if(currentPath.get(0)=='d'){
 			myDirection = 'd';
-			myRobot.move(myRobot.getX(), myRobot.getY()+1);
+			if(!myRobot.move(myRobot.getX(), myRobot.getY()+1)){
+				endMove();
+				return;
+			}
 		}
 		if(currentPath.get(0)=='l'){
 			myDirection = 'l';
-			myRobot.move(myRobot.getX()-1, myRobot.getY());
+			if(!myRobot.move(myRobot.getX()-1, myRobot.getY())){
+				endMove();
+				return;
+			}
 		}
 		if(currentPath.get(0)=='r'){
 			myDirection = 'r';
-			myRobot.move(myRobot.getX()+1, myRobot.getY());
+			if(!myRobot.move(myRobot.getX()+1, myRobot.getY())){
+				endMove();
+				return;
+			}
 		}
 		currentPath.remove(0);
+	}
+	
+	private void endMove() {
+		currentPath.clear();
+		movementCounter = 0;
 	}
 	int getRobotX(){
 		if(myDirection=='l'){
@@ -121,6 +137,7 @@ public class ViewRobot extends ViewMapObject{
 		}
 		return 16*myRobot.getX();
 	}
+	
 	int getRobotY(){
 		if(myDirection=='u'){
 			return 16*myRobot.getY() + ((movementCounter % 32) / 2);

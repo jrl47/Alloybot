@@ -5,7 +5,7 @@ public class ResourceManager extends ModelComponent{
 	
 	private int myOil;
 	public ResourceManager(){
-		myOil = 15000;
+		myOil = 150000;
 	}
 	public int getOil() {
 		return myOil;

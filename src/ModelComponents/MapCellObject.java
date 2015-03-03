@@ -8,7 +8,7 @@ public abstract class MapCellObject extends ModelComponent{
 		impassable = b;
 	}
 	public boolean isPassable() {
-		return !impassable;
+		return impassable;
 	}
 	public boolean isSelected(){
 		return (myMap.getSelectedCell()!=null && myMap.getSelectedCell().getObjects()!=null && myMap.getSelectedCell().getObjects().contains(this));

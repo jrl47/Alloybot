@@ -48,6 +48,12 @@ public class ModelData {
 		r.addButton(new RobotDeselectButton(r));
 		r.addButton(new RobotStopButton(r));
 		b.addRobot(r, 50, 50);
+		r = new Robot();
+		r.addButton(new RobotMoveButton(r));
+		r.addButton(new RobotEnableButton(r));
+		r.addButton(new RobotDeselectButton(r));
+		r.addButton(new RobotStopButton(r));
+		b.addRobot(r, 40, 50);
 		myComponents.add(r);
 		mapComp.add(b);
 		mapComp.add(manager);

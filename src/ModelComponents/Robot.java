@@ -45,7 +45,9 @@ public class Robot extends MapCellObject{
 	public void stopMove(){
 		readyToMove = false;
 	}
-	public void move(int x, int y){
+	public boolean move(int x, int y){
+		if(myMap.getCell(x, y).getObjects().size()!=0)
+			return false;
 		myLocation.removeObject(this);
 		myResources.setOil(myResources.getOil() - 1000*(Math.abs(myX - x) + Math.abs(myY - y)));
 		myX = x;
@@ -54,6 +56,7 @@ public class Robot extends MapCellObject{
 		myLocation.addObject(this);
 		enabled = false;
 		readyToMove = false;
+		return true;
 	}
 	public int getX(){
 		return myX;
