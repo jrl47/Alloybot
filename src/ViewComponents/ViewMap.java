@@ -22,7 +22,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private ModelMap myMap;
 	private Map<MapCellObject, ViewMapObject> myViewMapObjects;
 	private List<ViewMapObject> myMapObjects;
-	private MapCellObject currentlySelectedObject;
+	private ViewMapObject currentlySelectedObject;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
 		currentlySelectedObject = null;
@@ -61,6 +61,8 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	@Override
 	public void useInput(int xx, int yy, boolean b) {
 		if(!animation.inAnimation()){
+			if(currentlySelectedObject!=null && !currentlySelectedObject.getMapObject().isSelected())
+				currentlySelectedObject = null;
 			graphics.setXHover(xx);
 			graphics.setYHover(yy);
 			((ModelMap)myComponent).setXTile(animation.getX() + ((xx-BORDER_WIDTH)/16));
@@ -70,15 +72,16 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			
 			// If we've got a click and an object
 			if(b && currentlySelectedObject != null){
-				myViewMapObjects.get(currentlySelectedObject).trigger(newX, newY);
+				currentlySelectedObject.trigger(newX, newY);
 				return;
 			}
 			
 			// If we've got a click and no object, we might be selecting one
 			else if(b){
 				if(((ModelMap)myComponent).getCurrentHighlightedCell().getObjects().size()!=0){
-					myViewMapObjects.get(((ModelMap)(myComponent)).getRobot(((ModelMap)myComponent).getCurrentHighlightedCell().getX(),
-							((ModelMap)myComponent).getCurrentHighlightedCell().getY())).trigger(newX, newY);
+					currentlySelectedObject = myViewMapObjects.get(((ModelMap)(myComponent)).getRobot(((ModelMap)myComponent).getCurrentHighlightedCell().getX(),
+							((ModelMap)myComponent).getCurrentHighlightedCell().getY()));
+					currentlySelectedObject.trigger(newX, newY);
 					return;
 				}
 			}

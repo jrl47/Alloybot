@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Robot extends MapCellObject{
 	
-	private ModelMap myMap;
 	private MapCell myLocation;
 	private int myX;
 	private int myY;
@@ -80,8 +79,5 @@ public class Robot extends MapCellObject{
 	public void select() {
 		myMap.setXSelect(myX);
 		myMap.setYSelect(myY);
-	}
-	public boolean isSelected(){
-		return (myMap.getSelectedCell()!=null && myMap.getSelectedCell().getObjects()!=null && myMap.getSelectedCell().getObjects().contains(this));
 	}
 }

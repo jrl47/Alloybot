@@ -14,4 +14,7 @@ public abstract class ViewMapObject {
 	public abstract void trigger(int newX, int newY);
 	
 	public abstract void draw(Graphics2D g, DeciduousTileManager manager, ViewMapAnimationHandler animation);
+	public MapCellObject getMapObject(){
+		return myMapObject;
+	}
 }

@@ -47,10 +47,13 @@ public class ViewRobot extends ViewMapObject{
 	}
 	private void loadPaths() {
 		myPaths.clear();
-		myMap.loadPaths(myPaths, myRobot.getX(), myRobot.getY(), Math.min(10, myMap.getResources().getOil()/1000));
+		myMap.loadPaths(myPaths, myRobot.getX(), myRobot.getY(), Math.min(20, myMap.getResources().getOil()/1000));
 		myMoves = myPaths.keySet();
 	}
 	public void trigger(int newX, int newY) {
+		if(movementCounter > 0){
+			return;
+		}
 		if(!myRobot.isSelected()){
 			loadPaths();
 			myRobot.select();
@@ -71,7 +74,8 @@ public class ViewRobot extends ViewMapObject{
 				getRobotY() - animation.getOriginY(), null);
 		if(myRobot.isSelected()){
 			g.drawImage(manager.getHighlightTransparency(), myRobot.getX()*16 - animation.getOriginX(),myRobot.getY()*16 - animation.getOriginY(), null);
-			drawMoveRange(g, manager, animation);
+			if(myRobot.movable())
+				drawMoveRange(g, manager, animation);
 		}
 		// If it's one of the times the robot is supposed to move, make it move here!
 		// aka
