@@ -77,4 +77,11 @@ public class Robot extends MapCellObject{
 		myMap.setYSelect(-1);
 		stopMove();
 	}
+	public void select() {
+		myMap.setXSelect(myX);
+		myMap.setYSelect(myY);
+	}
+	public boolean isSelected(){
+		return (myMap.getSelectedCell()!=null && myMap.getSelectedCell().getObjects()!=null && myMap.getSelectedCell().getObjects().contains(this));
+	}
 }

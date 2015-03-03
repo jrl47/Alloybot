@@ -19,7 +19,6 @@ public class ViewRobot extends ViewMapObject{
 	private Map<MapCell, List<Character>> myPaths;
 	private List<Character> currentPath;
 	private ModelMap myMap;
-	private boolean selected;
 	private int idleCounter;
 	private int movementCounter;
 	private Set<MapCell> myMoves;
@@ -47,33 +46,33 @@ public class ViewRobot extends ViewMapObject{
 		return myRobot.getY();
 	}
 	private void loadPaths() {
-		if(movementCounter <= 0){
-			myPaths.clear();
-			myMap.loadPaths(myPaths, myRobot.getX(), myRobot.getY(), Math.min(10, myMap.getResources().getOil()/1000));
-		}
+		myPaths.clear();
+		myMap.loadPaths(myPaths, myRobot.getX(), myRobot.getY(), Math.min(10, myMap.getResources().getOil()/1000));
+		myMoves = myPaths.keySet();
 	}
 	public void trigger(int newX, int newY) {
-		if(!selected){
-			myPaths.clear();
-			myMap.loadPaths(myPaths, myRobot.getX(), myRobot.getY(), Math.min(10, myMap.getResources().getOil()/1000));
-			selected = true;
-			return;
+		if(!myRobot.isSelected()){
+			loadPaths();
+			myRobot.select();
 		}
 		if(myRobot.movable()){
 			if(currentPath == null && myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){
 				currentPath = myPaths.get(myMap.getCell(newX, newY));
 				if(currentPath!=null && currentPath.size()!=0){
-					movementCounter = currentPath.size()*32+32;
+					movementCounter = currentPath.size()*32;
 				}
 			}
+			myRobot.deselect();
 		}
 	}
 	public void draw(Graphics2D g, DeciduousTileManager manager, ViewMapAnimationHandler animation) {
+//		System.out.println(myPaths.keySet().size());
 		g.drawImage(manager.generateRobot(idleCounter, myDirection), getRobotX() - animation.getOriginX(),
 				getRobotY() - animation.getOriginY(), null);
-		if(selected)
+		if(myRobot.isSelected()){
 			g.drawImage(manager.getHighlightTransparency(), myRobot.getX()*16 - animation.getOriginX(),myRobot.getY()*16 - animation.getOriginY(), null);
-		drawMoveRange(g, manager, animation);
+			drawMoveRange(g, manager, animation);
+		}
 		// If it's one of the times the robot is supposed to move, make it move here!
 		// aka
 		if(movementCounter % 32 == 0 && movementCounter>0)
@@ -82,11 +81,7 @@ public class ViewRobot extends ViewMapObject{
 		idleCounter = idleCounter % 80;
 		if(movementCounter > 0)
 			movementCounter--;
-//		// If i have an object and it's moveable but we haven't started, load the move
-//		for(ViewMapObject m: myMapObjects){
-//			if(m instanceof ViewRobot)
-//				((ViewRobot)m).loadMove();
-//		}
+		
 	}
 	private void drawMoveRange(Graphics2D g, DeciduousTileManager manager, ViewMapAnimationHandler animation){
 		for(MapCell m: myMoves){
@@ -105,11 +100,11 @@ public class ViewRobot extends ViewMapObject{
 		}
 		if(currentPath.get(0)=='l'){
 			myDirection = 'l';
-			myRobot.move(myRobot.getX(), myRobot.getY()-1);
+			myRobot.move(myRobot.getX()-1, myRobot.getY());
 		}
 		if(currentPath.get(0)=='r'){
 			myDirection = 'r';
-			myRobot.move(myRobot.getX(), myRobot.getY()+1);
+			myRobot.move(myRobot.getX()+1, myRobot.getY());
 		}
 		currentPath.remove(0);
 	}

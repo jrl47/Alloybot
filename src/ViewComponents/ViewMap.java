@@ -22,8 +22,10 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private ModelMap myMap;
 	private Map<MapCellObject, ViewMapObject> myViewMapObjects;
 	private List<ViewMapObject> myMapObjects;
+	private MapCellObject currentlySelectedObject;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
+		currentlySelectedObject = null;
 		animation = new ViewMapAnimationHandler();
 		myMap = (ModelMap)myComponent;
 		myMapObjects = new ArrayList<ViewMapObject>();
@@ -33,8 +35,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			myViewMapObjects.put(r, v);
 			myMapObjects.add(v);
 		}
-		myMap.setXSelect(-1);
-		myMap.setYSelect(-1);
 		graphics = new ViewMapGraphicsHandler(animation, myMap, myViewMapObjects);
 	}
 
@@ -53,12 +53,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 		return graphics.drawVisibleMapRegion(isHover, myMapObjects);
 	}
 	
-	private MapCellObject currentlySelectedObject(){
-		if(myMap.getXSelect() == -1 || myMap.getYSelect() == -1)
-			return null;
-		return ((ModelMap)(myComponent)).getRobot(myMap.getXSelect(), myMap.getYSelect());
-	}
-	
 	@Override
 	public BufferedImage loadHover() {
 		return loadImage();
@@ -75,19 +69,16 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			int newY = ((ModelMap)myComponent).getCell(animation.getX() + ((xx-BORDER_WIDTH)/16), animation.getY() + ((yy-BORDER_WIDTH)/16)).getY();
 			
 			// If we've got a click and an object
-			if(b && currentlySelectedObject() != null){
-				myViewMapObjects.get(currentlySelectedObject()).trigger(newX, newY);
-				myMap.setXSelect(-1);
-				myMap.setYSelect(-1);
+			if(b && currentlySelectedObject != null){
+				myViewMapObjects.get(currentlySelectedObject).trigger(newX, newY);
 				return;
 			}
 			
 			// If we've got a click and no object, we might be selecting one
 			else if(b){
 				if(((ModelMap)myComponent).getCurrentHighlightedCell().getObjects().size()!=0){
-					myMap.setXSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getX());
-					myMap.setYSelect(((ModelMap)myComponent).getCurrentHighlightedCell().getY());
-					myViewMapObjects.get(currentlySelectedObject()).trigger(newX, newY);
+					myViewMapObjects.get(((ModelMap)(myComponent)).getRobot(((ModelMap)myComponent).getCurrentHighlightedCell().getX(),
+							((ModelMap)myComponent).getCurrentHighlightedCell().getY())).trigger(newX, newY);
 					return;
 				}
 			}
