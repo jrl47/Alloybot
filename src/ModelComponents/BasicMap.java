@@ -14,6 +14,7 @@ public class BasicMap extends ModelMap{
 
 	private static BufferedImage terrainDataImage;
 	private static BufferedImage oilDataImage;
+	private static BufferedImage oreDataImage;
 	public BasicMap(ResourceManager r){
 		super(getImage().getWidth(), getImage().getHeight(), r);
 		for(int i=0; i<getImage().getWidth(); i++){
@@ -39,7 +40,7 @@ public class BasicMap extends ModelMap{
 				else{
 //					System.out.println(getImage().getRGB(i, j));
 				}
-				myCells.getCell(i, j).setOil(getOilImage().getRGB(i, j)>>16 & 255);
+				setResources(i, j);
 			}
 		}
 		setX(getImage().getWidth()/2);
@@ -55,7 +56,7 @@ public class BasicMap extends ModelMap{
 		}
 		return terrainDataImage;
 	}
-	public static BufferedImage getOilImage(){
+	public BufferedImage getOilImage(){
 		if(oilDataImage==null){
 		try {
 			oilDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapOil.png"));
@@ -65,6 +66,18 @@ public class BasicMap extends ModelMap{
 		}
 		return oilDataImage;
 	}
+
+	protected BufferedImage getOreImage() {
+		if(oreDataImage==null){
+		try {
+			oreDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapOre.png"));
+		} catch (IOException e) {
+			return null;
+		}
+		}
+		return oreDataImage;
+	}
+	
 	@Override
 	public void step() {
 		// TODO Auto-generated method stub

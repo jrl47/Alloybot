@@ -47,6 +47,9 @@ public class ResourcesInfoScreen extends ViewComponent{
 		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
 		String s = myManager.getOil() + "";
 		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
+		g.drawImage(font.getStringImage("ORE:", 1), 10, 50, null);
+		s = myManager.getOre() + "";
+		g.drawImage(font.getStringImage(s, 1), 40, 50, null);
 		return image;
 	}
 	@Override

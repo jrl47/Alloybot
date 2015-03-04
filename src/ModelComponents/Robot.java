@@ -8,9 +8,6 @@ import Model.Model;
 
 public class Robot extends MapCellObject{
 	
-	private MapCell myLocation;
-	private int myX;
-	private int myY;
 	private ResourceManager myResources;
 	private List<ModelButton> myManagerButtons;
 	private boolean enabled;
@@ -30,6 +27,7 @@ public class Robot extends MapCellObject{
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
 			myResources.setOil(myResources.getOil() + myLocation.getOil());
+			myResources.setOre(myResources.getOre() + myLocation.getOre());
 		}
 	}
 	public void enabled() {
@@ -59,12 +57,6 @@ public class Robot extends MapCellObject{
 		enabled = false;
 		readyToMove = false;
 		return true;
-	}
-	public int getX(){
-		return myX;
-	}
-	public int getY(){
-		return myY;
 	}
 	public void addButton(ModelButton b){
 		myManagerButtons.add(b);

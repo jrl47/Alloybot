@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import Controller.Game;
 import ModelComponents.MapCell;
 import ModelComponents.ModelMap;
 import ModelComponents.Robot;
@@ -19,7 +20,6 @@ public class ViewRobot extends ViewMapObject{
 	private Map<MapCell, List<Character>> myPaths;
 	private List<Character> currentPath;
 	private ModelMap myMap;
-	private int idleCounter;
 	private int movementCounter;
 	private Set<MapCell> myMoves;
 	public ViewRobot(Robot r, ModelMap map) {
@@ -72,7 +72,7 @@ public class ViewRobot extends ViewMapObject{
 		if(myRobot.isSelected()){
 			loadPaths();
 		}
-		g.drawImage(manager.generateRobot(idleCounter, myDirection), getRobotX() - animation.getOriginX(),
+		g.drawImage(manager.generateRobot((int)Game.ticks % 80, myDirection), getRobotX() - animation.getOriginX(),
 				getRobotY() - animation.getOriginY(), null);
 		if(myRobot.isSelected()){
 			g.drawImage(manager.getHighlightTransparency(), myRobot.getX()*16 - animation.getOriginX(),myRobot.getY()*16 - animation.getOriginY(), null);
@@ -81,8 +81,6 @@ public class ViewRobot extends ViewMapObject{
 		}
 		if(movementCounter % 32 == 0 && movementCounter>0)
 			doMovement();
-		idleCounter++;
-		idleCounter = idleCounter % 80;
 		if(movementCounter > 0)
 			movementCounter--;
 	}

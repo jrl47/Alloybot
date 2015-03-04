@@ -1,5 +1,6 @@
 package ModelComponents;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,15 @@ public abstract class ModelMap extends ModelComponent{
 		myRobots.add(r);
 		r.addToMap(this, x, y);
 	}
+	protected void setResources(int i, int j){
+		myCells.getCell(i, j).setOil(getOilImage().getRGB(i, j)>>16 & 255);
+		myCells.getCell(i, j).setOre(getOreImage().getRGB(i, j)>>16 & 255);
+	}
+	protected abstract BufferedImage getOilImage();
+	
+	protected abstract BufferedImage getOreImage();
+	
+	
 	public int getX(){
 		return x;
 	}
