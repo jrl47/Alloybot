@@ -3,6 +3,8 @@ package ModelComponents;
 import java.util.ArrayList;
 import java.util.List;
 
+import Controller.Game;
+import Model.Model;
 
 public class Robot extends MapCellObject{
 	
@@ -26,7 +28,7 @@ public class Robot extends MapCellObject{
 		myLocation.addObject(this);
 	}
 	public void step(){
-		if(enabled){
+		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
 			myResources.setOil(myResources.getOil() + myLocation.getOil());
 		}
 	}

@@ -48,6 +48,7 @@ public class ModelData {
 		r.addButton(new RobotDeselectButton(r));
 		r.addButton(new RobotStopButton(r));
 		b.addRobot(r, 50, 50);
+		myComponents.add(r);
 		r = new Robot();
 		r.addButton(new RobotMoveButton(r));
 		r.addButton(new RobotEnableButton(r));

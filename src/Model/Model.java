@@ -1,13 +1,9 @@
 package Model;
-
-import java.util.HashMap;
-import java.util.List;
-
-import Controller.InputListener;
 import ModelComponents.ModelComponent;
 
 public class Model {
 	
+	public static final int TICK_SCALAR = 30;
 	private ModelData data;
 	public Model() {
 		data = new ModelData();

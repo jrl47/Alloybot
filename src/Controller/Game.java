@@ -21,6 +21,7 @@ public class Game implements Runnable{
 	private View view;
 	private Model model;
 	private InputListener listener;
+	public static long ticks;
 	public Game(){
 		listener = new InputListener();
 		view = new View(listener);
@@ -34,7 +35,6 @@ public class Game implements Runnable{
 	}
 	public void run() {
 		long firstTime = System.nanoTime();
-		long ticks = 0;
 		while(exitGame==false){
 			step();
 			render();
