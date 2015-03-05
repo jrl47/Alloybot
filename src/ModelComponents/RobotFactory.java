@@ -6,16 +6,12 @@ public class RobotFactory extends MapCellObject{
 		super(b);
 	}
 
-	@Override
 	public void step() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
-	@Override
 	public void respond() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 }
