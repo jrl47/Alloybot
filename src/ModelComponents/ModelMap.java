@@ -2,6 +2,7 @@ package ModelComponents;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -136,16 +137,16 @@ public abstract class ModelMap extends ModelComponent{
 		yHover = -1;
 	}
 	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, int cap) {
-		ArrayList<Character> u = new ArrayList<Character>();
+		LinkedList<Character> u = new LinkedList<Character>();
 		u.add('u');
 		loadPaths(myPaths, x, y-1, cap, u);
-		ArrayList<Character> d = new ArrayList<Character>();
+		LinkedList<Character> d = new LinkedList<Character>();
 		d.add('d');
 		loadPaths(myPaths, x, y+1, cap, d);
-		ArrayList<Character> l = new ArrayList<Character>();
+		LinkedList<Character> l = new LinkedList<Character>();
 		l.add('l');
 		loadPaths(myPaths, x-1, y, cap, l);
-		ArrayList<Character> r = new ArrayList<Character>();
+		LinkedList<Character> r = new LinkedList<Character>();
 		r.add('r');
 		loadPaths(myPaths, x+1, y, cap, r);
 	}
@@ -171,19 +172,19 @@ public abstract class ModelMap extends ModelComponent{
 				return;
 			}
 		}
-		ArrayList<Character> u = new ArrayList<Character>();
+		LinkedList<Character> u = new LinkedList<Character>();
 		u.addAll(c);
 		u.add('u');
 		loadPaths(myPaths, x, y-1, cap, u);
-		ArrayList<Character> d = new ArrayList<Character>();
+		LinkedList<Character> d = new LinkedList<Character>();
 		d.addAll(c);
 		d.add('d');
 		loadPaths(myPaths, x, y+1, cap, d);
-		ArrayList<Character> l = new ArrayList<Character>();
+		LinkedList<Character> l = new LinkedList<Character>();
 		l.addAll(c);
 		l.add('l');
 		loadPaths(myPaths, x-1, y, cap, l);
-		ArrayList<Character> r = new ArrayList<Character>();
+		LinkedList<Character> r = new LinkedList<Character>();
 		r.addAll(c);
 		r.add('r');
 		loadPaths(myPaths, x+1, y, cap, r);
