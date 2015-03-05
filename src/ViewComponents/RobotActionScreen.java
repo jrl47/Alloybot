@@ -58,17 +58,21 @@ public class RobotActionScreen extends ViewComponent{
 		myImage = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = myImage.getGraphics();
 		g.drawImage(myBackground, 0, 0, null);
-		if(myMap.getSelectedRobot()!=null){
+		Robot r;
+		if(myMap.getSelectedObject()!=null){
 			if(needsButton){
-				myMoveButton.setComponent(myMap.getSelectedRobot().getButtons().get(0));
-				addComponent(myMoveButton);
-				myMineButton.setComponent(myMap.getSelectedRobot().getButtons().get(1));
-				addComponent(myMineButton);
-				myDeselectButton.setComponent(myMap.getSelectedRobot().getButtons().get(2));
-				addComponent(myDeselectButton);
-				myStopButton.setComponent(myMap.getSelectedRobot().getButtons().get(3));
-				addComponent(myStopButton);
-				needsButton = false;
+				if(myMap.getSelectedObject() instanceof Robot){
+					r = (Robot)myMap.getSelectedObject();
+					myMoveButton.setComponent(r.getButtons().get(0));
+					addComponent(myMoveButton);
+					myMineButton.setComponent(r.getButtons().get(1));
+					addComponent(myMineButton);
+					myDeselectButton.setComponent(r.getButtons().get(2));
+					addComponent(myDeselectButton);
+					myStopButton.setComponent(r.getButtons().get(3));
+					addComponent(myStopButton);
+					needsButton = false;
+				}
 			}
 		}
 		else{

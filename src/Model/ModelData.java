@@ -13,6 +13,7 @@ import ModelComponents.ResourceManager;
 import ModelComponents.Robot;
 import ModelComponents.RobotDeselectButton;
 import ModelComponents.RobotEnableButton;
+import ModelComponents.RobotFactory;
 import ModelComponents.RobotMoveButton;
 import ModelComponents.RobotStopButton;
 import ModelComponents.StateChangeButton;
@@ -21,6 +22,7 @@ public class ModelData {
 	public static final String START_MENU_STATE = "Start";
 	public static final String GAME_OVER_STATE = "End";
 	public static final String MAP_EXPLORATION_STATE = "Map";
+	public static final String ROBOT_CREATION_STATE = "RobotMake";
 	
 	private HashMap<String, ScreenData> screens;
 	private State state;
@@ -36,6 +38,7 @@ public class ModelData {
 		loadStart();
 		loadMap();
 		loadEnd();
+		loadRobotMake();
 	}
 
 	private void loadMap() {
@@ -47,15 +50,18 @@ public class ModelData {
 		r.addButton(new RobotEnableButton(r));
 		r.addButton(new RobotDeselectButton(r));
 		r.addButton(new RobotStopButton(r));
-		b.addRobot(r, 50, 50);
+		b.addObject(r, 50, 50);
 		myComponents.add(r);
 		r = new Robot();
 		r.addButton(new RobotMoveButton(r));
 		r.addButton(new RobotEnableButton(r));
 		r.addButton(new RobotDeselectButton(r));
 		r.addButton(new RobotStopButton(r));
-		b.addRobot(r, 40, 50);
+		b.addObject(r, 40, 50);
 		myComponents.add(r);
+		RobotFactory rf = new RobotFactory(state);
+		b.addObject(rf, 45, 45);
+		myComponents.add(rf);
 		mapComp.add(b);
 		mapComp.add(manager);
 		myComponents.addAll(mapComp);
@@ -64,6 +70,10 @@ public class ModelData {
 	}
 
 	private void loadEnd() {
+		screens.put(ROBOT_CREATION_STATE, new ScreenData(GAME_OVER_STATE, null));
+	}
+	
+	private void loadRobotMake() {
 		screens.put(GAME_OVER_STATE, new ScreenData(GAME_OVER_STATE, null));
 	}
 

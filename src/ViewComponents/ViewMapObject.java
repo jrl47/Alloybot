@@ -3,13 +3,16 @@ package ViewComponents;
 import java.awt.Graphics2D;
 
 import ModelComponents.MapCellObject;
+import ModelComponents.ModelMap;
 import View.DeciduousTileManager;
 
 public abstract class ViewMapObject {
 	
 	protected MapCellObject myMapObject;
-	public ViewMapObject(MapCellObject m){
+	protected ModelMap myMap;
+	public ViewMapObject(MapCellObject m, ModelMap mm){
 		myMapObject = m;
+		myMap = mm;
 	}
 	public abstract void trigger(int newX, int newY);
 	

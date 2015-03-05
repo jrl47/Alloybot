@@ -11,7 +11,7 @@ import Model.MapCellFactory;
 public abstract class ModelMap extends ModelComponent{
 	protected MapCellArray myCells;
 	protected MapCellFactory myFactory;
-	protected List<Robot> myRobots;
+	protected List<MapCellObject> myMapCellObjects;
 	protected ResourceManager myManager;
 	protected int x;
 	protected int y;
@@ -38,7 +38,7 @@ public abstract class ModelMap extends ModelComponent{
 		myCells = new MapCellArray(myList);
 		myFactory = new MapCellFactory();
 		myManager = m;
-		myRobots = new ArrayList<Robot>();
+		myMapCellObjects = new ArrayList<MapCellObject>();
 	}
 	public MapCell getCell(int i, int j){
 		return myCells.getCell(i, j);
@@ -46,9 +46,9 @@ public abstract class ModelMap extends ModelComponent{
 	public ResourceManager getResources(){
 		return myManager;
 	}
-	public void addRobot(Robot r, int x, int y){
-		myRobots.add(r);
-		r.addToMap(this, x, y);
+	public void addObject(MapCellObject m, int x, int y){
+		myMapCellObjects.add(m);
+		m.addToMap(this, x, y);
 	}
 	protected void setResources(int i, int j){
 		myCells.getCell(i, j).setOil(getOilImage().getRGB(i, j)>>16 & 255);
@@ -101,13 +101,12 @@ public abstract class ModelMap extends ModelComponent{
 	public void setYSelect(int y){
 		ySelect = y;
 	}
-	public List<Robot> getRobots(){
-		return myRobots;
+	public List<MapCellObject> getObjects(){
+		return myMapCellObjects;
 	}
-	public Robot getRobot(int x, int y){
+	public MapCellObject getObject(int x, int y){
 		for(MapCellObject m: myCells.getCell(x, y).getObjects()){
-			if(m instanceof Robot)
-				return (Robot)m;
+			return m;
 		}
 		return null;
 	}
@@ -121,10 +120,10 @@ public abstract class ModelMap extends ModelComponent{
 			return null;
 		return myCells.getCell(xSelect, ySelect);
 	}
-	public Robot getSelectedRobot(){
+	public MapCellObject getSelectedObject(){
 		if(xSelect==-1 || ySelect == -1)
 			return null;
-		return getRobot(xSelect, ySelect);
+		return getObject(xSelect, ySelect);
 	}
 	public int getWidth(){
 		return myWidth;

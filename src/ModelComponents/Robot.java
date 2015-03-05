@@ -8,21 +8,12 @@ import Model.Model;
 
 public class Robot extends MapCellObject{
 	
-	private ResourceManager myResources;
 	private List<ModelButton> myManagerButtons;
 	private boolean enabled;
 	private boolean readyToMove;
 	public Robot(){
 		super(false);
 		myManagerButtons = new ArrayList<ModelButton>();
-	}
-	public void addToMap(ModelMap m, int x, int y){
-		myX = x;
-		myY = y;
-		myMap = m;
-		myResources = m.getResources();
-		myLocation = myMap.getCell(myX, myY);
-		myLocation.addObject(this);
 	}
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){

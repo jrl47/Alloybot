@@ -23,7 +23,7 @@ public class ViewRobot extends ViewMapObject{
 	private int movementCounter;
 	private Set<MapCell> myMoves;
 	public ViewRobot(Robot r, ModelMap map) {
-		super(r);
+		super(r, map);
 		myRobot = (Robot)myMapObject;
 		myDirection = 'd';
 		myMap = map;

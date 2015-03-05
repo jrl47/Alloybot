@@ -84,6 +84,14 @@ public class ScreenBuilder extends ViewComponent{
 			e.printStackTrace();
 		}
 	}
+	public void buildRobotMake(){
+		try {
+			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"))));
+			myComponents.add(new AlloyText(10, 10, "GAME OVER", 3));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public BufferedImage loadImage() {
 		return myImage;

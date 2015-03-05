@@ -14,9 +14,11 @@ import ModelComponents.Robot;
 public class DeciduousTileManager extends TileManager{
 
 	private BufferedImage myRobotSprite;
+	private BufferedImage myRobotFactorySprite;
 	public DeciduousTileManager(ModelMap m) throws IOException {
 		super(ImageIO.read(ScreenBuilder.class.getResource("/deciduousspritesheet.png")), m);
 		myRobotSprite = ImageIO.read(ScreenBuilder.class.getResource("/genericrobot.png"));
+		myRobotFactorySprite = ImageIO.read(ScreenBuilder.class.getResource("/robotfactory.png"));
 	}
 
 	@Override
@@ -44,6 +46,10 @@ public class DeciduousTileManager extends TileManager{
 		if(m.getID().equals(MapCell.FOREST))
 			return generateForest(m);
 		return null;
+	}
+	
+	public BufferedImage generateRobotFactory(){
+		return myRobotFactorySprite.getSubimage(0, 0, 16, 16);
 	}
 	
 	public BufferedImage generateRobot(int robotAnimCounter, char robotDirection) {

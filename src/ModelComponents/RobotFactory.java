@@ -1,17 +1,20 @@
 package ModelComponents;
 
+import Model.ModelData;
+import Model.State;
+
 public class RobotFactory extends MapCellObject{
 
-	public RobotFactory(boolean b) {
-		super(b);
+	private State myOldState;
+	public RobotFactory(State oldState) {
+		super(false);
+		myOldState = oldState;
 	}
-
 	public void step() {
 
 	}
-
 	public void respond() {
-
+		myOldState.setState(ModelData.ROBOT_CREATION_STATE);
 	}
 
 }
