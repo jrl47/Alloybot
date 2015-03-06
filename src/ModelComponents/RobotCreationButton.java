@@ -26,7 +26,7 @@ public class RobotCreationButton extends ModelButton{
 			myManager.setOil(myManager.getOil() - oilCost);
 			myManager.setOre(myManager.getOre() - oreCost);
 			myManager.setGems(myManager.getGems() - gemCost);
-			Robot r = new Robot(newOilE, newOreE);
+			Robot r = new Robot(newOilE, newOreE, myMap);
 			myMap.addObject(r, myFactory.getX(), myFactory.getY() + 1);
 		}
 	}

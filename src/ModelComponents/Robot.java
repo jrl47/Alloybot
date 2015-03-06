@@ -12,7 +12,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	private boolean enabled;
 	private int oilEfficiency;
 	private int oreEfficiency;
-	public Robot(int oilE, int oreE){
+	public Robot(int oilE, int oreE, ModelMap m){
 		super(false);
 		myManagerButtons = new ArrayList<ModelButton>();
 		oilEfficiency = oilE;
@@ -21,7 +21,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 		addButton(new RobotEnableButton(this));
 		addButton(new RobotDeselectButton(this));
 		addButton(new RobotStopButton(this));
-		addButton(new RobotDestroyButton(this, myResources));
+		addButton(new RobotDestroyButton(this, m.getResources()));
 	}
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
