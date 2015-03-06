@@ -12,6 +12,7 @@ public abstract class ModelMap extends ModelComponent{
 	protected MapCellArray myCells;
 	protected MapCellFactory myFactory;
 	protected List<MapCellObject> myMapCellObjects;
+	protected List<Robot> myRobots;
 	protected ResourceManager myManager;
 	protected int x;
 	protected int y;
@@ -39,6 +40,7 @@ public abstract class ModelMap extends ModelComponent{
 		myFactory = new MapCellFactory();
 		myManager = m;
 		myMapCellObjects = new ArrayList<MapCellObject>();
+		myRobots = new ArrayList<Robot>();
 	}
 	public void step() {
 		for(MapCellObject m: myMapCellObjects){
@@ -53,6 +55,7 @@ public abstract class ModelMap extends ModelComponent{
 	}
 	public void addObject(MapCellObject m, int x, int y){
 		myMapCellObjects.add(m);
+		if(m instanceof Robot) myRobots.add((Robot)m);
 		m.addToMap(this, x, y);
 	}
 	protected void setResources(int i, int j){
@@ -192,5 +195,13 @@ public abstract class ModelMap extends ModelComponent{
 		r.addAll(c);
 		r.add('r');
 		loadPaths(myPaths, x+1, y, cap, r);
+	}
+	public List<Robot> getRobots() {
+		return myRobots;
+	}
+	public void removeObject(MapCellObject m) {
+		myMapCellObjects.remove(m);
+		if(m instanceof Robot) myRobots.remove((Robot)m);
+		m.removeFromMap(this);
 	}
 }

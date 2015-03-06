@@ -6,7 +6,7 @@ import java.util.List;
 import Controller.Game;
 import Model.Model;
 
-public class Robot extends MapCellObject{
+public class Robot extends MapCellObject implements Comparable<Robot>{
 	
 	private List<ModelButton> myManagerButtons;
 	private boolean enabled;
@@ -21,6 +21,7 @@ public class Robot extends MapCellObject{
 		addButton(new RobotEnableButton(this));
 		addButton(new RobotDeselectButton(this));
 		addButton(new RobotStopButton(this));
+		addButton(new RobotDestroyButton(this, myResources));
 	}
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
@@ -56,5 +57,16 @@ public class Robot extends MapCellObject{
 	@Override
 	public void respond() {
 
+	}
+	@Override
+	public int compareTo(Robot r) {
+		if(oreEfficiency > r.oreEfficiency) return -1;
+		if(oreEfficiency < r.oreEfficiency) return 1;
+		if(oilEfficiency > r.oilEfficiency) return -1;
+		if(oilEfficiency < r.oilEfficiency) return 1;
+		return 0;
+	}
+	public int getOreEfficiency() {
+		return oreEfficiency;
 	}
 }

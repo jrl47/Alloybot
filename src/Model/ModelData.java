@@ -70,6 +70,7 @@ public class ModelData {
 		List<ModelComponent> makeComp = new ArrayList<ModelComponent>();
 		makeComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
 		makeComp.add(manager);
+		makeComp.add(myMap);
 		makeComp.add(new RobotCreationButton(myMap, 100000, 50, 1, 1, 1));
 		makeComp.add(new RobotCreationButton(myMap, 100000, 150, 1, 2, 2));
 		myComponents.addAll(makeComp);

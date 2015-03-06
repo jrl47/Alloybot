@@ -32,6 +32,14 @@ public abstract class MapCellObject extends ModelComponent{
 		myLocation = myMap.getCell(myX, myY);
 		myLocation.addObject(this);
 	}
+	public void removeFromMap(ModelMap m){
+		myX = -1;
+		myY = -1;
+		myResources = null;
+		myLocation.removeObject(this);
+		myLocation = null;
+		myMap = null;
+	}
 	public void deselect() {
 		myMap.setXSelect(-1);
 		myMap.setYSelect(-1);
@@ -49,5 +57,9 @@ public abstract class MapCellObject extends ModelComponent{
 	}
 	public void stopMove(){
 		readyToMove = false;
+	}
+	public void destroy() {
+		readyToMove = false;
+		myMap.removeObject(this);
 	}
 }
