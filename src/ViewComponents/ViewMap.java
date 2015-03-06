@@ -89,6 +89,7 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 				if(((ModelMap)myComponent).getCurrentHighlightedCell().getObjects().size()!=0){
 					currentlySelectedObject = myViewMapObjects.get(((ModelMap)(myComponent)).getObject(((ModelMap)myComponent).getCurrentHighlightedCell().getX(),
 							((ModelMap)myComponent).getCurrentHighlightedCell().getY()));
+					currentlySelectedObject.getMapObject().select();
 					currentlySelectedObject.trigger(newX, newY);
 					return;
 				}

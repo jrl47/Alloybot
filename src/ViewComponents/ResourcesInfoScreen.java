@@ -50,6 +50,9 @@ public class ResourcesInfoScreen extends ViewComponent{
 		g.drawImage(font.getStringImage("ORE:", 1), 10, 50, null);
 		s = myManager.getOre() + "";
 		g.drawImage(font.getStringImage(s, 1), 40, 50, null);
+		g.drawImage(font.getStringImage("GEMS:", 1), 10, 70, null);
+		s = myManager.getGems() + "";
+		g.drawImage(font.getStringImage(s, 1), 46, 70, null);
 		return image;
 	}
 	@Override

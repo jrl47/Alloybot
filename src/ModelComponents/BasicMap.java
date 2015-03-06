@@ -77,12 +77,6 @@ public class BasicMap extends ModelMap{
 		}
 		return oreDataImage;
 	}
-	
-	@Override
-	public void step() {
-		// TODO Auto-generated method stub
-		
-	}
 	@Override
 	public void respond() {
 		// TODO Auto-generated method stub

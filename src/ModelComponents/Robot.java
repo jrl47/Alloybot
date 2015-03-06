@@ -10,15 +10,22 @@ public class Robot extends MapCellObject{
 	
 	private List<ModelButton> myManagerButtons;
 	private boolean enabled;
-	private boolean readyToMove;
-	public Robot(){
+	private int oilEfficiency;
+	private int oreEfficiency;
+	public Robot(int oilE, int oreE){
 		super(false);
 		myManagerButtons = new ArrayList<ModelButton>();
+		oilEfficiency = oilE;
+		oreEfficiency = oreE;
+		addButton(new RobotMoveButton(this));
+		addButton(new RobotEnableButton(this));
+		addButton(new RobotDeselectButton(this));
+		addButton(new RobotStopButton(this));
 	}
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
-			myResources.setOil(myResources.getOil() + myLocation.getOil());
-			myResources.setOre(myResources.getOre() + myLocation.getOre());
+			myResources.setOil(myResources.getOil() + myLocation.getOil()*oilEfficiency);
+			myResources.setOre(myResources.getOre() + myLocation.getOre()*oreEfficiency);
 		}
 	}
 	public void enabled() {
@@ -26,15 +33,6 @@ public class Robot extends MapCellObject{
 	}
 	public void disabled(){
 		enabled = false;
-	}
-	public void prepareMove(){
-		readyToMove = true;
-	}
-	public boolean movable(){
-		return readyToMove;
-	}
-	public void stopMove(){
-		readyToMove = false;
 	}
 	public boolean move(int x, int y){
 		if(myMap.getCell(x, y).getObjects().size()!=0)
@@ -58,14 +56,5 @@ public class Robot extends MapCellObject{
 	@Override
 	public void respond() {
 
-	}
-	public void deselect() {
-		myMap.setXSelect(-1);
-		myMap.setYSelect(-1);
-		stopMove();
-	}
-	public void select() {
-		myMap.setXSelect(myX);
-		myMap.setYSelect(myY);
 	}
 }

@@ -8,6 +8,7 @@ public abstract class MapCellObject extends ModelComponent{
 	boolean impassable;
 	protected int myX;
 	protected int myY;
+	protected boolean readyToMove;
 	public MapCellObject(boolean b){
 		impassable = b;
 	}
@@ -30,5 +31,23 @@ public abstract class MapCellObject extends ModelComponent{
 		myResources = m.getResources();
 		myLocation = myMap.getCell(myX, myY);
 		myLocation.addObject(this);
+	}
+	public void deselect() {
+		myMap.setXSelect(-1);
+		myMap.setYSelect(-1);
+		stopMove();
+	}
+	public void select() {
+		myMap.setXSelect(myX);
+		myMap.setYSelect(myY);
+	}
+	public void prepareMove(){
+		readyToMove = true;
+	}
+	public boolean movable(){
+		return readyToMove;
+	}
+	public void stopMove(){
+		readyToMove = false;
 	}
 }

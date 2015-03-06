@@ -40,6 +40,11 @@ public abstract class ModelMap extends ModelComponent{
 		myManager = m;
 		myMapCellObjects = new ArrayList<MapCellObject>();
 	}
+	public void step() {
+		for(MapCellObject m: myMapCellObjects){
+			m.step();
+		}
+	}
 	public MapCell getCell(int i, int j){
 		return myCells.getCell(i, j);
 	}

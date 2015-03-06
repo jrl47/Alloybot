@@ -56,7 +56,6 @@ public class ViewRobot extends ViewMapObject{
 		}
 		if(!myRobot.isSelected()){
 			loadPaths();
-			myRobot.select();
 		}
 		if(myRobot.movable()){
 			if(myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){

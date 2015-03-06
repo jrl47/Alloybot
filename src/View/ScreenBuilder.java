@@ -1,24 +1,18 @@
 package View;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
 import ModelComponents.ResourceManager;
-import ModelComponents.RobotEnableButton;
 import ViewComponents.AlloyBorderedButton;
 import ViewComponents.AlloyBorderedText;
-import ViewComponents.AlloyButton;
 import ViewComponents.AlloyText;
 import ViewComponents.Background;
-import ViewComponents.Button;
 import ViewComponents.ResourcesInfoScreen;
 import ViewComponents.RobotActionScreen;
 import ViewComponents.TileInfoScreen;
@@ -75,10 +69,10 @@ public class ScreenBuilder extends ViewComponent{
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "END GAME", 1));
-			myComponents.add(new ViewMap(myData.getComponents().get(4), 146, 0));
-			myComponents.add(new TileInfoScreen(myData.getComponents().get(4), 660, 0));
-			myComponents.add(new ResourcesInfoScreen((ResourceManager)(myData.getComponents().get(5)), 0, 0));
-			RobotActionScreen r = new RobotActionScreen(myData.getComponents().get(4), 0, 300);
+			myComponents.add(new ViewMap(myData.getComponents().get(1), 146, 0));
+			myComponents.add(new TileInfoScreen(myData.getComponents().get(1), 660, 0));
+			myComponents.add(new ResourcesInfoScreen((ResourceManager)(myData.getComponents().get(2)), 0, 0));
+			RobotActionScreen r = new RobotActionScreen(myData.getComponents().get(1), 0, 300);
 			myComponents.add(r);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -91,6 +85,9 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new AlloyText(220, 10, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOil()), 2));
 			myComponents.add(new AlloyText(10, 50, "ORE AVAILABLE:", 2));
 			myComponents.add(new AlloyText(220, 50, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOre()), 2));
+			myComponents.add(new AlloyText(10, 90, "GEMS AVAILABLE:", 2));
+			myComponents.add(new AlloyText(232, 90, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getGems()), 2));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 400, 10, "CREATE CLASS 2 ROBOT", 2));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
