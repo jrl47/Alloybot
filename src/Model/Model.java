@@ -9,9 +9,12 @@ public class Model {
 		data = new ModelData();
 	}
 	public void step() {
-		for(ModelComponent m: data.getComponents()){
+		for(ModelComponent m: data.getScreenData().getComponents()){
 			m.step();
 		}
+//		for(ModelComponent m: data.getComponents()){
+//			m.step();
+//		}
 	}
 	public ScreenData getScreenData(){
 		return data.getScreenData();

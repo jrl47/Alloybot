@@ -75,10 +75,10 @@ public class ScreenBuilder extends ViewComponent{
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "END GAME", 1));
-			myComponents.add(new ViewMap(myData.getComponents().get(1), 146, 0));
-			myComponents.add(new TileInfoScreen(myData.getComponents().get(1), 660, 0));
-			myComponents.add(new ResourcesInfoScreen((ResourceManager)(myData.getComponents().get(2)), 0, 0));
-			RobotActionScreen r = new RobotActionScreen(myData.getComponents().get(1), 0, 300);
+			myComponents.add(new ViewMap(myData.getComponents().get(4), 146, 0));
+			myComponents.add(new TileInfoScreen(myData.getComponents().get(4), 660, 0));
+			myComponents.add(new ResourcesInfoScreen((ResourceManager)(myData.getComponents().get(5)), 0, 0));
+			RobotActionScreen r = new RobotActionScreen(myData.getComponents().get(4), 0, 300);
 			myComponents.add(r);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -86,8 +86,12 @@ public class ScreenBuilder extends ViewComponent{
 	}
 	public void buildRobotMake(){
 		try {
-			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"))));
-			myComponents.add(new AlloyText(10, 10, "GAME OVER", 3));
+			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
+			myComponents.add(new AlloyText(10, 10, "OIL AVAILABLE:", 2));
+			myComponents.add(new AlloyText(220, 10, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOil()), 2));
+			myComponents.add(new AlloyText(10, 50, "ORE AVAILABLE:", 2));
+			myComponents.add(new AlloyText(220, 50, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOre()), 2));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

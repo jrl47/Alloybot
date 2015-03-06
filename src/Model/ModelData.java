@@ -51,17 +51,17 @@ public class ModelData {
 		r.addButton(new RobotDeselectButton(r));
 		r.addButton(new RobotStopButton(r));
 		b.addObject(r, 50, 50);
-		myComponents.add(r);
+		mapComp.add(r);
 		r = new Robot();
 		r.addButton(new RobotMoveButton(r));
 		r.addButton(new RobotEnableButton(r));
 		r.addButton(new RobotDeselectButton(r));
 		r.addButton(new RobotStopButton(r));
 		b.addObject(r, 40, 50);
-		myComponents.add(r);
+		mapComp.add(r);
 		RobotFactory rf = new RobotFactory(state);
 		b.addObject(rf, 45, 45);
-		myComponents.add(rf);
+		mapComp.add(rf);
 		mapComp.add(b);
 		mapComp.add(manager);
 		myComponents.addAll(mapComp);
@@ -70,11 +70,16 @@ public class ModelData {
 	}
 
 	private void loadEnd() {
-		screens.put(ROBOT_CREATION_STATE, new ScreenData(GAME_OVER_STATE, null));
+		screens.put(GAME_OVER_STATE, new ScreenData(GAME_OVER_STATE, null));
 	}
 	
 	private void loadRobotMake() {
-		screens.put(GAME_OVER_STATE, new ScreenData(GAME_OVER_STATE, null));
+		List<ModelComponent> makeComp = new ArrayList<ModelComponent>();
+		makeComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
+		makeComp.add(manager);
+		myComponents.addAll(makeComp);
+		ScreenData s = new ScreenData(ROBOT_CREATION_STATE, makeComp);
+		screens.put(ROBOT_CREATION_STATE, s);
 	}
 
 	private void loadStart() {
