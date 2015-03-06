@@ -15,6 +15,7 @@ import ViewComponents.AlloyText;
 import ViewComponents.Background;
 import ViewComponents.ResourcesInfoScreen;
 import ViewComponents.RobotActionScreen;
+import ViewComponents.RobotCreationResourceScreen;
 import ViewComponents.TileInfoScreen;
 import ViewComponents.ViewComponent;
 import ViewComponents.ViewMap;
@@ -81,13 +82,15 @@ public class ScreenBuilder extends ViewComponent{
 	public void buildRobotMake(){
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
-			myComponents.add(new AlloyText(10, 10, "OIL AVAILABLE:", 2));
-			myComponents.add(new AlloyText(220, 10, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOil()), 2));
-			myComponents.add(new AlloyText(10, 50, "ORE AVAILABLE:", 2));
-			myComponents.add(new AlloyText(220, 50, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOre()), 2));
-			myComponents.add(new AlloyText(10, 90, "GEMS AVAILABLE:", 2));
-			myComponents.add(new AlloyText(232, 90, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getGems()), 2));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 400, 10, "CREATE CLASS 2 ROBOT", 2));
+			myComponents.add(new RobotCreationResourceScreen((ResourceManager) myData.getComponents().get(1), 0, 0));
+//			myComponents.add(new AlloyText(10, 10, "OIL AVAILABLE:", 2));
+//			myComponents.add(new AlloyText(220, 10, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOil()), 2));
+//			myComponents.add(new AlloyText(10, 50, "ORE AVAILABLE:", 2));
+//			myComponents.add(new AlloyText(220, 50, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getOre()), 2));
+//			myComponents.add(new AlloyText(10, 90, "GEMS AVAILABLE:", 2));
+//			myComponents.add(new AlloyText(232, 90, Integer.toString(((ResourceManager)myData.getComponents().get(1)).getGems()), 2));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 400, 10, "CREATE CLASS 1 ROBOT", 2));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 400, 50, "CREATE CLASS 2 ROBOT", 2));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
