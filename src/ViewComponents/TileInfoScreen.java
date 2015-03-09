@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
 import View.AlloyFont;
@@ -44,21 +45,27 @@ public class TileInfoScreen extends ViewComponent{
 		}
 		g.drawImage(font.getStringImage("TILE RESOURCES", 1), 10, 10, null);
 
+		MapCell currentCell = null;
 		if(((ModelMap)myComponent).getCurrentHighlightedCell()!=null){
-			g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-			String s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOil() + "";
-			g.drawImage(font.getStringImage(s, 1), 40, 30, null);
-			g.drawImage(font.getStringImage("ORE:", 1), 10, 50, null);
-			s = ((ModelMap)myComponent).getCurrentHighlightedCell().getOre() + "";
-			g.drawImage(font.getStringImage(s, 1), 40, 50, null);
+			currentCell = ((ModelMap)myComponent).getCurrentHighlightedCell();
 		}
 		else if(((ModelMap)myComponent).getSelectedCell()!=null){
+			currentCell = ((ModelMap)myComponent).getSelectedCell();
+		}
+		if(currentCell!=null){
 			g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-			String s = ((ModelMap)myComponent).getSelectedCell().getOil() + "";
+			String s = currentCell.getOil() + "";
 			g.drawImage(font.getStringImage(s, 1), 40, 30, null);
-			g.drawImage(font.getStringImage("ORE:", 1), 10, 50, null);
-			s = ((ModelMap)myComponent).getSelectedCell().getOre() + "";
-			g.drawImage(font.getStringImage(s, 1), 40, 50, null);
+			int counter = 0;
+			for(int i=0; i<5; i++){
+				if(currentCell.getOre(i)!=0){
+					g.drawImage(font.getStringImage(currentCell.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1), 10, 50 + (20*counter), null);
+					s = currentCell.getOre(i) + "";
+					g.drawImage(font.getStringImage(s, 1), 110, 50 + (20*counter), null);
+					
+					counter++;
+				}
+			}
 		}
 		else{
 			g.drawImage(font.getStringImage("NO TILE SELECTED", 1), 10, 30, null);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import Controller.Game;
 import Model.Model;
+import Model.OreData;
 
 public class Robot extends MapCellObject implements Comparable<Robot>{
 	
@@ -26,7 +27,9 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
 			myResources.setOil(myResources.getOil() + myLocation.getOil()*oilEfficiency);
-			myResources.setOre(myResources.getOre() + myLocation.getOre()*oreEfficiency);
+			for(int i=0; i<OreData.NUMBER_OF_ORES; i++){
+				myResources.setOre(myResources.getOre(i) + myLocation.getOre(i)*oreEfficiency, i);
+			}
 		}
 	}
 	public void enabled() {

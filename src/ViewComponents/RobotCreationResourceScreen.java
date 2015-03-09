@@ -45,7 +45,7 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		g.drawImage(font.getStringImage("OIL AVAILABLE:", 2), 10, 10, null);
 		g.drawImage(font.getStringImage(Integer.toString(myManager.getOil()), 2), 220, 10, null);
 		g.drawImage(font.getStringImage("ORE AVAILABLE:", 2), 10, 50, null);
-		g.drawImage(font.getStringImage(Integer.toString(myManager.getOre()), 2), 220, 50, null);
+		g.drawImage(font.getStringImage(Integer.toString(myManager.getOre(0)), 2), 220, 50, null);
 		g.drawImage(font.getStringImage("GEMS AVAILABLE:", 2), 10, 90, null);
 		g.drawImage(font.getStringImage(Integer.toString(myManager.getGems()), 2), 232, 90, null);
 		List<Robot> myRobots = myMap.getRobots();

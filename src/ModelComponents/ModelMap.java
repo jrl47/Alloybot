@@ -60,11 +60,16 @@ public abstract class ModelMap extends ModelComponent{
 	}
 	protected void setResources(int i, int j){
 		myCells.getCell(i, j).setOil(getOilImage().getRGB(i, j)>>16 & 255);
-		myCells.getCell(i, j).setOre(getOreImage().getRGB(i, j)>>16 & 255);
+		int counter = 0;
+		for(BufferedImage b: getOreImages()){
+			if(b==null) break;
+			myCells.getCell(i, j).setOre(getOreImages()[counter].getRGB(i, j)>>16 & 255, counter);
+			counter++;
+		}
 	}
 	protected abstract BufferedImage getOilImage();
 	
-	protected abstract BufferedImage getOreImage();
+	protected abstract BufferedImage[] getOreImages();
 	
 	
 	public int getX(){

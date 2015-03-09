@@ -21,10 +21,10 @@ public class RobotCreationButton extends ModelButton{
 	}
 	public void respond() {
 		myFactory = (RobotFactory) myMap.getSelectedObject();
-		if(myManager.getOil()>=oilCost && myManager.getOre()>=oreCost && myManager.getGems()>=gemCost
+		if(myManager.getOil()>=oilCost && myManager.getOre(0)>=oreCost && myManager.getGems()>=gemCost
 				&& myMap.getCell(myFactory.getX(), myFactory.getY() + 1).getObjects().size()==0){
 			myManager.setOil(myManager.getOil() - oilCost);
-			myManager.setOre(myManager.getOre() - oreCost);
+			myManager.setOre(myManager.getOre(0) - oreCost, 0);
 			myManager.setGems(myManager.getGems() - gemCost);
 			Robot r = new Robot(newOilE, newOreE, myMap);
 			myMap.addObject(r, myFactory.getX(), myFactory.getY() + 1);

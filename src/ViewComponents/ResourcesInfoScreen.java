@@ -47,8 +47,18 @@ public class ResourcesInfoScreen extends ViewComponent{
 		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
 		String s = myManager.getOil() + "";
 		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
+//		int counter = 0;
+//		for(int i=0; i<5; i++){
+//			if(myManager.getOre(i)!=0){
+//				g.drawImage(font.getStringImage(myManager.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1), 10, 50 + (20*counter), null);
+//				s = currentCell.getOre(i) + "";
+//				g.drawImage(font.getStringImage(s, 1), 110, 50 + (20*counter), null);
+//				
+//				counter++;
+//			}
+//		}
 		g.drawImage(font.getStringImage("ORE:", 1), 10, 50, null);
-		s = myManager.getOre() + "";
+		s = myManager.getOre(0) + "";
 		g.drawImage(font.getStringImage(s, 1), 40, 50, null);
 		g.drawImage(font.getStringImage("GEMS:", 1), 10, 70, null);
 		s = myManager.getGems() + "";

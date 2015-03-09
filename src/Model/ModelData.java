@@ -38,6 +38,7 @@ public class ModelData {
 		myComponents.add(manager);
 		screens = new HashMap<String, ScreenData>();
 		state = new State(START_MENU_STATE);
+		OreData.init();
 		loadStart();
 		loadMap();
 		loadEnd();

@@ -8,13 +8,14 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import Model.OreData;
 import View.ScreenBuilder;
 
 public class BasicMap extends ModelMap{
 
 	private static BufferedImage terrainDataImage;
 	private static BufferedImage oilDataImage;
-	private static BufferedImage oreDataImage;
+	private static BufferedImage[] oreDataImages;
 	public BasicMap(ResourceManager r){
 		super(getImage().getWidth(), getImage().getHeight(), r);
 		for(int i=0; i<getImage().getWidth(); i++){
@@ -67,15 +68,16 @@ public class BasicMap extends ModelMap{
 		return oilDataImage;
 	}
 
-	protected BufferedImage getOreImage() {
-		if(oreDataImage==null){
-		try {
-			oreDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapOre.png"));
-		} catch (IOException e) {
-			return null;
+	protected BufferedImage[] getOreImages() {
+		if(oreDataImages==null){
+			oreDataImages = new BufferedImage[OreData.NUMBER_OF_ORES];
+			for(int i=0;i<5;i++){
+				String oreMapName = "/standardMapOre" + i + ".png";
+				try {oreDataImages[i] = ImageIO.read(ScreenBuilder.class.getResource(oreMapName));} 
+				catch (IOException e) {return null;}
+			}
 		}
-		}
-		return oreDataImage;
+		return oreDataImages;
 	}
 	@Override
 	public void respond() {

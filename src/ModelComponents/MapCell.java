@@ -1,7 +1,11 @@
 package ModelComponents;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import Model.OreData;
 
 public class MapCell {
 	public static final String GRASS = "grass";
@@ -20,12 +24,15 @@ public class MapCell {
 	private int myX;
 	private int myY;
 	private int myOil;
-	private int myOre;
+	private int[] myOre;
+	private Map<Integer, Ore> myOres;
 	public MapCell(String id, int x, int y){
 		myX = x;
 		myY = y;
 		myID = id;
 		myObjects = new ArrayList<MapCellObject>();
+		myOre = new int[OreData.NUMBER_OF_ORES];
+		myOres = new HashMap<Integer, Ore>();
 	}
 	public String getID(){
 		return myID;
@@ -39,14 +46,18 @@ public class MapCell {
 	public int getOil(){
 		return myOil;
 	}
-	public int getOre(){
-		return myOre;
+	public int getOre(int i){
+		return myOre[i];
+	}
+	public Ore getOreObject(int i){
+		return myOres.get(i);
 	}
 	public void setOil(int o){
 		myOil = o;
 	}
-	public void setOre(int o) {
-		myOre = o;
+	public void setOre(int o, int index) {
+		myOre[index] = o;
+		myOres.put(index, new Ore(index));
 	}
 	public List<MapCellObject> getObjects(){
 		return myObjects;
