@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import Model.OreData;
 import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
@@ -59,7 +60,7 @@ public class TileInfoScreen extends ViewComponent{
 			int counter = 0;
 			for(int i=0; i<5; i++){
 				if(currentCell.getOre(i)!=0){
-					g.drawImage(font.getStringImage(currentCell.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1), 10, 50 + (20*counter), null);
+					g.drawImage(font.getStringImage(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1), 10, 50 + (20*counter), null);
 					s = currentCell.getOre(i) + "";
 					g.drawImage(font.getStringImage(s, 1), 110, 50 + (20*counter), null);
 					

@@ -88,6 +88,7 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 400, 10, "CREATE CLASS 1 ROBOT", 2));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 400, 50, "CREATE CLASS 2 ROBOT", 2));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

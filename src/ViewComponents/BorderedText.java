@@ -1,10 +1,8 @@
 package ViewComponents;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import View.BorderedFixedFont;
-import View.FixedFont;
 
 public class BorderedText extends Text{
 

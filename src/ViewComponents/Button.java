@@ -1,14 +1,9 @@
 package ViewComponents;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import ModelComponents.ModelComponent;
 import View.FixedFont;
-import View.ScreenBuilder;
 
 public class Button extends ViewComponent{
 

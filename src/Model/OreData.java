@@ -4,12 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import ModelComponents.Ore;
 
 public class OreData {
 	
 	public static final int NUMBER_OF_ORES = 100;
 	public static String[] oreData;
+	public static Map<Integer, Ore> myOres;
 	public static void init(){
     	// General file-reading stuff, nothing to see here
 		oreData = new String[100];
@@ -29,5 +33,12 @@ public class OreData {
     		counter++;
     		try {currentLine = b.readLine();} catch (IOException e) {e.printStackTrace();}
     	}
+		myOres = new HashMap<Integer, Ore>();
+		for(int i=0; i<5; i++){
+			myOres.put(i, new Ore(i));
+		}
+	}
+	public static Ore getOreObject(int i){
+		return myOres.get(i);
 	}
 }

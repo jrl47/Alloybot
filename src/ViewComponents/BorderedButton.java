@@ -1,11 +1,9 @@
 package ViewComponents;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import ModelComponents.ModelComponent;
 import View.BorderedFixedFont;
-import View.FixedFont;
 
 public class BorderedButton extends Button{
 
