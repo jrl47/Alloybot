@@ -4,13 +4,17 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import Model.OreData;
 import Model.ScreenData;
 import ModelComponents.ModelMap;
 import ModelComponents.ResourceManager;
 import ViewComponents.AlloyBorderedButton;
+import ViewComponents.AlloyBorderedSelectionMenu;
 import ViewComponents.AlloyBorderedText;
 import ViewComponents.AlloyText;
 import ViewComponents.Background;
@@ -89,6 +93,15 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 400, 50, "CREATE CLASS 2 ROBOT", 2));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
+			AlloyBorderedSelectionMenu oreMenu = new AlloyBorderedSelectionMenu(698, 425, 1);
+			List<List<String>> menuStrings = new ArrayList<List<String>>();
+			menuStrings.add(new ArrayList<String>());
+			menuStrings.add(new ArrayList<String>());
+			for(int i=0; i<5; i++){
+				menuStrings.get(i/3).add(OreData.getOreObject(i).getMyName());
+			}
+			oreMenu.loadSelection(menuStrings);
+			myComponents.add(oreMenu);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

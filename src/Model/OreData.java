@@ -14,6 +14,7 @@ public class OreData {
 	public static final int NUMBER_OF_ORES = 100;
 	public static String[] oreData;
 	public static Map<Integer, Ore> myOres;
+	public static Map<String, Ore> myStringOres;
 	public static void init(){
     	// General file-reading stuff, nothing to see here
 		oreData = new String[100];
@@ -34,8 +35,10 @@ public class OreData {
     		try {currentLine = b.readLine();} catch (IOException e) {e.printStackTrace();}
     	}
 		myOres = new HashMap<Integer, Ore>();
+		myStringOres = new HashMap<String, Ore>();
 		for(int i=0; i<5; i++){
 			myOres.put(i, new Ore(i));
+			myStringOres.put(myOres.get(i).getMyName(), myOres.get(i));
 		}
 	}
 	public static Ore getOreObject(int i){

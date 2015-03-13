@@ -1,6 +1,5 @@
 package ViewComponents;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -19,8 +18,8 @@ public abstract class ViewComponent {
 	protected BufferedImage myHoverImage;
 	private Shape myBounds;
 	protected boolean isHover;
-	private int x;
-	private int y;
+	protected int x;
+	protected int y;
 	private int absoluteX;
 	private int absoluteY;
 	public ViewComponent(ModelComponent c, int xx, int yy){
