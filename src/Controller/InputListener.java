@@ -8,6 +8,8 @@ import java.util.List;
 
 
 
+import java.util.Set;
+
 import View.ScreenBuilder;
 import View.View;
 import ViewComponents.InputSensitive;
@@ -24,14 +26,14 @@ public class InputListener implements MouseListener, MouseMotionListener{
 	private MouseEvent mostRecentEvent = null;
 	private boolean clicked = false;
 	private boolean moved = false;
-	public void step(List<ViewComponent> screenComponents) {
+	public void step(List<ViewComponent> list) {
 		if(clicked){
-			for(ViewComponent v: screenComponents){
+			for(ViewComponent v: list){
 				doClick(v);
 			}
 		}
 		if(moved){
-			for(ViewComponent v: screenComponents){
+			for(ViewComponent v: list){
 				doHover(v);
 			}
 		}
@@ -42,7 +44,7 @@ public class InputListener implements MouseListener, MouseMotionListener{
 
 	private void doHover(ViewComponent v) {
 		Shape s = v.getBounds();
-		if(s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
+		if(s!=null&&s.contains(mostRecentEvent.getX()/(View.scale), mostRecentEvent.getY()/(View.scale))){
 			for(ViewComponent vv: v.getComponents()){
 				doHover(vv);
 			}

@@ -11,7 +11,7 @@ public class BorderedButton extends Button{
 	private BufferedImage myHoverBorder;
 	public BorderedButton(ModelComponent c, int xx, int yy, String s, int size,
 			BufferedImage font, BufferedImage hoverFont, BufferedImage border, BufferedImage hoverBorder) {
-		super(c, xx, yy, s, size, font, hoverFont);
+		super(c, xx, yy, s.toUpperCase(), size, font, hoverFont);
 		myBorder = border;
 		myHoverBorder = hoverBorder;
 	}

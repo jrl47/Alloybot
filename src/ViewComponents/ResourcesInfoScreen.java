@@ -17,6 +17,7 @@ import View.ScreenBuilder;
 public class ResourcesInfoScreen extends ViewComponent{
 	private BufferedImage myBackground;
 	private ResourceManager myManager;
+	private boolean componentsLoaded;
 	public ResourcesInfoScreen(ResourceManager resourceManager, int xx, int yy){
 		super(null, xx, yy, 100, 300);
 		myManager = resourceManager;
@@ -35,8 +36,8 @@ public class ResourcesInfoScreen extends ViewComponent{
 			e.printStackTrace();
 		}
 		}
-		BufferedImage image = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = image.getGraphics();
+		myImage = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = myImage.getGraphics();
 		g.drawImage(myBackground, 0, 0, null);
 		AlloyFont font = null;
 		try {
@@ -54,7 +55,6 @@ public class ResourcesInfoScreen extends ViewComponent{
 				g.drawImage(font.getStringImage(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1), 10, 50 + (20*counter), null);
 				s = myManager.getOre(i) + "";
 				g.drawImage(font.getStringImage(s, 1), 110, 50 + (20*counter), null);
-				
 				counter++;
 			}
 		}
@@ -64,7 +64,7 @@ public class ResourcesInfoScreen extends ViewComponent{
 		g.drawImage(font.getStringImage("GEMS:", 1), 10, 50 + (20*counter), null);
 		s = myManager.getGems() + "";
 		g.drawImage(font.getStringImage(s, 1), 46, 50 + (20*counter), null);
-		return image;
+		return myImage;
 	}
 	@Override
 	public BufferedImage loadHover() {

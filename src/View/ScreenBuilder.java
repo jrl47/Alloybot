@@ -92,8 +92,8 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 400, 10, "CREATE CLASS 1 ROBOT", 2));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 400, 50, "CREATE CLASS 2 ROBOT", 2));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
-			AlloyBorderedSelectionMenu oreMenu = new AlloyBorderedSelectionMenu(698, 425, 1);
+//			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
+			AlloyBorderedSelectionMenu oreMenu = new AlloyBorderedSelectionMenu(600, 125, 1);
 			List<List<String>> menuStrings = new ArrayList<List<String>>();
 			menuStrings.add(new ArrayList<String>());
 			menuStrings.add(new ArrayList<String>());
