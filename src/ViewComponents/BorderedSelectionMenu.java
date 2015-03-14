@@ -1,7 +1,6 @@
 package ViewComponents;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ public class BorderedSelectionMenu extends ViewComponent{
 	private List<List<String>> myData;
 	private List<List<BorderedButton>> myButtons;
 	private SelectionMenuTracker mySelectionTracker;
+	private SelectionMenuTracker myCurrentListTracker;
 	private int maxWidth;
 	private int maxHeight;
 	private int maxLength;
@@ -32,6 +32,8 @@ public class BorderedSelectionMenu extends ViewComponent{
 		myHoverFont = hoverFont;
 		myBorder = border;
 		myHoverBorder = hoverBorder;
+		mySelectionTracker = new SelectionMenuTracker();
+		myCurrentListTracker = new SelectionMenuTracker();
 	}
 	public void loadSelection(List<List<String>> data){
 		myData = data;
