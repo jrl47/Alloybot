@@ -40,7 +40,8 @@ public class BorderedSelectionMenu extends ViewComponent{
 	private void loadButtons() {
 		for(int i=0; i<myData.size(); i++){
 			for(int j=0; j<myData.size(); j++){
-				
+				if(myData.get(i).get(j).length()>maxWordLength)
+					maxWordLength = myData.get(i).get(j).length();
 			}
 		}
 		for(int i=0; i<myData.size(); i++){
@@ -48,7 +49,16 @@ public class BorderedSelectionMenu extends ViewComponent{
 		}
 		for(int i=0; i<myData.size(); i++){
 			for(int j=0; j<myData.get(i).size(); j++){
-				BorderedButton button = new BorderedButton(mySelectionTracker, 0, 0 + j*mySize*20, myData.get(i).get(j), mySize, myFont, myHoverFont, myBorder, myHoverBorder);
+				String s = myData.get(i).get(j);
+				while(s.length()<maxWordLength){
+					if(s.length() % 2 == 0){
+						s += ' ';
+					}
+					else{
+						s = ' ' + s;
+					}
+				}
+				BorderedButton button = new BorderedButton(mySelectionTracker, 0, 0 + j*mySize*20, s, mySize, myFont, myHoverFont, myBorder, myHoverBorder);
 				myButtons.get(i).add(button);
 				addComponent(button);
 				if(myButtons.get(i).get(j).getImage().getHeight() > maxHeight){
