@@ -15,6 +15,7 @@ public class AlloyBorderedButton extends BorderedButton{
 				ImageIO.read(ScreenBuilder.class.getResource("/bluefonts.png")),
 				ImageIO.read(ScreenBuilder.class.getResource("/textbackground.png")), 
 				ImageIO.read(ScreenBuilder.class.getResource("/textbackgroundhover.png")));
+		setSelectedBorder(ImageIO.read(ScreenBuilder.class.getResource("/textbackgroundhover.png")));
 	}
 
 }

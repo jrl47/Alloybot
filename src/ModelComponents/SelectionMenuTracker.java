@@ -9,6 +9,11 @@ public class SelectionMenuTracker extends ModelComponent{
 	public SelectionMenuOption getSelectedOption(){
 		return mySelectedOption;
 	}
+	public int getSelectedIndex(){
+		if(mySelectedOption==null)
+			return -1;
+		return mySelectedOption.getIndex();
+	}
 	public void step() {
 		
 	}

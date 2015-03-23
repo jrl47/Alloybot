@@ -1,6 +1,6 @@
 package ModelComponents;
 
-public class SelectionMenuOption {
+public class SelectionMenuOption extends ModelComponent{
 	
 	private SelectionMenuTracker myTracker;
 	private int myIndex;
@@ -12,5 +12,13 @@ public class SelectionMenuOption {
 	}
 	public void setOption(){
 		myTracker.setOption(this);
+	}
+	@Override
+	public void step() {
+		
+	}
+	@Override
+	public void respond() {
+		setOption();
 	}
 }
