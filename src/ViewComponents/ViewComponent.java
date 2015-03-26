@@ -109,6 +109,9 @@ public abstract class ViewComponent {
 			g.drawImage(v.getImage(), v.getX(), v.getY(), null);
 		}
 	}
+	public ModelComponent getComponent(){
+		return myComponent;
+	}
 	public List<ViewComponent> getComponents(){
 		return myComponents;
 	}
