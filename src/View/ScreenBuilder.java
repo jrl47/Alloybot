@@ -94,10 +94,11 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 			AlloyBorderedSelectionMenu oreMenu = new AlloyBorderedSelectionMenu(600, 125, 1);
 			List<List<String>> menuStrings = new ArrayList<List<String>>();
-			menuStrings.add(new ArrayList<String>());
-			menuStrings.add(new ArrayList<String>());
-			for(int i=0; i<5; i++){
-				menuStrings.get(i/3).add(OreData.getOreObject(i).getMyName());
+			for(int i=0; i<3; i++){
+				menuStrings.add(new ArrayList<String>());
+			}
+			for(int i=0; i<21; i++){
+				menuStrings.get(i/7).add(OreData.getOreObject(i).getMyName());
 			}
 			oreMenu.loadSelection(menuStrings);
 			myComponents.add(oreMenu);

@@ -20,7 +20,11 @@ public class BorderedButton extends Button{
 	
 	public BufferedImage loadImage() {
 		if(selected&&mySelectedFont!=null){
-			BorderedFixedFont f = new BorderedFixedFont(mySelectedFont, 6, mySelectedBorder);
+			BorderedFixedFont f = null;
+			if(mySelectedBorder!=null)
+				f = new BorderedFixedFont(mySelectedFont, 6, mySelectedBorder);
+			if(mySelectedBorder==null)
+				f = new BorderedFixedFont(mySelectedFont, 6, myBorder);
 			return f.getStringImage(myString, mySize);
 		}
 		BorderedFixedFont f = new BorderedFixedFont(myFont, 6, myBorder);

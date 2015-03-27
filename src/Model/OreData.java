@@ -36,7 +36,7 @@ public class OreData {
     	}
 		myOres = new HashMap<Integer, Ore>();
 		myStringOres = new HashMap<String, Ore>();
-		for(int i=0; i<5; i++){
+		for(int i=0; i<21; i++){
 			myOres.put(i, new Ore(i));
 			myStringOres.put(myOres.get(i).getMyName(), myOres.get(i));
 		}
