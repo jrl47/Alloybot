@@ -9,6 +9,9 @@ public class SelectionMenuTracker extends ModelComponent{
 	public SelectionMenuOption getSelectedOption(){
 		return mySelectedOption;
 	}
+	public void deselect(){
+		mySelectedOption = null;
+	}
 	public int getSelectedIndex(){
 		if(mySelectedOption==null)
 			return -1;

@@ -89,19 +89,9 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
 			myComponents.add(new RobotCreationResourceScreen((ResourceManager) myData.getComponents().get(1),
 					(ModelMap) myData.getComponents().get(2), 0, 0));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 400, 10, "CREATE CLASS 1 ROBOT", 2));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 400, 50, "CREATE CLASS 2 ROBOT", 2));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 200, 310, "CREATE CLASS 1 ROBOT", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 200, 330, "CREATE CLASS 2 ROBOT", 1));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
-			AlloyBorderedSelectionMenu oreMenu = new AlloyBorderedSelectionMenu(600, 125, 1);
-			List<List<String>> menuStrings = new ArrayList<List<String>>();
-			for(int i=0; i<3; i++){
-				menuStrings.add(new ArrayList<String>());
-			}
-			for(int i=0; i<21; i++){
-				menuStrings.get(i/7).add(OreData.getOreObject(i).getMyName());
-			}
-			oreMenu.loadSelection(menuStrings);
-			myComponents.add(oreMenu);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -47,6 +47,9 @@ public class BorderedSelectionMenu extends ViewComponent{
 		myData = data;
 		loadButtons();
 	}
+	public int getSelectedIndex(){
+		return mySelectionTracker.getSelectedIndex();
+	}
 	private void loadButtons() {
 		for(int i=0; i<myData.size(); i++){
 			for(int j=0; j<myData.get(i).size(); j++){
@@ -118,6 +121,7 @@ public class BorderedSelectionMenu extends ViewComponent{
 			for(Button b: myButtons.get(myMenuIndex)){
 				b.deselect();
 				removeComponent(b);
+				mySelectionTracker.deselect();
 			}
 			myMenuIndex = myCurrentListTracker.getSelectedIndex();
 			for(Button b: myButtons.get(myMenuIndex)){
