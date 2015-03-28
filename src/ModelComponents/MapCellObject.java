@@ -9,6 +9,7 @@ public abstract class MapCellObject extends ModelComponent{
 	protected int myX;
 	protected int myY;
 	protected boolean readyToMove;
+	protected boolean isDestroyed;
 	public MapCellObject(boolean b){
 		impassable = b;
 	}
@@ -16,7 +17,7 @@ public abstract class MapCellObject extends ModelComponent{
 		return impassable;
 	}
 	public boolean isSelected(){
-		return (myMap.getSelectedCell()!=null && myMap.getSelectedCell().getObjects()!=null && myMap.getSelectedCell().getObjects().contains(this));
+		return (!this.isDestroyed() && myMap.getSelectedCell()!=null && myMap.getSelectedCell().getObjects()!=null && myMap.getSelectedCell().getObjects().contains(this));
 	}
 	public int getX(){
 		return myX;
@@ -61,5 +62,9 @@ public abstract class MapCellObject extends ModelComponent{
 	public void destroy() {
 		readyToMove = false;
 		myMap.removeObject(this);
+		isDestroyed = true;
+	}
+	public boolean isDestroyed(){
+		return isDestroyed;
 	}
 }

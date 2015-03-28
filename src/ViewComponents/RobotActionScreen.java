@@ -22,6 +22,7 @@ public class RobotActionScreen extends ViewComponent{
 	private AlloyBorderedButton myMineButton;
 	private AlloyBorderedButton myDeselectButton;
 	private AlloyBorderedButton myStopButton;
+	private AlloyBorderedButton myDestroyButton;
 	private boolean needsButton;
 	public RobotActionScreen(ModelComponent m, int xx, int yy){
 		super(null, xx, yy, 100, 300);
@@ -31,11 +32,13 @@ public class RobotActionScreen extends ViewComponent{
 		myMineButton = null;
 		myDeselectButton = null;
 		myStopButton = null;
+		myDestroyButton = null;
 		try {
 			myMoveButton = new AlloyBorderedButton(null, 10, 10, "MOVE", 1);
 			myMineButton = new AlloyBorderedButton(null, 10, 34, "MINE", 1);
 			myDeselectButton = new AlloyBorderedButton(null, 10, 58, "DESELECT", 1);
 			myStopButton = new AlloyBorderedButton(null, 10, 82, "STOP", 1);
+			myDestroyButton = new AlloyBorderedButton(null, 10, 106, "DESTROY", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -71,6 +74,8 @@ public class RobotActionScreen extends ViewComponent{
 					addComponent(myDeselectButton);
 					myStopButton.setComponent(r.getButtons().get(3));
 					addComponent(myStopButton);
+					myDestroyButton.setComponent(r.getButtons().get(4));
+					addComponent(myDestroyButton);
 					needsButton = false;
 				}
 			}
@@ -80,6 +85,7 @@ public class RobotActionScreen extends ViewComponent{
 			removeComponent(myMineButton);
 			removeComponent(myDeselectButton);
 			removeComponent(myStopButton);
+			removeComponent(myDestroyButton);
 			needsButton = true;
 		}
 		drawComponents();

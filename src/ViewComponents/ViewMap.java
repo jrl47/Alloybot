@@ -22,28 +22,24 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 	private ViewMapGraphicsHandler graphics;
 	private ModelMap myMap;
 	private Map<MapCellObject, ViewMapObject> myViewMapObjects;
-	private List<ViewMapObject> myMapObjects;
 	private ViewMapObject currentlySelectedObject;
 	public ViewMap(ModelComponent c, int xx, int yy) {
 		super(c, xx, yy, 2*BORDER_WIDTH + 16*WIDTH, 2*BORDER_WIDTH + 16*HEIGHT);
 		currentlySelectedObject = null;
 		animation = new ViewMapAnimationHandler();
 		myMap = (ModelMap)myComponent;
-		myMapObjects = new ArrayList<ViewMapObject>();
 		myViewMapObjects = new HashMap<MapCellObject, ViewMapObject>();
 		for(MapCellObject r: myMap.getObjects()){
 			if(r instanceof Robot){
 				ViewRobot v = new ViewRobot((Robot)r, myMap);
 				myViewMapObjects.put(r, v);
-				myMapObjects.add(v);
 			}
 			if(r instanceof RobotFactory){
 				ViewRobotFactory v = new ViewRobotFactory((RobotFactory)r, myMap);
 				myViewMapObjects.put(r, v);
-				myMapObjects.add(v);
 			}
 		}
-		graphics = new ViewMapGraphicsHandler(animation, myMap, myViewMapObjects);
+		graphics = new ViewMapGraphicsHandler(animation, myMap);
 	}
 
 	@Override
@@ -58,14 +54,18 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			myMap.undoHighlight();
 		}
 		animation.handleAnimation();
-		return graphics.drawVisibleMapRegion(isHover, myMapObjects);
+		List<ViewMapObject> mapObjects = new ArrayList<ViewMapObject>();
+		for(MapCellObject m: myViewMapObjects.keySet()){
+			if(!m.isDestroyed())
+				mapObjects.add(myViewMapObjects.get(m));
+		}
+		return graphics.drawVisibleMapRegion(isHover, mapObjects);
 	}
 	
 	@Override
 	public BufferedImage loadHover() {
 		return loadImage();
 	}
-
 	@Override
 	public void useInput(int xx, int yy, boolean b) {
 		if(!animation.inAnimation()){

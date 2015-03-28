@@ -18,15 +18,19 @@ public class RobotCreationResourceScreen extends ViewComponent{
 	private ResourceManager myManager;
 	private ModelMap myMap;
 	private AlloyBorderedSelectionMenu myOreSelection;
-	private AlloyBorderedButton[] myDestroyButtons;
-	private int activeButtons;
+	private AlloyBorderedSelectionMenu mySizeSelection;
 	public RobotCreationResourceScreen(ResourceManager resourceManager, ModelMap m, int xx, int yy) {
 		super(null, xx, yy, 800, 450);
 		myManager = resourceManager;
 		myMap = m;
-		AlloyBorderedSelectionMenu oreMenu = null;
+		createOreMenu();
+		createSizeMenu();
+	}
+
+	private void createOreMenu() {
+		myOreSelection = null;
 		try {
-			oreMenu = new AlloyBorderedSelectionMenu(714, 15, 1);
+			myOreSelection = new AlloyBorderedSelectionMenu(714, 26, 1);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -37,20 +41,31 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		for(int i=0; i<21; i++){
 			menuStrings.get(i/7).add(OreData.getOreObject(i).getMyName());
 		}
-		oreMenu.loadSelection(menuStrings);
-		myOreSelection = oreMenu;
-		myComponents.add(oreMenu);
-		myDestroyButtons = new AlloyBorderedButton[10];
-		for(int i=0; i<10; i++){
-			try {
-				myDestroyButtons[i] = new AlloyBorderedButton(null, 160, 10 + (20 * (19 + i)), "DESTROY", 1);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		myOreSelection.loadSelection(menuStrings);
+		myComponents.add(myOreSelection);
 	}
 
+	private void createSizeMenu() {
+		mySizeSelection = null;
+		try {
+			mySizeSelection = new AlloyBorderedSelectionMenu(570, 26, 1);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		List<List<String>> menuStrings = new ArrayList<List<String>>();
+		for(int i=0; i<2; i++){
+			menuStrings.add(new ArrayList<String>());
+		}
+		menuStrings.get(0).add("SIZE 1 (1 ORE)");
+		menuStrings.get(0).add("SIZE 2 (4 ORE)");
+		menuStrings.get(0).add("SIZE 3 (27 ORE)");
+		menuStrings.get(0).add("SIZE 4 (256 ORE)");
+		menuStrings.get(1).add("SIZE 5 (3125 ORE)");
+		menuStrings.get(1).add("SIZE 6 (46656 ORE)");
+		menuStrings.get(1).add("SIZE 7 (823543 ORE)");
+		mySizeSelection.loadSelection(menuStrings);
+		myComponents.add(mySizeSelection);
+	}
 	@Override
 	public BufferedImage loadImage() {
 		myImage = new BufferedImage(800, 450, BufferedImage.TYPE_INT_ARGB);
@@ -61,40 +76,29 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		g.drawImage(font.getStringImage("SELECTED ORE:", 2), 10, 10, null);
-		if(myOreSelection.getSelectedIndex()!=-1)
-			g.drawImage(font.getStringImage(OreData.getOreObject(myOreSelection.getSelectedIndex()).getMyName().toUpperCase(), 2), 210, 10, null);
 		
+		if(myOreSelection.getSelectedIndex()!=-1 && mySizeSelection.getSelectedIndex()!=-1){
+			g.drawImage(font.getStringImage("COST:", 2), 10, 10, null);
+			int size = (int) Math.pow(mySizeSelection.getSelectedIndex()+1, mySizeSelection.getSelectedIndex()+1);
+			g.drawImage(font.getStringImage(Integer.toString(size), 2), 80, 10, null);
+			g.drawImage(font.getStringImage(OreData.getOreObject(myOreSelection.getSelectedIndex()).getMyName().toUpperCase(), 2),
+					Integer.toString(size).length()*14 + 88, 10, null);
+		}
+		else{
+			g.drawImage(font.getStringImage("SELECT A MATERIAL AND SIZE", 2), 10, 10, null);
+		}
+
+		g.drawImage(font.getStringImage("SIZES:", 1), 574, 7, null);
+		g.drawImage(font.getStringImage("ORES:", 1), 718, 7, null);
 		
 		
 		{ // old mini menu for temp testing purposes
-			g.drawImage(font.getStringImage("OIL AVAILABLE:", 1), 10, 310, null);
-			g.drawImage(font.getStringImage(Integer.toString(myManager.getOil()), 1), 120, 310, null);
-			g.drawImage(font.getStringImage("ORE AVAILABLE:", 1), 10, 330, null);
-			g.drawImage(font.getStringImage(Integer.toString(myManager.getOre(0)), 1), 120, 330, null);
-			g.drawImage(font.getStringImage("GEMS AVAILABLE:", 1), 10, 350, null);
-			g.drawImage(font.getStringImage(Integer.toString(myManager.getGems()), 1), 132, 350, null);
-			List<Robot> myRobots = myMap.getRobots();
-			Robot[] robots = new Robot[myRobots.size()];
-			for(int i=0; i<myRobots.size(); i++){
-				robots[i] = myRobots.get(i);
-			}
-			Arrays.sort(robots);
-			if(activeButtons!=robots.length){
-				for(int i=0; i<activeButtons; i++){
-					removeComponent(myDestroyButtons[i]);
-				}
-				for(int i=0; i<robots.length; i++){
-					myDestroyButtons[i].setComponent(robots[i].getButtons().get(4));
-					addComponent(myDestroyButtons[i]);
-				}
-				activeButtons = robots.length;
-			}
-			g.drawImage(font.getStringImage("ROBOT ROSTER:", 1), 10, 370, null);
-			for(int i=0; i<robots.length; i++){
-				g.drawImage(font.getStringImage("ROBOT " + i + " POWER:", 1), 10, 10 + (20 * (19 + i)), null);
-				g.drawImage(font.getStringImage(Integer.toString(robots[i].getOreEfficiency()), 1), 110, 10 + (20 * (19 + i)), null);
-			}
+			g.drawImage(font.getStringImage("OIL AVAILABLE:", 1), 10, 390, null);
+			g.drawImage(font.getStringImage(Integer.toString(myManager.getOil()), 1), 120, 390, null);
+			g.drawImage(font.getStringImage("ORE AVAILABLE:", 1), 10, 410, null);
+			g.drawImage(font.getStringImage(Integer.toString(myManager.getOre(0)), 1), 120, 410, null);
+			g.drawImage(font.getStringImage("GEMS AVAILABLE:", 1), 10, 430, null);
+			g.drawImage(font.getStringImage(Integer.toString(myManager.getGems()), 1), 132, 430, null);
 		}
 		
 		drawComponents();

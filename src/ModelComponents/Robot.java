@@ -6,6 +6,7 @@ import java.util.List;
 import Controller.Game;
 import Model.Model;
 import Model.OreData;
+import ViewComponents.ViewRobot;
 
 public class Robot extends MapCellObject implements Comparable<Robot>{
 	

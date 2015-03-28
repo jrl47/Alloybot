@@ -24,7 +24,7 @@ public class ViewMapGraphicsHandler {
 	private boolean isHover;
 	private List<ViewMapObject> myActiveObjects;
 	
-	public ViewMapGraphicsHandler(ViewMapAnimationHandler a, ModelMap m, Map<MapCellObject, ViewMapObject> myViewMapObjects){
+	public ViewMapGraphicsHandler(ViewMapAnimationHandler a, ModelMap m){
 		animation = a;
 		myMap = m;
 	}

@@ -89,8 +89,8 @@ public class ScreenBuilder extends ViewComponent{
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
 			myComponents.add(new RobotCreationResourceScreen((ResourceManager) myData.getComponents().get(1),
 					(ModelMap) myData.getComponents().get(2), 0, 0));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 200, 310, "CREATE CLASS 1 ROBOT", 1));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 200, 330, "CREATE CLASS 2 ROBOT", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 200, 390, "CREATE CLASS 1 ROBOT", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 200, 410, "CREATE CLASS 2 ROBOT", 1));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
