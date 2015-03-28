@@ -8,6 +8,7 @@ import java.util.List;
 
 import Model.OreData;
 import ModelComponents.ModelComponent;
+import ModelComponents.Ore;
 import ModelComponents.ResourceManager;
 import ModelComponents.RobotCreationButton;
 import View.AlloyFont;
@@ -83,10 +84,12 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		
 		if(myOreSelection.getSelectedIndex()!=-1 && mySizeSelection.getSelectedIndex()!=-1){
 			g.drawImage(font.getStringImage("COST:", 2), 10, 10, null);
-			int sizeCost = (int) Math.pow(mySizeSelection.getSelectedIndex()+1, mySizeSelection.getSelectedIndex()+1);
+			int size = mySizeSelection.getSelectedIndex()+1;
+			int sizeCost = (int) Math.pow(size, size);
 			g.drawImage(font.getStringImage(Integer.toString(sizeCost), 2), 88, 10, null);
 			int oreIndex = myOreSelection.getSelectedIndex();
-			String oreName = OreData.getOreObject(oreIndex).getMyName().toUpperCase();
+			Ore ore = OreData.getOreObject(oreIndex);
+			String oreName = ore.getMyName().toUpperCase();
 			g.drawImage(font.getStringImage(oreName, 2), Integer.toString(sizeCost).length()*14 + 100, 10, null);
 			
 			g.drawImage(font.getStringImage(oreName, 2), 10, 50, null);
@@ -94,13 +97,48 @@ public class RobotCreationResourceScreen extends ViewComponent{
 			g.drawImage(font.getStringImage(Integer.toString(myManager.getOre(oreIndex)), 2), oreName.length()*14 + 24 + 14 + 140, 50, null);
 		
 			if(sizeCost <= myManager.getOre(oreIndex)){
-				((RobotCreationButton)myCreationButton.getComponent()).setCost(oreIndex, mySizeSelection.getSelectedIndex()+1);
+				((RobotCreationButton)myCreationButton.getComponent()).setCost(oreIndex, size);
 				addComponent(myCreationButton);
 			}
 			else{
 				removeComponent(myCreationButton);
 				g.drawImage(font.getStringImage("NOT ENOUGH RESOURCES", 2), 10, 90, null);
 			}
+			
+			g.drawImage(font.getStringImage("OIL EFFICIENCY:", 1), 10, 130, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyOil(), size)), 1), "OIL EFFICIENCY:".length()*7 + 17, 130, null);
+			int length1 = "OIL EFFICIENCY:".length()*7 + 24 + Integer.toString(processStat(ore.getMyOil(), size)).length()*7 + 14;
+			
+			g.drawImage(font.getStringImage("ORE EFFICIENCY:", 1), length1, 130, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyOre(), size)), 1), "ORE EFFICIENCY:".length()*7 + 7 + length1, 130, null);
+			int length2 = length1 + "ORE EFFICIENCY".length()*7 + Integer.toString(processStat(ore.getMyOre(), size)).length()*7 + 14 + 14 + 14;
+			
+			g.drawImage(font.getStringImage("GEM EFFICIENCY:", 1), length2, 130, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyGems(), size)), 1), "GEM EFFICIENCY:".length()*7 + 7 + length2, 130, null);
+			
+			
+			g.drawImage(font.getStringImage("DIVERSITY:", 1), 10, 150, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyDiversity(), size)), 1), "DIVERSITY:".length()*7 + 17, 150, null);
+			length1 = "DIVERSITY:".length()*7 + 24 + Integer.toString(processStat(ore.getMyDiversity(), size)).length()*7 + 14;
+			
+			g.drawImage(font.getStringImage("DISTANCE:", 1), length1, 150, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyDistance(), size)), 1), "DISTANCE:".length()*7 + 7 + length1, 150, null);
+			length2 = length1 + "DISTANCE".length()*7 + Integer.toString(processStat(ore.getMyDistance(), size)).length()*7 + 14 + 14 + 14;
+			
+			g.drawImage(font.getStringImage("LUCK:", 1), length2, 150, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyLuck(), size)), 1), "LUCK:".length()*7 + 7 + length2, 150, null);
+		
+			
+			g.drawImage(font.getStringImage("POWER:", 1), 10, 170, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyPower(), size)), 1), "POWER:".length()*7 + 17, 170, null);
+			length1 = "POWER:".length()*7 + 24 + Integer.toString(processStat(ore.getMyPower(), size)).length()*7 + 14;
+			
+			g.drawImage(font.getStringImage("DURABILITY:", 1), length1, 170, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyDurability(), size)), 1), "DURABILITY:".length()*7 + 7 + length1, 170, null);
+			length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(processStat(ore.getMyDurability(), size)).length()*7 + 14 + 14 + 14;
+			
+			g.drawImage(font.getStringImage("MAGIC:", 1), length2, 170, null);
+			g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyMagic(), size)), 1), "MAGIC:".length()*7 + 7 + length2, 170, null);
 		}
 		else{
 			g.drawImage(font.getStringImage("SELECT A MATERIAL AND SIZE", 2), 10, 10, null);
@@ -119,6 +157,13 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		
 		drawComponents();
 		return myImage;
+	}
+	
+	// Takes base stat and enters into equation to find robot's practical stat based on size
+	public int processStat(int base, int size){
+		int std = (int)Math.pow(2, base);
+		int actualStat = (int) (Math.pow(size, size)*std*size);
+		return actualStat;
 	}
 
 	@Override
