@@ -4,25 +4,29 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import Model.OreData;
-import ModelComponents.ModelMap;
+import ModelComponents.ModelComponent;
 import ModelComponents.ResourceManager;
-import ModelComponents.Robot;
+import ModelComponents.RobotCreationButton;
 import View.AlloyFont;
 
 public class RobotCreationResourceScreen extends ViewComponent{
 
 	private ResourceManager myManager;
-	private ModelMap myMap;
 	private AlloyBorderedSelectionMenu myOreSelection;
 	private AlloyBorderedSelectionMenu mySizeSelection;
-	public RobotCreationResourceScreen(ResourceManager resourceManager, ModelMap m, int xx, int yy) {
+	private AlloyBorderedButton myCreationButton;
+	public RobotCreationResourceScreen(ResourceManager resourceManager, RobotCreationButton creationButton, int xx, int yy) {
 		super(null, xx, yy, 800, 450);
 		myManager = resourceManager;
-		myMap = m;
+		myCreationButton = null;
+		try {
+			myCreationButton = new AlloyBorderedButton(creationButton, 10, 90, "CREATE ROBOT", 2);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		createOreMenu();
 		createSizeMenu();
 	}
@@ -79,10 +83,24 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		
 		if(myOreSelection.getSelectedIndex()!=-1 && mySizeSelection.getSelectedIndex()!=-1){
 			g.drawImage(font.getStringImage("COST:", 2), 10, 10, null);
-			int size = (int) Math.pow(mySizeSelection.getSelectedIndex()+1, mySizeSelection.getSelectedIndex()+1);
-			g.drawImage(font.getStringImage(Integer.toString(size), 2), 80, 10, null);
-			g.drawImage(font.getStringImage(OreData.getOreObject(myOreSelection.getSelectedIndex()).getMyName().toUpperCase(), 2),
-					Integer.toString(size).length()*14 + 88, 10, null);
+			int sizeCost = (int) Math.pow(mySizeSelection.getSelectedIndex()+1, mySizeSelection.getSelectedIndex()+1);
+			g.drawImage(font.getStringImage(Integer.toString(sizeCost), 2), 88, 10, null);
+			int oreIndex = myOreSelection.getSelectedIndex();
+			String oreName = OreData.getOreObject(oreIndex).getMyName().toUpperCase();
+			g.drawImage(font.getStringImage(oreName, 2), Integer.toString(sizeCost).length()*14 + 100, 10, null);
+			
+			g.drawImage(font.getStringImage(oreName, 2), 10, 50, null);
+			g.drawImage(font.getStringImage("AVAILABLE:", 2), oreName.length()*14 + 24, 50, null);
+			g.drawImage(font.getStringImage(Integer.toString(myManager.getOre(oreIndex)), 2), oreName.length()*14 + 24 + 14 + 140, 50, null);
+		
+			if(sizeCost <= myManager.getOre(oreIndex)){
+				((RobotCreationButton)myCreationButton.getComponent()).setCost(oreIndex, mySizeSelection.getSelectedIndex()+1);
+				addComponent(myCreationButton);
+			}
+			else{
+				removeComponent(myCreationButton);
+				g.drawImage(font.getStringImage("NOT ENOUGH RESOURCES", 2), 10, 90, null);
+			}
 		}
 		else{
 			g.drawImage(font.getStringImage("SELECT A MATERIAL AND SIZE", 2), 10, 10, null);
@@ -93,10 +111,8 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		
 		
 		{ // old mini menu for temp testing purposes
-			g.drawImage(font.getStringImage("OIL AVAILABLE:", 1), 10, 390, null);
-			g.drawImage(font.getStringImage(Integer.toString(myManager.getOil()), 1), 120, 390, null);
-			g.drawImage(font.getStringImage("ORE AVAILABLE:", 1), 10, 410, null);
-			g.drawImage(font.getStringImage(Integer.toString(myManager.getOre(0)), 1), 120, 410, null);
+			g.drawImage(font.getStringImage("OIL AVAILABLE:", 1), 10, 410, null);
+			g.drawImage(font.getStringImage(Integer.toString(myManager.getOil()), 1), 120, 410, null);
 			g.drawImage(font.getStringImage("GEMS AVAILABLE:", 1), 10, 430, null);
 			g.drawImage(font.getStringImage(Integer.toString(myManager.getGems()), 1), 132, 430, null);
 		}

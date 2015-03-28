@@ -4,17 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import Model.OreData;
 import Model.ScreenData;
-import ModelComponents.ModelMap;
 import ModelComponents.ResourceManager;
+import ModelComponents.RobotCreationButton;
 import ViewComponents.AlloyBorderedButton;
-import ViewComponents.AlloyBorderedSelectionMenu;
 import ViewComponents.AlloyBorderedText;
 import ViewComponents.AlloyText;
 import ViewComponents.Background;
@@ -88,9 +84,9 @@ public class ScreenBuilder extends ViewComponent{
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
 			myComponents.add(new RobotCreationResourceScreen((ResourceManager) myData.getComponents().get(1),
-					(ModelMap) myData.getComponents().get(2), 0, 0));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 200, 390, "CREATE CLASS 1 ROBOT", 1));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(4), 200, 410, "CREATE CLASS 2 ROBOT", 1));
+					(RobotCreationButton) myData.getComponents().get(2), 0, 0));
+//			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 200, 390, "CREATE CLASS 1 ROBOT", 1));
+//			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 200, 410, "CREATE CLASS 2 ROBOT", 1));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();

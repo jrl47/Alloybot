@@ -14,11 +14,15 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	private boolean enabled;
 	private int oilEfficiency;
 	private int oreEfficiency;
-	public Robot(int oilE, int oreE, ModelMap m){
+	private int myOreType;
+	private int mySize;
+	public Robot(int oreType, int size, ModelMap m){
 		super(false);
 		myManagerButtons = new ArrayList<ModelButton>();
-		oilEfficiency = oilE;
-		oreEfficiency = oreE;
+		myOreType = oreType;
+		mySize = size;
+		oilEfficiency = 1;
+		oreEfficiency = 1;
 		addButton(new RobotMoveButton(this));
 		addButton(new RobotEnableButton(this));
 		addButton(new RobotDeselectButton(this));

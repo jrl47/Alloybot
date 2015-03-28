@@ -2,31 +2,28 @@ package ModelComponents;
 
 public class RobotCreationButton extends ModelButton{
 
-	RobotFactory myFactory;
-	ModelMap myMap;
-	ResourceManager myManager;
-	int oilCost;
-	int oreCost;
-	int gemCost;
-	int newOilE;
-	int newOreE;
-	public RobotCreationButton(ModelMap m, int oilC, int oreC, int gemC, int newOil, int newOre){
+	private RobotFactory myFactory;
+	private ModelMap myMap;
+	private ResourceManager myManager;
+	private int myOreType;
+	private int mySize;
+	private int myOreCost;
+	public RobotCreationButton(ModelMap m){
 		myMap = m;
 		myManager = myMap.getResources();
-		oilCost = oilC;
-		oreCost = oreC;
-		gemCost = gemC;
-		newOilE = newOil;
-		newOreE = newOre;
+	}
+	public void setCost(int oreType, int size){
+		myOreType = oreType;
+		mySize = size;
+		myOreCost = (int) Math.pow(size, size);
 	}
 	public void respond() {
 		myFactory = (RobotFactory) myMap.getSelectedObject();
-		if(myManager.getOil()>=oilCost && myManager.getOre(0)>=oreCost && myManager.getGems()>=gemCost
+		if(myManager.getOre(myOreType)>=myOreCost && myManager.getGems()>=1
 				&& myMap.getCell(myFactory.getX(), myFactory.getY() + 1).getObjects().size()==0){
-			myManager.setOil(myManager.getOil() - oilCost);
-			myManager.setOre(myManager.getOre(0) - oreCost, 0);
-			myManager.setGems(myManager.getGems() - gemCost);
-			Robot r = new Robot(newOilE, newOreE, myMap);
+			myManager.setOre(myManager.getOre(myOreType) - myOreCost, 0);
+			myManager.setGems(myManager.getGems() - 1);
+			Robot r = new Robot(myOreType, mySize, myMap);
 			myMap.addObject(r, myFactory.getX(), myFactory.getY() + 1);
 		}
 	}
