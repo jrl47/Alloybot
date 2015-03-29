@@ -10,27 +10,33 @@ import javax.imageio.ImageIO;
 import Model.OreData;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
+import ModelComponents.ModelButton;
 import ModelComponents.ResourceManager;
 import View.AlloyFont;
 import View.ScreenBuilder;
 
 public class ResourcesInfoScreen extends ViewComponent{
+	private Background background;
 	private BufferedImage myBackground;
 	private ResourceManager myManager;
+	private ModelButton myInventoryButton;
 	private boolean componentsLoaded;
-	public ResourcesInfoScreen(ResourceManager resourceManager, int xx, int yy){
+	public ResourcesInfoScreen(ResourceManager resourceManager, ModelButton inventoryButton, int xx, int yy){
 		super(null, xx, yy, 100, 300);
+		myInventoryButton = inventoryButton;
 		myManager = resourceManager;
 	}
 	@Override
 	public BufferedImage loadImage() {
-		if(myBackground==null){
+		if(background==null){
 		try {
 			myBackground = ImageIO.read(ScreenBuilder.class.getResource("/resourcedatabackground.png"));
 			BufferedImage bb = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			Graphics g = bb.getGraphics();
 			g.drawImage(myBackground, 0, 0, null);
 			myBackground = bb;
+			background = new Background(0,0,bb);
+			addComponent(background);
 			g.dispose();
 		} catch (IOException e) {
 			e.printStackTrace();

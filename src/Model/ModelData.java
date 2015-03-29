@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import ModelComponents.BasicMap;
+import ModelComponents.InventoryButton;
 import ModelComponents.MapMoveButton;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
@@ -26,6 +27,7 @@ public class ModelData {
 	public static final String GAME_OVER_STATE = "End";
 	public static final String MAP_EXPLORATION_STATE = "Map";
 	public static final String ROBOT_CREATION_STATE = "RobotMake";
+	public static final String INVENTORY_STATE = "Inventory";
 	
 	private HashMap<String, ScreenData> screens;
 	private State state;
@@ -59,6 +61,7 @@ public class ModelData {
 		b.addObject(rf, 45, 45);
 		mapComp.add(b);
 		mapComp.add(manager);
+		mapComp.add(new InventoryButton(state));
 		myComponents.addAll(mapComp);
 		ScreenData s = new ScreenData(MAP_EXPLORATION_STATE, mapComp);
 		screens.put(MAP_EXPLORATION_STATE, s);
@@ -73,12 +76,19 @@ public class ModelData {
 		makeComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
 		makeComp.add(manager);
 		makeComp.add(new RobotCreationButton(myMap));
-//		makeComp.add(new OldRobotCreationButton(myMap, 100000, 50, 1, 1, 1));
-//		makeComp.add(new OldRobotCreationButton(myMap, 100000, 150, 1, 2, 2));
 		myComponents.addAll(makeComp);
 		ScreenData s = new ScreenData(ROBOT_CREATION_STATE, makeComp);
 		s.addAuxiliaryComponent(myMap);
 		screens.put(ROBOT_CREATION_STATE, s);
+	}
+	
+	private void loadInventory() {
+		List<ModelComponent> invComp = new ArrayList<ModelComponent>();
+		invComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
+		invComp.add(manager);
+		myComponents.addAll(invComp);
+		ScreenData s = new ScreenData(INVENTORY_STATE, invComp);
+		screens.put(INVENTORY_STATE, s);
 	}
 
 	private void loadStart() {
