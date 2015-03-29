@@ -14,15 +14,31 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	private boolean enabled;
 	private int oilEfficiency;
 	private int oreEfficiency;
-	private int myOreType;
+	private int gemEfficiency;
+	private int diversity;
+	private int distance;
+	private int luck;
+	private int power;
+	private int durability;
+	private int magic;
+	private Ore myOre;
 	private int mySize;
+	private String myName;
 	public Robot(int oreType, int size, ModelMap m){
 		super(false);
 		myManagerButtons = new ArrayList<ModelButton>();
-		myOreType = oreType;
 		mySize = size;
-		oilEfficiency = 1;
-		oreEfficiency = 1;
+		myOre = OreData.getOreObject(oreType);
+		oilEfficiency = processStat(myOre.getMyOil(), size);
+		oreEfficiency = processStat(myOre.getMyOre(), size);
+		gemEfficiency = processStat(myOre.getMyGems(), size);
+		diversity = processStat(myOre.getMyDiversity(), size);
+		distance = processStat(myOre.getMyDistance(), size);
+		luck = processStat(myOre.getMyLuck(), size);
+		power = processStat(myOre.getMyPower(), size);
+		durability = processStat(myOre.getMyDurability(), size);
+		magic = processStat(myOre.getMyMagic(), size);
+		myName = myOre.getMyName();
 		addButton(new RobotMoveButton(this));
 		addButton(new RobotEnableButton(this));
 		addButton(new RobotDeselectButton(this));
@@ -36,6 +52,11 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 				myResources.setOre(myResources.getOre(i) + myLocation.getOre(i)*oreEfficiency, i);
 			}
 		}
+	}
+	public int processStat(int base, int size){
+		int std = (int)Math.pow(2, base);
+		int actualStat = (int) (Math.pow(size, size)*std*size);
+		return actualStat;
 	}
 	public void enabled() {
 		enabled = true;
@@ -76,5 +97,11 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	}
 	public int getOreEfficiency() {
 		return oreEfficiency;
+	}
+	public String getName() {
+		return myName;
+	}
+	public int getSize() {
+		return mySize;
 	}
 }

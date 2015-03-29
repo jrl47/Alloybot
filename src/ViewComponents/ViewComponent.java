@@ -96,6 +96,13 @@ public abstract class ViewComponent {
 		v.addParentComponent(null);
 		myComponents.remove(v);
 	}
+	public void removeComponents(){
+		List<ViewComponent> toRemove = new ArrayList<ViewComponent>(myComponents);
+		for(ViewComponent v : toRemove){
+			v.addParentComponent(null);
+			myComponents.remove(v);
+		}
+	}
 	public abstract BufferedImage loadImage();
 	public abstract BufferedImage loadHover();
 	public void drawComponents() {

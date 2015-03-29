@@ -51,7 +51,7 @@ public class ModelData {
 		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
 		BasicMap b = new BasicMap(manager);
 		myMap = b;
-		Robot r = new Robot(1, 1, myMap);
+		Robot r = new Robot(0, 1, myMap);
 		b.addObject(r, 50, 50);
 		r = new Robot(1, 1, myMap);
 		b.addObject(r, 40, 50);

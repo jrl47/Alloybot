@@ -62,7 +62,7 @@ public class ScreenBuilder extends ViewComponent{
 	public void buildEnd(){
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"))));
-			myComponents.add(new AlloyText(10, 10, "GAME OVER", 3));
+			myComponents.add(new AlloyText("GAME OVER", 3, 10, 10));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
