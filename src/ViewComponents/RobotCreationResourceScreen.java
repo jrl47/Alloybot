@@ -8,6 +8,7 @@ import java.util.List;
 
 import Model.OreData;
 import ModelComponents.ModelComponent;
+import ModelComponents.ModelMap;
 import ModelComponents.Ore;
 import ModelComponents.ResourceManager;
 import ModelComponents.RobotCreationButton;
@@ -16,15 +17,17 @@ import View.AlloyFont;
 public class RobotCreationResourceScreen extends ViewComponent{
 
 	private ResourceManager myManager;
+	private ModelMap myMap;
 	private AlloyBorderedSelectionMenu myOreSelection;
 	private AlloyBorderedSelectionMenu mySizeSelection;
 	private AlloyBorderedButton myCreationButton;
 	private int myOreIndex;
 	private int mySizeIndex;
 	private boolean loaded;
-	public RobotCreationResourceScreen(ResourceManager resourceManager, RobotCreationButton creationButton, int xx, int yy) {
+	public RobotCreationResourceScreen(ResourceManager resourceManager, ModelMap map, RobotCreationButton creationButton, int xx, int yy) {
 		super(null, xx, yy, 800, 450);
 		myManager = resourceManager;
+		myMap = map;
 		myCreationButton = null;
 		try {
 			myCreationButton = new AlloyBorderedButton(creationButton, 10, 90, "CREATE ROBOT", 2);
@@ -76,6 +79,9 @@ public class RobotCreationResourceScreen extends ViewComponent{
 	}
 	@Override
 	public BufferedImage loadImage() {
+		if(((RobotCreationButton) myCreationButton.getComponent()).wasTriggered()){
+			loaded = false;
+		}
 		myImage = new BufferedImage(800, 450, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = myImage.getGraphics();
 		AlloyFont font = null;
@@ -107,14 +113,18 @@ public class RobotCreationResourceScreen extends ViewComponent{
 				addComponent(new AlloyText(oreName, 2, 10, 50));
 				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 50));
 				addComponent(new AlloyText(Integer.toString(myManager.getOre(oreIndex)), 2, oreName.length()*14 + 24 + 14 + 140, 50));
-			
-				if(sizeCost <= myManager.getOre(oreIndex)){
-					((RobotCreationButton)myCreationButton.getComponent()).setCost(oreIndex, size);
-					addComponent(myCreationButton);
-				}
-				else{
+				
+				if(sizeCost > myManager.getOre(oreIndex)){
 					removeComponent(myCreationButton);
 					addComponent(new AlloyText("NOT ENOUGH RESOURCES", 2, 10, 90));
+				}
+				else if(myMap.getCell(myMap.getCurrentHighlightedCell().getX(), myMap.getCurrentHighlightedCell().getY() + 1).getObjects().size()!=0){
+					removeComponent(myCreationButton);
+					addComponent(new AlloyText("ROBOT IN THE WAY OF CREATION", 2, 10, 90));
+				}
+				else{
+					((RobotCreationButton)myCreationButton.getComponent()).setCost(oreIndex, size);
+					addComponent(myCreationButton);
 				}
 				
 				addComponent(new AlloyText("OIL EFFICIENCY:", 1, 10, 130));
@@ -152,37 +162,10 @@ public class RobotCreationResourceScreen extends ViewComponent{
 				addComponent(new AlloyText("MAGIC:", 1, length2, 170));
 				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyMagic(), size)), 1, "MAGIC:".length()*7 + 7 + length2, 170));
 				
-//	
-//				
-//				
-//				
-//				g.drawImage(font.getStringImage("DIVERSITY:", 1), 10, 150, null);
-//				g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyDiversity(), size)), 1), "DIVERSITY:".length()*7 + 17, 150, null);
-//				length1 = "DIVERSITY:".length()*7 + 24 + Integer.toString(processStat(ore.getMyDiversity(), size)).length()*7 + 14;
-//				
-//				g.drawImage(font.getStringImage("DISTANCE:", 1), length1, 150, null);
-//				g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyDistance(), size)), 1), "DISTANCE:".length()*7 + 7 + length1, 150, null);
-//				length2 = length1 + "DISTANCE".length()*7 + Integer.toString(processStat(ore.getMyDistance(), size)).length()*7 + 14 + 14 + 14;
-//				
-//				g.drawImage(font.getStringImage("LUCK:", 1), length2, 150, null);
-//				g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyLuck(), size)), 1), "LUCK:".length()*7 + 7 + length2, 150, null);
-//			
-//				
-//				g.drawImage(font.getStringImage("POWER:", 1), 10, 170, null);
-//				g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyPower(), size)), 1), "POWER:".length()*7 + 17, 170, null);
-//				length1 = "POWER:".length()*7 + 24 + Integer.toString(processStat(ore.getMyPower(), size)).length()*7 + 14;
-//				
-//				g.drawImage(font.getStringImage("DURABILITY:", 1), length1, 170, null);
-//				g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyDurability(), size)), 1), "DURABILITY:".length()*7 + 7 + length1, 170, null);
-//				length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(processStat(ore.getMyDurability(), size)).length()*7 + 14 + 14 + 14;
-//				
-//				g.drawImage(font.getStringImage("MAGIC:", 1), length2, 170, null);
-//				g.drawImage(font.getStringImage(Integer.toString(processStat(ore.getMyMagic(), size)), 1), "MAGIC:".length()*7 + 7 + length2, 170, null);
 				loaded = true;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-//			g.drawImage(font.getStringImage("COST:", 2), 10, 10, null);
 		}
 		else if (myOreSelection.getSelectedIndex()==-1 && mySizeSelection.getSelectedIndex()==-1){
 			removeComponents();

@@ -77,6 +77,7 @@ public class ModelData {
 //		makeComp.add(new OldRobotCreationButton(myMap, 100000, 150, 1, 2, 2));
 		myComponents.addAll(makeComp);
 		ScreenData s = new ScreenData(ROBOT_CREATION_STATE, makeComp);
+		s.addAuxiliaryComponent(myMap);
 		screens.put(ROBOT_CREATION_STATE, s);
 	}
 

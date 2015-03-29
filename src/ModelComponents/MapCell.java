@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import Model.OreData;
 
@@ -43,6 +44,20 @@ public class MapCell {
 	}
 	public int getOil(){
 		return myOil;
+	}
+	public void incrementOre(ResourceManager r, int scalar){
+		Random rand = new Random();
+		int random = rand.nextInt(100);
+		int index = -1;
+		int counter = 0;
+		for(int i=0; i<myOre.length; i++){
+			if(random >= counter && random < counter + myOre[i])
+				index = i;
+			counter+=myOre[i];
+		}
+		if(index!=-1){
+			r.setOre(r.getOre(index) + scalar, index);
+		}
 	}
 	public int getOre(int i){
 		return myOre[i];

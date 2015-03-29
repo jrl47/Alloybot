@@ -8,16 +8,19 @@ public class RobotCreationButton extends ModelButton{
 	private int myOreType;
 	private int mySize;
 	private int myOreCost;
+	private boolean wasTriggered;
 	public RobotCreationButton(ModelMap m){
 		myMap = m;
 		myManager = myMap.getResources();
 	}
 	public void setCost(int oreType, int size){
+		wasTriggered = false;
 		myOreType = oreType;
 		mySize = size;
 		myOreCost = (int) Math.pow(size, size);
 	}
 	public void respond() {
+		wasTriggered = true;
 		myFactory = (RobotFactory) myMap.getSelectedObject();
 		if(myManager.getOre(myOreType)>=myOreCost && myManager.getGems()>=1
 				&& myMap.getCell(myFactory.getX(), myFactory.getY() + 1).getObjects().size()==0){
@@ -26,6 +29,9 @@ public class RobotCreationButton extends ModelButton{
 			Robot r = new Robot(myOreType, mySize, myMap);
 			myMap.addObject(r, myFactory.getX(), myFactory.getY() + 1);
 		}
+	}
+	public boolean wasTriggered(){
+		return wasTriggered;
 	}
 	
 }

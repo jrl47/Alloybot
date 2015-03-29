@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
 
 import Model.ScreenData;
+import ModelComponents.ModelMap;
 import ModelComponents.ResourceManager;
 import ModelComponents.RobotCreationButton;
 import ViewComponents.AlloyBorderedButton;
@@ -84,6 +85,7 @@ public class ScreenBuilder extends ViewComponent{
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
 			myComponents.add(new RobotCreationResourceScreen((ResourceManager) myData.getComponents().get(1),
+					(ModelMap)(myData.getAuxiliaryComponents().get(0)),
 					(RobotCreationButton) myData.getComponents().get(2), 0, 0));
 //			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 200, 390, "CREATE CLASS 1 ROBOT", 1));
 //			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(3), 200, 410, "CREATE CLASS 2 ROBOT", 1));

@@ -48,9 +48,10 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
 			myResources.setOil(myResources.getOil() + myLocation.getOil()*oilEfficiency);
-			for(int i=0; i<OreData.NUMBER_OF_ORES; i++){
-				myResources.setOre(myResources.getOre(i) + myLocation.getOre(i)*oreEfficiency, i);
-			}
+			myLocation.incrementOre(myResources, oreEfficiency);
+//			for(int i=0; i<OreData.NUMBER_OF_ORES; i++){
+//				myResources.setOre(myResources.getOre(i) + myLocation.getOre(i)*oreEfficiency, i);
+//			}
 		}
 	}
 	public int processStat(int base, int size){
