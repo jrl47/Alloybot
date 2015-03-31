@@ -46,6 +46,7 @@ public class ModelData {
 		loadMap();
 		loadEnd();
 		loadRobotMake();
+		loadInventory();
 	}
 
 	private void loadMap() {

@@ -6,6 +6,7 @@ public class ResourceManager extends ModelComponent{
 	private int myOil;
 	private int myOre[];
 	private int myGems;
+	private boolean wasUpdated;
 	public ResourceManager(){
 		myOil = 150000;
 		myOre = new int[100];

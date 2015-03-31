@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import Controller.Game;
+import Model.Model;
 import Model.OreData;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
@@ -25,51 +27,42 @@ public class ResourcesInfoScreen extends ViewComponent{
 		super(null, xx, yy, 100, 300);
 		myInventoryButton = inventoryButton;
 		myManager = resourceManager;
+		myImage = new BufferedImage(800, 450, BufferedImage.TYPE_INT_ARGB);
+
+		buildComponents();
+	}
+	private void buildComponents() {
+		removeComponents();
+		try {
+			if(background==null){
+					background = new Background(0,0,ImageIO.read(ScreenBuilder.class.getResource("/resourcedatabackground.png")));
+					addComponent(background);		
+			}
+			addComponent(new AlloyBorderedButton(myInventoryButton, 10, 8, "INVENTORY", 1));
+			addComponent(new AlloyText("OIL:", 1, 10, 30));
+			String s = myManager.getOil() + "";
+			addComponent(new AlloyText(s, 1, 40, 30));
+			int counter = 0;
+			for(int i=0; i<5; i++){
+				if(myManager.getOre(i)!=0){
+					addComponent(new AlloyText(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1, 10, 50 + (20*counter)));
+					s = myManager.getOre(i) + "";
+					addComponent(new AlloyText(s, 1, 110, 50 + (20*counter)));
+					counter++;
+				}
+			}
+			addComponent(new AlloyText("GEMS:", 1, 10, 50 + (20*counter)));
+			s = myManager.getGems() + "";
+			addComponent(new AlloyText(s, 1, 46, 50 + (20*counter)));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	@Override
 	public BufferedImage loadImage() {
-		if(background==null){
-		try {
-			myBackground = ImageIO.read(ScreenBuilder.class.getResource("/resourcedatabackground.png"));
-			BufferedImage bb = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics g = bb.getGraphics();
-			g.drawImage(myBackground, 0, 0, null);
-			myBackground = bb;
-			background = new Background(0,0,bb);
-			addComponent(background);
-			g.dispose();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		}
-		myImage = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics g = myImage.getGraphics();
-		g.drawImage(myBackground, 0, 0, null);
-		AlloyFont font = null;
-		try {
-			font = new AlloyFont();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		g.drawImage(font.getStringImage("INVENTORY", 1), 10, 10, null);
-		g.drawImage(font.getStringImage("OIL:", 1), 10, 30, null);
-		String s = myManager.getOil() + "";
-		g.drawImage(font.getStringImage(s, 1), 40, 30, null);
-		int counter = 0;
-		for(int i=0; i<5; i++){
-			if(myManager.getOre(i)!=0){
-				g.drawImage(font.getStringImage(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1), 10, 50 + (20*counter), null);
-				s = myManager.getOre(i) + "";
-				g.drawImage(font.getStringImage(s, 1), 110, 50 + (20*counter), null);
-				counter++;
-			}
-		}
-//		g.drawImage(font.getStringImage("ORE:", 1), 10, 50, null);
-//		s = myManager.getOre(0) + "";
-//		g.drawImage(font.getStringImage(s, 1), 40, 50, null);
-		g.drawImage(font.getStringImage("GEMS:", 1), 10, 50 + (20*counter), null);
-		s = myManager.getGems() + "";
-		g.drawImage(font.getStringImage(s, 1), 46, 50 + (20*counter), null);
+		if((Game.ticks % Model.TICK_SCALAR )==0)
+			buildComponents();
+		drawComponents();
 		return myImage;
 	}
 	@Override
