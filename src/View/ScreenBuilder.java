@@ -98,7 +98,7 @@ public class ScreenBuilder extends ViewComponent{
 	public void buildInventory(){
 		try {
 			myComponents.add(new InventoryScreen((ModelMap)(myData.getAuxiliaryComponents().get(0)), 0, 0));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 678, 425, "BACK TO MAP", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
