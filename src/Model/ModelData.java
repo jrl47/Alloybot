@@ -42,6 +42,7 @@ public class ModelData {
 		screens = new HashMap<String, ScreenData>();
 		state = new State(START_MENU_STATE);
 		OreData.init();
+		makeModelMap();
 		loadStart();
 		loadMap();
 		loadEnd();
@@ -49,9 +50,7 @@ public class ModelData {
 		loadInventory();
 	}
 
-	private void loadMap() {
-		List<ModelComponent> mapComp = new ArrayList<ModelComponent>();
-		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
+	private void makeModelMap() {
 		BasicMap b = new BasicMap(manager);
 		myMap = b;
 		Robot r = new Robot(0, 1, myMap);
@@ -60,7 +59,12 @@ public class ModelData {
 		b.addObject(r, 40, 50);
 		RobotFactory rf = new RobotFactory(state);
 		b.addObject(rf, 45, 45);
-		mapComp.add(b);
+	}
+
+	private void loadMap() {
+		List<ModelComponent> mapComp = new ArrayList<ModelComponent>();
+		mapComp.add(new StateChangeButton(state, GAME_OVER_STATE));
+		mapComp.add(myMap);
 		mapComp.add(manager);
 		mapComp.add(new InventoryButton(state));
 		myComponents.addAll(mapComp);
@@ -89,6 +93,7 @@ public class ModelData {
 		invComp.add(manager);
 		myComponents.addAll(invComp);
 		ScreenData s = new ScreenData(INVENTORY_STATE, invComp);
+		s.addAuxiliaryComponent(myMap);
 		screens.put(INVENTORY_STATE, s);
 	}
 
