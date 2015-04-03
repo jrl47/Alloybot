@@ -21,6 +21,7 @@ public class BorderedSelectionMenu extends ViewComponent{
 	private List<BorderedButton> allButtons;
 	private SelectionMenuTracker mySelectionTracker;
 	private SelectionMenuTracker myCurrentListTracker;
+	private boolean singleWidth;
 	private int maxWidth;
 	private int maxHeight;
 	private int maxLength;
@@ -57,6 +58,9 @@ public class BorderedSelectionMenu extends ViewComponent{
 					maxWordLength = myData.get(i).get(j).length();
 			}
 		}
+		if(myData.size()==1){
+			singleWidth = true;
+		}
 		for(int i=0; i<myData.size(); i++){
 			myButtons.add(new ArrayList<BorderedButton>());
 		}
@@ -85,21 +89,22 @@ public class BorderedSelectionMenu extends ViewComponent{
 					maxWidth = myButtons.get(i).get(j).getImage().getWidth();
 				}
 			}
-			
-			String s = ">NEXT>";
-			while(s.length()<maxWordLength){
-				if(s.length() % 2 == 0){
-					s += ' ';
+			if(!singleWidth){
+				String s = ">NEXT>";
+				while(s.length()<maxWordLength){
+					if(s.length() % 2 == 0){
+						s += ' ';
+					}
+					else{
+						s = ' ' + s;
+					}
 				}
-				else{
-					s = ' ' + s;
-				}
+				BorderedButton button = new BorderedButton(new SelectionMenuOption(myCurrentListTracker, (menuCounter+1) % myData.size()), 0, 0, s, mySize, myFont, myHoverFont, myBorder, myHoverBorder);
+				if(menuCounter==myData.size()-1)
+					myCurrentListTracker.setOption((SelectionMenuOption)button.getComponent());
+				menuCounter++;
+				myButtons.get(i).add(button);
 			}
-			BorderedButton button = new BorderedButton(new SelectionMenuOption(myCurrentListTracker, (menuCounter+1) % myData.size()), 0, 0, s, mySize, myFont, myHoverFont, myBorder, myHoverBorder);
-			if(menuCounter==myData.size()-1)
-				myCurrentListTracker.setOption((SelectionMenuOption)button.getComponent());
-			menuCounter++;
-			myButtons.get(i).add(button);
 			if(myData.get(i).size()>maxLength)
 				maxLength = myData.get(i).size();
 		}

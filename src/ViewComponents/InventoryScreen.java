@@ -44,53 +44,69 @@ public class InventoryScreen extends ViewComponent{
 	private void buildComponents() {
 		try{
 			removeComponents();
-			
 			if(background==null)
 				background = new Background(0,0,ImageIO.read(ScreenBuilder.class.getResource("/inventorybackground.png")));	
 			addComponent(background);
-			
-			
 			if(myState.getState().equals("Oil")){
-				addComponent(new AlloyText("OIL:", 5, 10, 10));
-				addComponent(new AlloyText(myManager.getOil() + "", 5, 175, 10));
-				addComponent(new AlloyBorderedButton(myBack, 658, 400, "BACK TO INVENTORY", 1));
+				loadOilMenu();
 			}
 			if(myState.getState().equals("Ore")){
-				addComponent(new AlloyText("ORE:", 5, 10, 10));
-				String s;
-				int counter = 0;
-				addComponent(myClass);
-				for(int i=0; i<21; i++){
-					if(myManager.getOre(i)!=0){
-						addComponent(new AlloyText(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1, 10, 50 + (20*counter)));
-						s = myManager.getOre(i) + "";
-						addComponent(new AlloyText(s, 1, 110, 50 + (20*counter)));
-						counter++;
-					}
-				}
-				addComponent(new AlloyBorderedButton(myBack, 658, 400, "BACK TO INVENTORY", 1));
+				loadOreMenu();
 			}
 			if(myState.getState().equals("Gems")){
-				addComponent(new AlloyText("GEMS:", 5, 10, 10));
-				addComponent(new AlloyText(myManager.getGems() + "", 5, 210, 10));
-				addComponent(new AlloyBorderedButton(myBack, 658, 400, "BACK TO INVENTORY", 1));
+				loadGemMenu();
 			}
 			if(myState.getState().equals("Back")){
-				addComponent(new AlloyBorderedButton(myOil, 60, 60, "OIL", 7));
-				addComponent(new AlloyBorderedButton(myOre, 280, 60, "ORE", 7));
-				addComponent(new AlloyBorderedButton(myGems, 500, 60, "GEMS", 7));
+				loadMainMenu();
 			}
 		}
-		catch(IOException e) {e.printStackTrace();
-		
-		
+		catch(IOException e) {e.printStackTrace();}
+	}
+
+	private void loadOilMenu() throws IOException {
+		addComponent(new AlloyText("OIL:", 5, 10, 10));
+		addComponent(new AlloyText(myManager.getOil() + "", 5, 175, 10));
+		addComponent(new AlloyBorderedButton(myBack, 658, 400, "BACK TO INVENTORY", 1));
+	}
+
+	private void loadOreMenu() throws IOException {
+		addComponent(new AlloyText("ORE:", 5, 10, 10));
+		String s;
+		int counter = 0;
+		addComponent(myClass);
+		if(myClass.getSelectedIndex()==-1){
+			addComponent(new AlloyText("PLEASE SELECT AN ORE CLASS", 3, 190, 30));
 		}
+		if(myClass.getSelectedIndex()==0){
+			for(int i=0; i<21; i++){
+				int l = OreData.getOreObject(i).getMyName().length() + 6;
+				addComponent(new AlloyText(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1, 190 + (i/7)*210, 30 + (20*counter)));
+				s = myManager.getOre(i) + "";
+				addComponent(new AlloyText(s, 1, 190 + (i/7)*210 + l*7, 30 + (20*counter)));
+				counter++;
+				if(counter==7)
+					counter=0;
+			}
+		}
+		addComponent(new AlloyBorderedButton(myBack, 658, 400, "BACK TO INVENTORY", 1));
+	}
+
+	private void loadGemMenu() throws IOException {
+		addComponent(new AlloyText("GEMS:", 5, 10, 10));
+		addComponent(new AlloyText(myManager.getGems() + "", 5, 210, 10));
+		addComponent(new AlloyBorderedButton(myBack, 658, 400, "BACK TO INVENTORY", 1));
+	}
+
+	private void loadMainMenu() throws IOException {
+		addComponent(new AlloyBorderedButton(myOil, 180, 32, "OIL HOARDE", 6));
+		addComponent(new AlloyBorderedButton(myOre, 130, 162, "INVENT-ORE-Y", 6));
+		addComponent(new AlloyBorderedButton(myGems, 200, 292, "GEM CACHE", 6));
 	}
 	
 	private void createClassMenu() {
 		myClass = null;
 		try {
-			myClass = new AlloyBorderedSelectionMenu(570, 26, 1);
+			myClass = new AlloyBorderedSelectionMenu(15, 90, 2);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -111,7 +127,7 @@ public class InventoryScreen extends ViewComponent{
 
 	@Override
 	public BufferedImage loadImage() {
-		if((myState.getPreviousState()!=null && !myState.getState().equals(myState.getPreviousState())) || (!myState.getState().equals("Back") && (Game.ticks % Model.TICK_SCALAR )==0)){
+		if((myState.getPreviousState()!=null && !myState.getState().equals(myState.getPreviousState())) || (!myState.getState().equals("Back") && (Game.ticks % (Model.TICK_SCALAR /8))==0)){
 			myState.setState(myState.getState());
 			buildComponents();
 		}
