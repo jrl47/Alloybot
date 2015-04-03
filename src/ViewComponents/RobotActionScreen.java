@@ -24,7 +24,7 @@ public class RobotActionScreen extends ViewComponent{
 	private AlloyBorderedButton myStopButton;
 	private AlloyBorderedButton myDestroyButton;
 	private boolean needsButton;
-	public RobotActionScreen(ModelComponent m, int xx, int yy){
+	public RobotActionScreen(ModelMap m, int xx, int yy){
 		super(null, xx, yy, 100, 300);
 		myMap = (ModelMap)m;
 		needsButton = true;
@@ -88,11 +88,6 @@ public class RobotActionScreen extends ViewComponent{
 		}
 		else{
 			removeComponents();
-//			removeComponent(myMoveButton);
-//			removeComponent(myMineButton);
-//			removeComponent(myDeselectButton);
-//			removeComponent(myStopButton);
-//			removeComponent(myDestroyButton);
 			needsButton = true;
 		}
 		drawComponents();
