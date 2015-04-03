@@ -18,8 +18,6 @@ import ViewComponents.AlloyText;
 import ViewComponents.Background;
 import ViewComponents.InformationPanelScreen;
 import ViewComponents.InventoryScreen;
-import ViewComponents.ResourcesInfoScreen;
-import ViewComponents.RobotActionScreen;
 import ViewComponents.RobotCreationResourceScreen;
 import ViewComponents.ViewComponent;
 import ViewComponents.ViewMap;
@@ -73,13 +71,10 @@ public class ScreenBuilder extends ViewComponent{
 	public void buildMap(){
 		try {
 			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
-			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "END GAME", 1));
-			myComponents.add(new ViewMap(myData.getComponents().get(1), 146, 0));
-			myComponents.add(new InformationPanelScreen(myData.getComponents().get(1), (ModelMap)myData.getComponents().get(1), 660, 0));
-			myComponents.add(new ResourcesInfoScreen((ResourceManager)(myData.getComponents().get(2)),
-					(ModelButton)(myData.getComponents().get(3)), 0, 0));
-//			RobotActionScreen r = new RobotActionScreen((ModelMap)myData.getComponents().get(1), 0, 300);
-//			myComponents.add(r);
+			myComponents.add(new ViewMap(myData.getComponents().get(1), 0, 0));
+			myComponents.add(new InformationPanelScreen(myData.getComponents().get(1), (ModelMap)myData.getComponents().get(1), 658, 0));
+			myComponents.add(new AlloyBorderedButton((ModelButton)(myData.getComponents().get(3)), 665, 425, "INVENTORY", 1));
+			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 735, 425, "END GAME", 1));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

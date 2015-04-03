@@ -10,7 +10,7 @@ public class Model {
 	}
 	public void step() {
 		for(ModelComponent m: data.getScreenData().getComponents()){
-			m.step();
+				m.step();
 		}
 //		for(ModelComponent m: data.getComponents()){
 //			m.step();

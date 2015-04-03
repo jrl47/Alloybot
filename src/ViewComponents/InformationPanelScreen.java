@@ -41,11 +41,11 @@ public class InformationPanelScreen extends ViewComponent{
 		myRobotComponents = new ArrayList<ViewComponent>();
 		try {
 			addComponent(new AlloyText("TILE RESOURCES", 1, 10, 10));
-			myMoveButton = new AlloyBorderedButton(null, 10, 46, "MOVE", 1);
-			myMineButton = new AlloyBorderedButton(null, 10, 66, "MINE", 1);
-			myDeselectButton = new AlloyBorderedButton(null, 10, 86, "DESELECT", 1);
-			myStopButton = new AlloyBorderedButton(null, 10, 106, "STOP", 1);
-			myDestroyButton = new AlloyBorderedButton(null, 10, 126, "DESTROY", 1);
+			myMoveButton = new AlloyBorderedButton(null, 10, 176, "MOVE", 1);
+			myMineButton = new AlloyBorderedButton(null, 10, 196, "MINE", 1);
+			myDeselectButton = new AlloyBorderedButton(null, 10, 216, "DESELECT", 1);
+			myStopButton = new AlloyBorderedButton(null, 10, 236, "STOP", 1);
+			myDestroyButton = new AlloyBorderedButton(null, 10, 256, "DESTROY", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,7 @@ public class InformationPanelScreen extends ViewComponent{
 		myImage = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		try{
 			createTileInfo();
-//			createRobotActionInfo();
+			createRobotActionInfo();
 		} catch(IOException e) {e.printStackTrace();}
 		drawComponents();
 		return myImage;
@@ -65,15 +65,12 @@ public class InformationPanelScreen extends ViewComponent{
 	private void createRobotActionInfo() throws IOException {
 		Robot r;
 		if(myMap.getSelectedObject()!=null){
-			addComponent(new AlloyText("OIL:", 5, 10, 10));
 			if(needsButton){
 				if(myMap.getSelectedObject() instanceof Robot){
-					System.out.println("YEE");
 					r = (Robot)myMap.getSelectedObject();
 
-					addComponent(new AlloyText("OIL:", 5, 10, 10));
-					AlloyText a = new AlloyText(r.getName().toUpperCase() + " ROBOT", 1, 10, 6);
-					AlloyText b = new AlloyText("SIZE " + r.getSize(), 1, 10, 26);
+					AlloyText a = new AlloyText(r.getName().toUpperCase() + " ROBOT", 1, 10, 136);
+					AlloyText b = new AlloyText("SIZE " + r.getSize(), 1, 10, 156);
 					addComponent(a);
 					addComponent(b);
 					myRobotComponents.add(a);
@@ -98,7 +95,6 @@ public class InformationPanelScreen extends ViewComponent{
 			}
 		}
 		else{
-			System.out.println("antiYEE");
 			for(ViewComponent v: myRobotComponents){
 				removeComponent(v);
 			}
@@ -150,7 +146,7 @@ public class InformationPanelScreen extends ViewComponent{
 	private void createBackground() {
 		if(background==null){
 		try {
-			myBackground = ImageIO.read(ScreenBuilder.class.getResource("/tiledatabackground.png"));
+			myBackground = ImageIO.read(ScreenBuilder.class.getResource("/informationpanelbackground.png"));
 			background = new Background(0,0,myBackground);
 		} catch (IOException e) {e.printStackTrace();}
 		}

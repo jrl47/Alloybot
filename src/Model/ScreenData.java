@@ -13,6 +13,8 @@ public class ScreenData {
 	public ScreenData(String i, List<ModelComponent> c){
 		id = i;
 		myComponents = c;
+		if(c==null)
+			myComponents = new ArrayList<ModelComponent>();
 		myAuxiliaryComponents = new ArrayList<ModelComponent>();
 	}
 	public void addAuxiliaryComponent(ModelComponent m){

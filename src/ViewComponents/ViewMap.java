@@ -14,7 +14,7 @@ import ModelComponents.RobotFactory;
 
 public class ViewMap extends ViewComponent implements InputSensitive{
 
-	public static final int WIDTH = 31;
+	public static final int WIDTH = 40;
 	public static final int HEIGHT = 27;
 	public static final int BORDER_WIDTH = 9;
 	
@@ -90,7 +90,6 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 					currentlySelectedObject = myViewMapObjects.get(((ModelMap)(myComponent)).getObject(((ModelMap)myComponent).getCurrentHighlightedCell().getX(),
 							((ModelMap)myComponent).getCurrentHighlightedCell().getY()));
 					currentlySelectedObject.getMapObject().select();
-					currentlySelectedObject.trigger(newX, newY);
 					return;
 				}
 			}

@@ -54,9 +54,6 @@ public class ViewRobot extends ViewMapObject{
 		if(movementCounter > 0){
 			return;
 		}
-		if(!myRobot.isSelected()){
-			loadPaths();
-		}
 		if(myRobot.movable()){
 			if(myPaths.containsKey(myMap.getCell(newX, newY)) && myPaths.get(myMap.getCell(newX, newY)).size()!=0){
 				currentPath = myPaths.get(myMap.getCell(newX, newY));
@@ -66,6 +63,7 @@ public class ViewRobot extends ViewMapObject{
 			}
 			myRobot.deselect();
 		}
+		myRobot.deselect();
 	}
 	public void draw(Graphics2D g, DeciduousTileManager manager, ViewMapAnimationHandler animation) {
 		if(myRobot.isSelected()){
