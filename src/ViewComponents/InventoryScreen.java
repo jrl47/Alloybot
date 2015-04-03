@@ -12,6 +12,7 @@ import Model.Model;
 import Model.OreData;
 import Model.State;
 import ModelComponents.ModelMap;
+import ModelComponents.Ore;
 import ModelComponents.ResourceManager;
 import ModelComponents.StateChangeButton;
 import View.ScreenBuilder;
@@ -29,6 +30,8 @@ public class InventoryScreen extends ViewComponent{
 	private boolean loaded;
 	private AlloyBorderedSelectionMenu myClass;
 	private State mySelectedOre;
+	private Ore myOreStats;
+	private List<StateChangeButton> myOreStateChanges;
 	public InventoryScreen(ModelMap m, int xx, int yy) {
 		super(null, xx, yy);
 		myMap = m;
@@ -38,13 +41,14 @@ public class InventoryScreen extends ViewComponent{
 		myState = new State("Back");
 		myState.setState("Back");
 		mySelectedOre = new State("null");
-		myState.setState("null");
+		mySelectedOre.setState("null");
 		myOil = new StateChangeButton(myState, "Oil");
 		myOre = new StateChangeButton(myState, "Ore");
 		myGems = new StateChangeButton(myState, "Gems");
 		myBack = new StateChangeButton(myState, "Back");
+		myOreStateChanges = new ArrayList<StateChangeButton>();
 		for(int i=0; i<21; i++){
-			
+			myOreStateChanges.add(new StateChangeButton(mySelectedOre, "" + i));
 		}
 		buildComponents();
 	}
@@ -88,11 +92,55 @@ public class InventoryScreen extends ViewComponent{
 		if(myClass.getSelectedIndex()==0){
 			for(int i=0; i<21; i++){
 				int l = OreData.getOreObject(i).getMyName().length() + 6;
-				addComponent(new AlloyBorderedButton(null, 190 + (i/7)*210, 30 + (20*counter), OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:" + myManager.getOre(i), 1));
+				addComponent(new AlloyBorderedButton(myOreStateChanges.get(i), 190 + (i/7)*210, 30 + (20*counter), OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:" + myManager.getOre(i), 1));
 				counter++;
 				if(counter==7)
 					counter=0;
 			}
+		}
+		if(mySelectedOre.getState().equals("null")){
+			if(myClass.getSelectedIndex()!=-1)
+				addComponent(new AlloyText("PLEASE SELECT AN ORE", 3, 190, 200));
+		}
+		else{
+			Ore myOreStats = null;
+			myOreStats = OreData.getOreObject(Integer.parseInt(mySelectedOre.getState()));
+			addComponent(new AlloyText(myOreStats.getMyName().toUpperCase(), 3, 190, 200));
+			
+			addComponent(new AlloyText("OIL EFFICIENCY:", 1, 170, 270));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyOil()+1), 1, "OIL EFFICIENCY:".length()*7 + 177, 270));
+			int length1 = "OIL EFFICIENCY:".length()*7 + 194 + Integer.toString(myOreStats.getMyOil()+1).length()*7 + 14;
+			
+			addComponent(new AlloyText("ORE EFFICIENCY:", 1, length1, 270));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyOre()+1), 1, "ORE EFFICIENCY:".length()*7 + 7 + length1, 270));
+			int length2 = length1 + "ORE EFFICIENCY".length()*7 + Integer.toString(myOreStats.getMyOre()+1).length()*7 + 14 + 14 + 14;
+			
+			addComponent(new AlloyText("GEM EFFICIENCY:", 1, length2, 270));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyGems()+1), 1, "GEM EFFICIENCY:".length()*7 + 7 + length2, 270));
+			
+			
+			addComponent(new AlloyText("DIVERSITY:", 1, 170, 290));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyDiversity()+1), 1, "DIVERSITY:".length()*7 + 177, 290));
+			length1 = "DIVERSITY:".length()*7 + 194 + Integer.toString(myOreStats.getMyDiversity()+1).length()*7 + 14;
+			
+			addComponent(new AlloyText("DISTANCE:", 1, length1, 290));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyDistance()+1), 1, "DISTANCE:".length()*7 + 7 + length1, 290));
+			length2 = length1 + "DISTANCE:".length()*7 + Integer.toString(myOreStats.getMyDistance()+1).length()*7 + 14 + 14 + 14;
+			
+			addComponent(new AlloyText("LUCK:", 1, length2, 290));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyLuck()+1), 1, "LUCK:".length()*7 + 7 + length2, 290));
+			
+		
+			addComponent(new AlloyText("POWER:", 1, 170, 310));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyPower()+1), 1, "POWER:".length()*7 + 177, 310));
+			length1 = "POWER:".length()*7 + 194 + Integer.toString(myOreStats.getMyPower()+1).length()*7 + 14;
+			
+			addComponent(new AlloyText("DURABILITY:", 1, length1, 310));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyDurability()+1), 1, "DURABILITY:".length()*7 + 7 + length1, 310));
+			length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(myOreStats.getMyDurability()+1).length()*7 + 14 + 14 + 14;
+			
+			addComponent(new AlloyText("MAGIC:", 1, length2, 310));
+			addComponent(new AlloyText(Integer.toString(myOreStats.getMyMagic()+1), 1, "MAGIC:".length()*7 + 7 + length2, 310));
 		}
 		addComponent(new AlloyBorderedButton(myBack, 658, 400, "BACK TO INVENTORY", 1));
 	}
@@ -137,9 +185,12 @@ public class InventoryScreen extends ViewComponent{
 			buildComponents();
 			loaded = true;
 		}
-		if((myState.getPreviousState()!=null && !myState.getState().equals(myState.getPreviousState()))|| myClass.getPrevIndex()!=myClass.getSelectedIndex()){
+		if((myState.getPreviousState()!=null && !myState.getState().equals(myState.getPreviousState())) || 
+				myClass.getPrevIndex()!=myClass.getSelectedIndex() ||
+				(mySelectedOre.getPreviousState()!=null && !mySelectedOre.getState().equals(mySelectedOre.getPreviousState()))){
 			myState.setState(myState.getState());
 			myClass.setIndex(myClass.getSelectedIndex());
+			mySelectedOre.setState(mySelectedOre.getState());
 			buildComponents();
 		}
 		myImage = new BufferedImage(800, 450, BufferedImage.TYPE_INT_ARGB);
