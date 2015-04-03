@@ -26,7 +26,9 @@ public class InventoryScreen extends ViewComponent{
 	private StateChangeButton myOre;
 	private StateChangeButton myGems;
 	private StateChangeButton myBack;
+	private boolean loaded;
 	private AlloyBorderedSelectionMenu myClass;
+	private State mySelectedOre;
 	public InventoryScreen(ModelMap m, int xx, int yy) {
 		super(null, xx, yy);
 		myMap = m;
@@ -34,10 +36,16 @@ public class InventoryScreen extends ViewComponent{
 		background = null;
 		createClassMenu();
 		myState = new State("Back");
+		myState.setState("Back");
+		mySelectedOre = new State("null");
+		myState.setState("null");
 		myOil = new StateChangeButton(myState, "Oil");
 		myOre = new StateChangeButton(myState, "Ore");
 		myGems = new StateChangeButton(myState, "Gems");
 		myBack = new StateChangeButton(myState, "Back");
+		for(int i=0; i<21; i++){
+			
+		}
 		buildComponents();
 	}
 
@@ -80,9 +88,7 @@ public class InventoryScreen extends ViewComponent{
 		if(myClass.getSelectedIndex()==0){
 			for(int i=0; i<21; i++){
 				int l = OreData.getOreObject(i).getMyName().length() + 6;
-				addComponent(new AlloyText(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1, 190 + (i/7)*210, 30 + (20*counter)));
-				s = myManager.getOre(i) + "";
-				addComponent(new AlloyText(s, 1, 190 + (i/7)*210 + l*7, 30 + (20*counter)));
+				addComponent(new AlloyBorderedButton(null, 190 + (i/7)*210, 30 + (20*counter), OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:" + myManager.getOre(i), 1));
 				counter++;
 				if(counter==7)
 					counter=0;
@@ -127,8 +133,13 @@ public class InventoryScreen extends ViewComponent{
 
 	@Override
 	public BufferedImage loadImage() {
-		if((myState.getPreviousState()!=null && !myState.getState().equals(myState.getPreviousState())) || (!myState.getState().equals("Back") && (Game.ticks % (Model.TICK_SCALAR /8))==0)){
+		if(!loaded){
+			buildComponents();
+			loaded = true;
+		}
+		if((myState.getPreviousState()!=null && !myState.getState().equals(myState.getPreviousState()))|| myClass.getPrevIndex()!=myClass.getSelectedIndex()){
 			myState.setState(myState.getState());
+			myClass.setIndex(myClass.getSelectedIndex());
 			buildComponents();
 		}
 		myImage = new BufferedImage(800, 450, BufferedImage.TYPE_INT_ARGB);

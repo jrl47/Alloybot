@@ -21,6 +21,7 @@ public class BorderedSelectionMenu extends ViewComponent{
 	private List<BorderedButton> allButtons;
 	private SelectionMenuTracker mySelectionTracker;
 	private SelectionMenuTracker myCurrentListTracker;
+	private List<SelectionMenuOption> myOptions;
 	private boolean singleWidth;
 	private int maxWidth;
 	private int maxHeight;
@@ -33,6 +34,7 @@ public class BorderedSelectionMenu extends ViewComponent{
 		super(null, xx, yy);
 		myButtons = new ArrayList<List<BorderedButton>>();
 		allButtons = new ArrayList<BorderedButton>();
+		myOptions = new ArrayList<SelectionMenuOption>();
 		mySize = size;
 		myFont = font;
 		myHoverFont = hoverFont;
@@ -48,8 +50,18 @@ public class BorderedSelectionMenu extends ViewComponent{
 		myData = data;
 		loadButtons();
 	}
+	public void setIndex(int i){
+		if(i==-1){
+			mySelectionTracker.setOption(null);
+			return;
+		}
+		mySelectionTracker.setOption(myOptions.get(i));
+	}
 	public int getSelectedIndex(){
 		return mySelectionTracker.getSelectedIndex();
+	}
+	public int getPrevIndex() {
+		return mySelectionTracker.getPrevIndex();
 	}
 	private void loadButtons() {
 		for(int i=0; i<myData.size(); i++){
@@ -77,7 +89,9 @@ public class BorderedSelectionMenu extends ViewComponent{
 						s = ' ' + s;
 					}
 				}
-				BorderedButton button = new BorderedButton(new SelectionMenuOption(mySelectionTracker, counter), 0, j*mySize*20+(mySize*20), s, mySize, myFont, myHoverFont, myBorder, myHoverBorder);
+				SelectionMenuOption option = new SelectionMenuOption(mySelectionTracker, counter);
+				myOptions.add(option);
+				BorderedButton button = new BorderedButton(option, 0, j*mySize*20+(mySize*20), s, mySize, myFont, myHoverFont, myBorder, myHoverBorder);
 				button.setSelectedFont(mySelectionFont);
 				counter++;
 				allButtons.add(button);
