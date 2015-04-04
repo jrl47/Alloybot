@@ -8,10 +8,12 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import Model.OreData;
+import Model.State;
 import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
 import ModelComponents.Robot;
+import ModelComponents.StateChangeButton;
 import View.ScreenBuilder;
 
 public class InformationPanelScreen extends ViewComponent{
@@ -24,28 +26,39 @@ public class InformationPanelScreen extends ViewComponent{
 	private AlloyBorderedButton myDeselectButton;
 	private AlloyBorderedButton myStopButton;
 	private AlloyBorderedButton myDestroyButton;
+	private AlloyBorderedButton myStatsButton;
+	private AlloyBorderedButton myBackButton;
 	private boolean needsButton;
+	private boolean needsBack;
 	private List<ViewComponent> myTileComponents;
 	private List<ViewComponent> myRobotComponents;
+	private List<ViewComponent> myStatComponents;
+	private State myState;
 	public InformationPanelScreen(ModelComponent c, ModelMap m, int xx, int yy){
 		super(c, xx, yy, 100, 300);
 		myMap = (ModelMap)m;
 		needsButton = true;
+		needsBack = true;
 		myMoveButton = null;
 		myMineButton = null;
 		myDeselectButton = null;
 		myStopButton = null;
 		myDestroyButton = null;
+		myStatsButton = null;
+		myStatsButton = null;
 		createBackground();
 		myTileComponents = new ArrayList<ViewComponent>();
 		myRobotComponents = new ArrayList<ViewComponent>();
+		myStatComponents = new ArrayList<ViewComponent>();
+		myState = new State("main");
 		try {
-			addComponent(new AlloyText("TILE RESOURCES", 1, 10, 10));
 			myMoveButton = new AlloyBorderedButton(null, 10, 176, "MOVE", 1);
 			myMineButton = new AlloyBorderedButton(null, 10, 196, "MINE", 1);
 			myDeselectButton = new AlloyBorderedButton(null, 10, 216, "DESELECT", 1);
 			myStopButton = new AlloyBorderedButton(null, 10, 236, "STOP", 1);
 			myDestroyButton = new AlloyBorderedButton(null, 10, 256, "DESTROY", 1);
+			myStatsButton = new AlloyBorderedButton(new StateChangeButton(myState, "stats"), 10, 276, "STATS", 1);
+			myBackButton = new AlloyBorderedButton(new StateChangeButton(myState, "main"), 38, 375, "BACK", 2);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,11 +68,41 @@ public class InformationPanelScreen extends ViewComponent{
 	public BufferedImage loadImage() {
 		myImage = new BufferedImage(myBackground.getWidth(), myBackground.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		try{
-			createTileInfo();
-			createRobotActionInfo();
+			if(myState.getState().equals("main")){
+				for(ViewComponent v: myStatComponents){
+					removeComponent(v);
+				}
+				removeComponent(myBackButton);
+				needsBack = true;
+				createTileInfo();
+				createRobotActionInfo();
+			}
+			else{
+				needsButton = true;
+				createRobotStats();
+			}
 		} catch(IOException e) {e.printStackTrace();}
 		drawComponents();
 		return myImage;
+	}
+
+	private void createRobotStats() throws IOException {
+		for(ViewComponent v: myTileComponents){
+			removeComponent(v);
+		}
+		for(ViewComponent v: myRobotComponents){
+			removeComponent(v);
+		}
+		for(ViewComponent v: myStatComponents){
+			removeComponent(v);
+		}
+		if(needsBack){
+			addComponent(myBackButton);
+			needsBack = false;
+		}
+		AlloyText a = new AlloyText("ROBOT STATS", 1, 10, 10);
+		myTileComponents.add(a);
+		addComponent(a);
 	}
 
 	private void createRobotActionInfo() throws IOException {
@@ -90,6 +133,9 @@ public class InformationPanelScreen extends ViewComponent{
 					myDestroyButton.setComponent(r.getButtons().get(4));
 					addComponent(myDestroyButton);
 					myRobotComponents.add(myDestroyButton);
+
+					addComponent(myStatsButton);
+					myRobotComponents.add(myStatsButton);
 					needsButton = false;
 				}
 			}
@@ -115,7 +161,10 @@ public class InformationPanelScreen extends ViewComponent{
 			currentCell = ((ModelMap)myComponent).getSelectedCell();
 		}
 		if(currentCell!=null){
-			AlloyText a = new AlloyText("OIL:", 1, 10, 30);
+			AlloyText a = new AlloyText("TILE RESOURCES", 1, 10, 10);
+			myTileComponents.add(a);
+			addComponent(a);
+			a = new AlloyText("OIL:", 1, 10, 30);
 			myTileComponents.add(a);
 			addComponent(a);
 			String s = currentCell.getOil() + "";

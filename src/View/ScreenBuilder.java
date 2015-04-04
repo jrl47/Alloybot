@@ -12,6 +12,7 @@ import ModelComponents.ModelButton;
 import ModelComponents.ModelMap;
 import ModelComponents.ResourceManager;
 import ModelComponents.RobotCreationButton;
+import ModelComponents.StateChangeButton;
 import ViewComponents.AlloyBorderedButton;
 import ViewComponents.AlloyBorderedText;
 import ViewComponents.AlloyText;
@@ -94,6 +95,14 @@ public class ScreenBuilder extends ViewComponent{
 		try {
 			myComponents.add(new InventoryScreen((ModelMap)(myData.getAuxiliaryComponents().get(0)), 0, 0));
 			myComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 678, 425, "BACK TO MAP", 1));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void buildStats(){
+		try {
+			myComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/gameover.png"))));
+			myComponents.add(new AlloyText("GAME OVER", 3, 10, 10));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
