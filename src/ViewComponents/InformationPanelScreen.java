@@ -12,6 +12,7 @@ import Model.State;
 import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
+import ModelComponents.Ore;
 import ModelComponents.Robot;
 import ModelComponents.StateChangeButton;
 import View.ScreenBuilder;
@@ -30,6 +31,7 @@ public class InformationPanelScreen extends ViewComponent{
 	private AlloyBorderedButton myBackButton;
 	private boolean needsButton;
 	private boolean needsBack;
+	private boolean needsStats;
 	private List<ViewComponent> myTileComponents;
 	private List<ViewComponent> myRobotComponents;
 	private List<ViewComponent> myStatComponents;
@@ -39,6 +41,7 @@ public class InformationPanelScreen extends ViewComponent{
 		myMap = (ModelMap)m;
 		needsButton = true;
 		needsBack = true;
+		needsStats = true;
 		myMoveButton = null;
 		myMineButton = null;
 		myDeselectButton = null;
@@ -58,7 +61,7 @@ public class InformationPanelScreen extends ViewComponent{
 			myStopButton = new AlloyBorderedButton(null, 10, 236, "STOP", 1);
 			myDestroyButton = new AlloyBorderedButton(null, 10, 256, "DESTROY", 1);
 			myStatsButton = new AlloyBorderedButton(new StateChangeButton(myState, "stats"), 10, 276, "STATS", 1);
-			myBackButton = new AlloyBorderedButton(new StateChangeButton(myState, "main"), 38, 375, "BACK", 2);
+			myBackButton = new AlloyBorderedButton(new StateChangeButton(myState, "main"), 7, 405, "BACK", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -74,6 +77,7 @@ public class InformationPanelScreen extends ViewComponent{
 				}
 				removeComponent(myBackButton);
 				needsBack = true;
+				needsStats = true;
 				createTileInfo();
 				createRobotActionInfo();
 			}
@@ -93,16 +97,109 @@ public class InformationPanelScreen extends ViewComponent{
 		for(ViewComponent v: myRobotComponents){
 			removeComponent(v);
 		}
-		for(ViewComponent v: myStatComponents){
-			removeComponent(v);
-		}
 		if(needsBack){
 			addComponent(myBackButton);
 			needsBack = false;
 		}
-		AlloyText a = new AlloyText("ROBOT STATS", 1, 10, 10);
-		myTileComponents.add(a);
-		addComponent(a);
+		
+		Robot r;
+		if(myMap.getSelectedObject()!=null){
+			if(needsStats){
+				if(myMap.getSelectedObject() instanceof Robot){
+					r = (Robot)myMap.getSelectedObject();
+
+					AlloyText a = new AlloyText(r.getName().toUpperCase() + " ROBOT", 1, 10, 10);
+					AlloyText b = new AlloyText("SIZE " + r.getSize(), 1, 10, 30);
+					addComponent(a);
+					addComponent(b);
+					myStatComponents.add(a);
+					myStatComponents.add(b);
+					
+					Ore ore = r.getOre();
+					int size = r.getSize();
+					
+					a = new AlloyText("OIL EFFICIENCY:", 1, 10, 50);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyOil(), size)), 1, 10, 70);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					a = new AlloyText("ORE EFFICIENCY:", 1, 10, 90);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyOre(), size)), 1, 10, 110);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					a = new AlloyText("GEM EFFICIENCY:", 1, 10, 130);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyGems(), size)), 1, 10, 150);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					
+					a = new AlloyText("DIVERSITY:", 1, 10, 170);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyDiversity(), size)), 1, 10, 190);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					a = new AlloyText("DISTANCE:", 1, 10, 210);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyDistance(), size)), 1, 10, 230);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					a = new AlloyText("LUCK:", 1, 10, 250);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyLuck(), size)), 1, 10, 270);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+				
+					a = new AlloyText("POWER:", 1, 10, 290);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyPower(), size)), 1, 10, 310);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					a = new AlloyText("DURABILITY:", 1, 10, 330);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyDurability(), size)), 1, 10, 350);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					a = new AlloyText("MAGIC:", 1, 10, 370);
+					myStatComponents.add(a);
+					addComponent(a);
+					a = new AlloyText(Integer.toString(processStat(ore.getMyMagic(), size)), 1, 10, 390);
+					myStatComponents.add(a);
+					addComponent(a);
+					
+					needsStats = false;
+				}
+			}
+		}
+		else{
+			for(ViewComponent v: myStatComponents){
+				removeComponent(v);
+			}
+			myState.setState("main");
+			needsStats = true;
+		}
+	}
+
+	public int processStat(int base, int size){
+		int std = (int)Math.pow(2, base);
+		int actualStat = (int) (Math.pow(size, size)*std*size);
+		return actualStat;
 	}
 
 	private void createRobotActionInfo() throws IOException {
@@ -206,5 +303,7 @@ public class InformationPanelScreen extends ViewComponent{
 	public BufferedImage loadHover() {
 		return loadImage();
 	}
+	
+	
 	
 }
