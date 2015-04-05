@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import Controller.Game;
+import Model.Model;
 
 
 public class ResourceManager extends ModelComponent{
@@ -32,33 +33,38 @@ public class ResourceManager extends ModelComponent{
 		return myGems;
 	}
 	public void setOil(int oil) {
-		if(currentTick!=Game.ticks){
+		if(currentTick!=Game.ticks - (Game.ticks % Model.TICK_SCALAR)){
 			myOilDif = 0;
 			myOreDif.clear();
 			myGemDif = 0;
 			currentTick = Game.ticks;
 		}
-		myOilDif = oil - myOil;
+		myOilDif += oil - myOil;
 		myOil = oil;
 	}
 	public void setOre(int ore, int index) {
-		if(currentTick!=Game.ticks){
+		if(currentTick!=Game.ticks - (Game.ticks % Model.TICK_SCALAR)){
 			myOilDif = 0;
 			myOreDif.clear();
 			myGemDif = 0;
 			currentTick = Game.ticks;
 		}
-		myOreDif.put(index, ore - myOre[index]);
+		if(!myOreDif.containsKey(index)){
+			myOreDif.put(index, ore - myOre[index]);
+		}
+		else{
+			myOreDif.put(index, myOreDif.get(index) +  ore - myOre[index]);
+		}
 		myOre[index] = ore;
 	}
 	public void setGems(int gems) {
-		if(currentTick!=Game.ticks){
+		if(currentTick!=Game.ticks - (Game.ticks % Model.TICK_SCALAR)){
 			myOilDif = 0;
 			myOreDif.clear();
 			myGemDif = 0;
 			currentTick = Game.ticks;
 		}
-		myGemDif = gems - myGems;
+		myGemDif += gems - myGems;
 		myGems = gems;
 	}
 	public int getOilDif(){

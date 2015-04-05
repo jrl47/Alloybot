@@ -104,9 +104,9 @@ public class InformationPanelScreen extends ViewComponent{
 		AlloyText a = null;
 		if(myResources.getOilDif()!=0){
 			if(myResources.getOilDif()>0)
-				a = new AlloyText("GOT " + myResources.getOilDif() + " OIL", 1, 10, 296);
+				a = new AlloyText("GOT " + myResources.getOilDif() + " OIL", 1, 10, 298);
 			if(myResources.getOilDif()<0)
-				a = new AlloyText("LOST " + -1*myResources.getOilDif() + " OIL", 1, 10, 296);
+				a = new AlloyText("LOST " + -1*myResources.getOilDif() + " OIL", 1, 10, 298);
 			myGainComponents.add(a);
 			addComponent(a);
 		}
@@ -115,21 +115,21 @@ public class InformationPanelScreen extends ViewComponent{
 		for(Integer i: myResources.getOreDif().keySet()){
 			Ore o = OreData.getOreObject(i);
 			if(map.get(i)>0){
-				a = new AlloyText("GOT " + map.get(i), 1, 10, 316 + 20*counter);
+				a = new AlloyText("GOT " + map.get(i), 1, 10, 318 + 20*counter);
 				myGainComponents.add(a);
 				addComponent(a);
 				counter++;
-				a = new AlloyText("GOT " + o.getMyName().toUpperCase() + " ORE", 1, 10, 316 + 20*counter);
+				a = new AlloyText(o.getMyName().toUpperCase() + " ORE", 1, 10, 318 + 20*counter);
 				myGainComponents.add(a);
 				addComponent(a);
 				counter++;
 			}
 			if(map.get(i)<0){
-				a = new AlloyText("LOST " + -1*map.get(i), 1, 10, 316 + 20*counter);
+				a = new AlloyText("LOST " + -1*map.get(i), 1, 10, 318 + 20*counter);
 				myGainComponents.add(a);
 				addComponent(a);
 				counter++;
-				a = new AlloyText(o.getMyName().toUpperCase() + " ORE", 1, 10, 316 + 20*counter);
+				a = new AlloyText(o.getMyName().toUpperCase() + " ORE", 1, 10, 318 + 20*counter);
 				myGainComponents.add(a);
 				addComponent(a);
 				counter++;
@@ -139,9 +139,9 @@ public class InformationPanelScreen extends ViewComponent{
 		}
 		if(myResources.getGemDif()!=0){
 			if(myResources.getGemDif()>0)
-				a = new AlloyText("GOT " + myResources.getGemDif() + " GEMS", 1, 10, 316 + 20*counter);
+				a = new AlloyText("GOT " + myResources.getGemDif() + " GEMS", 1, 10, 318 + 20*counter);
 			if(myResources.getGemDif()<0)
-				a = new AlloyText("LOST " + -1*myResources.getGemDif() + " GEMS", 1, 10, 316 + 20*counter);
+				a = new AlloyText("LOST " + -1*myResources.getGemDif() + " GEMS", 1, 10, 318 + 20*counter);
 			myGainComponents.add(a);
 			addComponent(a);
 		}

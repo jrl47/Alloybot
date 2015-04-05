@@ -28,7 +28,7 @@ public class View {
 	private String state;
 	public View(InputListener l){
 		Dimension size = new Dimension((int)(width*scale), (int)(height*scale));
-		myScreen = new ScreenBuilder(null, null);
+		myScreen = new ScreenBuilder();
 		canvas = new Canvas();
 		canvas.setPreferredSize(size);
 		canvas.addMouseListener(l);
@@ -51,7 +51,7 @@ public class View {
     		return;
     	}
     	if(!state.equals(data.getID())){
-    		myScreen = new ScreenBuilder(data, image);
+    		myScreen.initialize(data, image);
     		state = data.getID();
     	}
     	myScreen.drawComponents();
