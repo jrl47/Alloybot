@@ -2,6 +2,7 @@ package ModelComponents;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import Controller.Game;
 import Model.Model;
@@ -24,6 +25,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	private Ore myOre;
 	private int mySize;
 	private String myName;
+	private Random myRandom;
 	public Robot(int oreType, int size, ModelMap m){
 		super(false);
 		myManagerButtons = new ArrayList<ModelButton>();
@@ -39,6 +41,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 		durability = processStat(myOre.getMyDurability(), size);
 		magic = processStat(myOre.getMyMagic(), size);
 		myName = myOre.getMyName();
+		myRandom = new Random();
 		addButton(new RobotMoveButton(this));
 		addButton(new RobotEnableButton(this));
 		addButton(new RobotDeselectButton(this));
@@ -47,7 +50,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	}
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
-			myResources.setOil(myResources.getOil() + myLocation.getOil()*oilEfficiency);
+			myResources.setOil(myResources.getOil() + (myLocation.getOil() + myRandom.nextInt(9) - 4)*oilEfficiency);
 			myLocation.incrementOre(myResources, oreEfficiency);
 //			for(int i=0; i<OreData.NUMBER_OF_ORES; i++){
 //				myResources.setOre(myResources.getOre(i) + myLocation.getOre(i)*oreEfficiency, i);

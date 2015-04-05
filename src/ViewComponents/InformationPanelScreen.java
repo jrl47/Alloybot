@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -13,6 +14,7 @@ import ModelComponents.MapCell;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
 import ModelComponents.Ore;
+import ModelComponents.ResourceManager;
 import ModelComponents.Robot;
 import ModelComponents.StateChangeButton;
 import View.ScreenBuilder;
@@ -22,6 +24,7 @@ public class InformationPanelScreen extends ViewComponent{
 	private BufferedImage myBackground;
 	private Background background;
 	private ModelMap myMap;
+	private ResourceManager myResources;
 	private AlloyBorderedButton myMoveButton;
 	private AlloyBorderedButton myMineButton;
 	private AlloyBorderedButton myDeselectButton;
@@ -34,11 +37,13 @@ public class InformationPanelScreen extends ViewComponent{
 	private boolean needsStats;
 	private List<ViewComponent> myTileComponents;
 	private List<ViewComponent> myRobotComponents;
+	private List<ViewComponent> myGainComponents;
 	private List<ViewComponent> myStatComponents;
 	private State myState;
 	public InformationPanelScreen(ModelComponent c, ModelMap m, int xx, int yy){
 		super(c, xx, yy, 100, 300);
-		myMap = (ModelMap)m;
+		myMap = m;
+		myResources = myMap.getResources();
 		needsButton = true;
 		needsBack = true;
 		needsStats = true;
@@ -52,6 +57,7 @@ public class InformationPanelScreen extends ViewComponent{
 		createBackground();
 		myTileComponents = new ArrayList<ViewComponent>();
 		myRobotComponents = new ArrayList<ViewComponent>();
+		myGainComponents = new ArrayList<ViewComponent>();
 		myStatComponents = new ArrayList<ViewComponent>();
 		myState = new State("main");
 		try {
@@ -80,6 +86,7 @@ public class InformationPanelScreen extends ViewComponent{
 				needsStats = true;
 				createTileInfo();
 				createRobotActionInfo();
+				createGainInfo();
 			}
 			else{
 				needsButton = true;
@@ -90,11 +97,64 @@ public class InformationPanelScreen extends ViewComponent{
 		return myImage;
 	}
 
+	private void createGainInfo() throws IOException {
+		for(ViewComponent v: myGainComponents){
+			removeComponent(v);
+		}
+		AlloyText a = null;
+		if(myResources.getOilDif()!=0){
+			if(myResources.getOilDif()>0)
+				a = new AlloyText("GOT " + myResources.getOilDif() + " OIL", 1, 10, 296);
+			if(myResources.getOilDif()<0)
+				a = new AlloyText("LOST " + -1*myResources.getOilDif() + " OIL", 1, 10, 296);
+			myGainComponents.add(a);
+			addComponent(a);
+		}
+		int counter = 0;
+		Map<Integer, Integer> map = myResources.getOreDif();
+		for(Integer i: myResources.getOreDif().keySet()){
+			Ore o = OreData.getOreObject(i);
+			if(map.get(i)>0){
+				a = new AlloyText("GOT " + map.get(i), 1, 10, 316 + 20*counter);
+				myGainComponents.add(a);
+				addComponent(a);
+				counter++;
+				a = new AlloyText("GOT " + o.getMyName().toUpperCase() + " ORE", 1, 10, 316 + 20*counter);
+				myGainComponents.add(a);
+				addComponent(a);
+				counter++;
+			}
+			if(map.get(i)<0){
+				a = new AlloyText("LOST " + -1*map.get(i), 1, 10, 316 + 20*counter);
+				myGainComponents.add(a);
+				addComponent(a);
+				counter++;
+				a = new AlloyText(o.getMyName().toUpperCase() + " ORE", 1, 10, 316 + 20*counter);
+				myGainComponents.add(a);
+				addComponent(a);
+				counter++;
+			}
+			
+			counter++;
+		}
+		if(myResources.getGemDif()!=0){
+			if(myResources.getGemDif()>0)
+				a = new AlloyText("GOT " + myResources.getGemDif() + " GEMS", 1, 10, 316 + 20*counter);
+			if(myResources.getGemDif()<0)
+				a = new AlloyText("LOST " + -1*myResources.getGemDif() + " GEMS", 1, 10, 316 + 20*counter);
+			myGainComponents.add(a);
+			addComponent(a);
+		}
+	}
+
 	private void createRobotStats() throws IOException {
 		for(ViewComponent v: myTileComponents){
 			removeComponent(v);
 		}
 		for(ViewComponent v: myRobotComponents){
+			removeComponent(v);
+		}
+		for(ViewComponent v: myGainComponents){
 			removeComponent(v);
 		}
 		if(needsBack){
