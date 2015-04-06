@@ -20,6 +20,10 @@ public class ViewRobotFactory extends ViewMapObject{
 	@Override
 	public void draw(Graphics2D g, DeciduousTileManager manager,
 			ViewMapAnimationHandler animation) {
+		if(myMapObject.isSelected()){
+			myMapObject.deselect();
+			trigger(0,0);
+		}
 		g.drawImage(manager.generateRobotFactory(), myMapObject.getX()*16 - animation.getOriginX(),
 				myMapObject.getY()*16 - animation.getOriginY(), null);
 	}

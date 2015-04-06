@@ -140,6 +140,7 @@ public class ScreenBuilder extends ViewComponent{
 				e.printStackTrace();
 			}
 		}
+		((InventoryScreen)myInventoryComponents.get(0)).reset();
 		for(ViewComponent v: myInventoryComponents){
 			addComponent(v);
 //			myComponents.add(v);

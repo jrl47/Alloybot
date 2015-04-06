@@ -50,7 +50,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	}
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
-			myResources.setOil(myResources.getOil() + (myLocation.getOil() + myRandom.nextInt(9) - 4)*oilEfficiency);
+			myResources.setOil(myResources.getOil() + (myLocation.getOil() + myRandom.nextInt(15) - 7)*oilEfficiency);
 			myLocation.incrementOre(myResources, oreEfficiency);
 //			for(int i=0; i<OreData.NUMBER_OF_ORES; i++){
 //				myResources.setOre(myResources.getOre(i) + myLocation.getOre(i)*oreEfficiency, i);

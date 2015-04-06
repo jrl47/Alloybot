@@ -14,6 +14,9 @@ public class ResourceManager extends ModelComponent{
 	private int[] myOre;
 	private int myGems; 
 	private long currentTick;
+	private int myOldOilDif;
+	private Map<Integer, Integer> myOldOreDif;
+	private int myOldGemDif;
 	private int myOilDif;
 	private Map<Integer, Integer> myOreDif;
 	private int myGemDif;
@@ -21,6 +24,7 @@ public class ResourceManager extends ModelComponent{
 		myOil = 150000;
 		myOre = new int[100];
 		myGems = 1;
+		myOldOreDif = new HashMap<Integer, Integer>();
 		myOreDif = new HashMap<Integer, Integer>();
 	}
 	public int getOil() {
@@ -33,22 +37,12 @@ public class ResourceManager extends ModelComponent{
 		return myGems;
 	}
 	public void setOil(int oil) {
-		if(currentTick!=Game.ticks - (Game.ticks % Model.TICK_SCALAR)){
-			myOilDif = 0;
-			myOreDif.clear();
-			myGemDif = 0;
-			currentTick = Game.ticks;
-		}
+		updateTick();
 		myOilDif += oil - myOil;
 		myOil = oil;
 	}
 	public void setOre(int ore, int index) {
-		if(currentTick!=Game.ticks - (Game.ticks % Model.TICK_SCALAR)){
-			myOilDif = 0;
-			myOreDif.clear();
-			myGemDif = 0;
-			currentTick = Game.ticks;
-		}
+		updateTick();
 		if(!myOreDif.containsKey(index)){
 			myOreDif.put(index, ore - myOre[index]);
 		}
@@ -58,23 +52,35 @@ public class ResourceManager extends ModelComponent{
 		myOre[index] = ore;
 	}
 	public void setGems(int gems) {
-		if(currentTick!=Game.ticks - (Game.ticks % Model.TICK_SCALAR)){
-			myOilDif = 0;
-			myOreDif.clear();
-			myGemDif = 0;
-			currentTick = Game.ticks;
-		}
+		updateTick();
 		myGemDif += gems - myGems;
 		myGems = gems;
 	}
+	private void updateTick() {
+		if(currentTick!=Game.ticks - (Game.ticks % Model.TICK_SCALAR)){
+			myOldOilDif = myOilDif;
+			myOilDif = 0;
+			myOldOreDif.clear();
+			for(int i : myOreDif.keySet()){
+				myOldOreDif.put(i, myOreDif.get(i));
+			}
+			myOreDif.clear();
+			myOldGemDif = myGemDif;
+			myGemDif = 0;
+			currentTick = Game.ticks - (Game.ticks % Model.TICK_SCALAR);
+		}
+	}
 	public int getOilDif(){
-		return myOilDif;
+		updateTick();
+		return myOldOilDif;
 	}
 	public Map<Integer, Integer> getOreDif(){
-		return myOreDif;
+		updateTick();
+		return myOldOreDif;
 	}
 	public int getGemDif(){
-		return myGemDif;
+		updateTick();
+		return myOldGemDif;
 	}
 	@Override
 	public void step() {

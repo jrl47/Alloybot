@@ -74,6 +74,9 @@ public class InventoryScreen extends ViewComponent{
 		}
 		catch(IOException e) {e.printStackTrace();}
 	}
+	public void reset() {
+		myState.setState("Back");
+	}
 
 	private void loadOilMenu() throws IOException {
 		addComponent(new AlloyText("OIL:", 5, 10, 10));
