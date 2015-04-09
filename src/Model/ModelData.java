@@ -20,6 +20,7 @@ import ModelComponents.RobotEnableButton;
 import ModelComponents.RobotFactory;
 import ModelComponents.RobotMoveButton;
 import ModelComponents.RobotStopButton;
+import ModelComponents.SmeltButton;
 import ModelComponents.StateChangeButton;
 
 public class ModelData {
@@ -29,6 +30,7 @@ public class ModelData {
 	public static final String FACTORY_STATE = "Factory";
 	public static final String ROBOT_CREATION_STATE = "RobotMake";
 	public static final String INVENTORY_STATE = "Inventory";
+	public static final String SMELT_STATE = "Smelt";
 	
 	private HashMap<String, ScreenData> screens;
 	private State state;
@@ -50,6 +52,7 @@ public class ModelData {
 		loadFactory();
 		loadRobotMake();
 		loadInventory();
+		loadSmelt();
 	}
 
 	private void makeModelMap() {
@@ -98,6 +101,17 @@ public class ModelData {
 		s.addAuxiliaryComponent(myMap);
 		screens.put(INVENTORY_STATE, s);
 	}
+	
+	private void loadSmelt() {
+		List<ModelComponent> smeltComp = new ArrayList<ModelComponent>();
+		smeltComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
+		smeltComp.add(manager);
+		smeltComp.add(new SmeltButton());
+		myComponents.addAll(smeltComp);
+		ScreenData s = new ScreenData(SMELT_STATE, smeltComp);
+		s.addAuxiliaryComponent(myMap);
+		screens.put(SMELT_STATE, s);
+	}
 
 	private void loadStart() {
 		List<ModelComponent> startComp = new ArrayList<ModelComponent>();
@@ -109,6 +123,7 @@ public class ModelData {
 	private void loadFactory() {
 		List<ModelComponent> factoryComp = new ArrayList<ModelComponent>();
 		factoryComp.add(new StateChangeButton(state, ROBOT_CREATION_STATE));
+		factoryComp.add(new StateChangeButton(state, SMELT_STATE));
 		factoryComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
 		myComponents.addAll(factoryComp);
 		screens.put(FACTORY_STATE, new ScreenData(FACTORY_STATE, factoryComp));

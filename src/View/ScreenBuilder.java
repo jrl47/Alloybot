@@ -14,6 +14,7 @@ import ModelComponents.ModelButton;
 import ModelComponents.ModelMap;
 import ModelComponents.ResourceManager;
 import ModelComponents.RobotCreationButton;
+import ModelComponents.SmeltButton;
 import ModelComponents.StateChangeButton;
 import ViewComponents.AlloyBorderedButton;
 import ViewComponents.AlloyBorderedText;
@@ -23,6 +24,7 @@ import ViewComponents.FactoryScreen;
 import ViewComponents.InformationPanelScreen;
 import ViewComponents.InventoryScreen;
 import ViewComponents.RobotCreationResourceScreen;
+import ViewComponents.SmeltScreen;
 import ViewComponents.ViewComponent;
 import ViewComponents.ViewMap;
 
@@ -35,6 +37,7 @@ public class ScreenBuilder extends ViewComponent{
 	private List<ViewComponent> myFactoryComponents;
 	private List<ViewComponent> myRobotMakeComponents;
 	private List<ViewComponent> myInventoryComponents;
+	private List<ViewComponent> mySmeltComponents;
 	public ScreenBuilder() {
 		super(null, 0, 0);
 	}
@@ -87,7 +90,8 @@ public class ScreenBuilder extends ViewComponent{
 				myFactoryComponents = new ArrayList<ViewComponent>();
 				myFactoryComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
 				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 240, 140, "BUILD ROBOT", 4));
-				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(1), 698, 425, "BACK TO MAP", 1));
+				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(1), 270, 240, "SMELT ORE", 4));
+				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 698, 425, "BACK TO MAP", 1));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -144,6 +148,24 @@ public class ScreenBuilder extends ViewComponent{
 			}
 		}
 		for(ViewComponent v: myRobotMakeComponents){
+			addComponent(v);
+//			myComponents.add(v);
+		}
+	}
+	
+	public void buildSmelt(){
+		if(mySmeltComponents==null){
+			try {
+				mySmeltComponents = new ArrayList<ViewComponent>();
+				mySmeltComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
+				mySmeltComponents.add(new SmeltScreen((ResourceManager) myData.getComponents().get(1),
+						(SmeltButton) myData.getComponents().get(2), 0, 0));
+				mySmeltComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 698, 425, "BACK TO MAP", 1));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		for(ViewComponent v: mySmeltComponents){
 			addComponent(v);
 //			myComponents.add(v);
 		}
