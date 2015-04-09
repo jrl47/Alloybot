@@ -26,6 +26,7 @@ public class ModelData {
 	public static final String START_MENU_STATE = "Start";
 	public static final String GAME_OVER_STATE = "End";
 	public static final String MAP_EXPLORATION_STATE = "Map";
+	public static final String FACTORY_STATE = "Factory";
 	public static final String ROBOT_CREATION_STATE = "RobotMake";
 	public static final String INVENTORY_STATE = "Inventory";
 	
@@ -46,6 +47,7 @@ public class ModelData {
 		loadStart();
 		loadMap();
 		loadEnd();
+		loadFactory();
 		loadRobotMake();
 		loadInventory();
 	}
@@ -102,6 +104,14 @@ public class ModelData {
 		startComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
 		myComponents.addAll(startComp);
 		screens.put(START_MENU_STATE, new ScreenData(START_MENU_STATE, startComp));
+	}
+	
+	private void loadFactory() {
+		List<ModelComponent> factoryComp = new ArrayList<ModelComponent>();
+		factoryComp.add(new StateChangeButton(state, ROBOT_CREATION_STATE));
+		factoryComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
+		myComponents.addAll(factoryComp);
+		screens.put(FACTORY_STATE, new ScreenData(FACTORY_STATE, factoryComp));
 	}
 
 	public Set<ModelComponent> getComponents() {

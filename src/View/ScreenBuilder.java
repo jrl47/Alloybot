@@ -19,6 +19,7 @@ import ViewComponents.AlloyBorderedButton;
 import ViewComponents.AlloyBorderedText;
 import ViewComponents.AlloyText;
 import ViewComponents.Background;
+import ViewComponents.FactoryScreen;
 import ViewComponents.InformationPanelScreen;
 import ViewComponents.InventoryScreen;
 import ViewComponents.RobotCreationResourceScreen;
@@ -31,6 +32,7 @@ public class ScreenBuilder extends ViewComponent{
 	private List<ViewComponent> myStartComponents;
 	private List<ViewComponent> myEndComponents;
 	private List<ViewComponent> myMapComponents;
+	private List<ViewComponent> myFactoryComponents;
 	private List<ViewComponent> myRobotMakeComponents;
 	private List<ViewComponent> myInventoryComponents;
 	public ScreenBuilder() {
@@ -75,6 +77,22 @@ public class ScreenBuilder extends ViewComponent{
 			}
 		}
 		for(ViewComponent v: myStartComponents){
+			addComponent(v);
+//			myComponents.add(v);
+		}
+	}
+	public void buildFactory(){
+		if(myFactoryComponents==null){
+			try {
+				myFactoryComponents = new ArrayList<ViewComponent>();
+				myFactoryComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
+				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 240, 140, "BUILD ROBOT", 4));
+				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(1), 698, 425, "BACK TO MAP", 1));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		for(ViewComponent v: myFactoryComponents){
 			addComponent(v);
 //			myComponents.add(v);
 		}

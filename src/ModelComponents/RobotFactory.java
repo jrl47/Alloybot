@@ -14,7 +14,7 @@ public class RobotFactory extends MapCellObject{
 
 	}
 	public void respond() {
-		myOldState.setState(ModelData.ROBOT_CREATION_STATE);
+		myOldState.setState(ModelData.FACTORY_STATE);
 	}
 
 }
