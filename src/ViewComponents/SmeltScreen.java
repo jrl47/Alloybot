@@ -18,29 +18,25 @@ import ModelComponents.SmeltButton;
 public class SmeltScreen extends ViewComponent{
 
 	private ResourceManager myManager;
-	private ModelMap myMap;
 	private AlloyBorderedSelectionMenu myOreSelection;
-	private AlloyBorderedSelectionMenu mySizeSelection;
-	private AlloyBorderedButton myCreationButton;
+	private AlloyBorderedSelectionMenu myAmountSelection;
+	private AlloyBorderedButton mySmeltButton;
 	private int myOreIndex;
-	private int mySizeIndex;
+	private int myAmountIndex;
 	private boolean loaded;
 
 	public SmeltScreen(ResourceManager resourceManager,
 			SmeltButton smeltButton, int i, int j) {
 		super(null, i, j, 800, 450);
 		myManager = resourceManager;
-//		myMap = map;
-		myMap = null;
-		myCreationButton = null;
-//		try {
-//			myCreationButton = new AlloyBorderedButton(creationButton, 10, 90, "CREATE ROBOT", 2);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		mySmeltButton = null;
+		try {
+			mySmeltButton = new AlloyBorderedButton(smeltButton, 10, 90, "SMELT!", 2);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		createOreMenu();
-		createSizeMenu();
-		// TODO Auto-generated constructor stub
+		createAmountMenu();
 	}
 
 	private void createOreMenu() {
@@ -60,11 +56,11 @@ public class SmeltScreen extends ViewComponent{
 		myOreSelection.loadSelection(menuStrings);
 		myComponents.add(myOreSelection);
 	}
-
-	private void createSizeMenu() {
-		mySizeSelection = null;
+	
+	private void createAmountMenu() {
+		myAmountSelection = null;
 		try {
-			mySizeSelection = new AlloyBorderedSelectionMenu(570, 26, 1);
+			myAmountSelection = new AlloyBorderedSelectionMenu(570, 26, 1);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -79,12 +75,13 @@ public class SmeltScreen extends ViewComponent{
 		menuStrings.get(1).add("SIZE 5 (3125 ORE)");
 		menuStrings.get(1).add("SIZE 6 (46656 ORE)");
 		menuStrings.get(1).add("SIZE 7 (823543 ORE)");
-		mySizeSelection.loadSelection(menuStrings);
-		myComponents.add(mySizeSelection);
+		myAmountSelection.loadSelection(menuStrings);
+		myComponents.add(myAmountSelection);
 	}
+
 	@Override
 	public BufferedImage loadImage() {
-		if(((RobotCreationButton) myCreationButton.getComponent()).wasTriggered()){
+		if(((SmeltButton) mySmeltButton.getComponent()).wasTriggered()){
 			loaded = false;
 		}
 		myImage = new BufferedImage(800, 450, BufferedImage.TYPE_INT_ARGB);
@@ -95,95 +92,90 @@ public class SmeltScreen extends ViewComponent{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(myOreSelection.getSelectedIndex()!=myOreIndex || mySizeSelection.getSelectedIndex()!=mySizeIndex){
+		if(myOreSelection.getSelectedIndex()!=myOreIndex || myAmountSelection.getSelectedIndex()!=myAmountIndex){
 			loaded = false;
 			myOreIndex = myOreSelection.getSelectedIndex();
-			mySizeIndex = mySizeSelection.getSelectedIndex();
+			myAmountIndex = myAmountSelection.getSelectedIndex();
 		}
-		if(myOreSelection.getSelectedIndex()!=-1 && mySizeSelection.getSelectedIndex()!=-1 && !loaded){
+		if(myOreSelection.getSelectedIndex()!=-1 && myAmountSelection.getSelectedIndex()!=-1 && !loaded){
 			removeComponents();
 			myComponents.add(myOreSelection);
-			myComponents.add(mySizeSelection);
+			myComponents.add(myAmountSelection);
 			try {
 				addComponent(new AlloyText("COST:", 2, 10, 10));
-				int size = mySizeSelection.getSelectedIndex()+1;
-				int sizeCost = (int) Math.pow(size, size);
-				addComponent(new AlloyText(Integer.toString(sizeCost), 2, 88, 10));
+				int amount = myAmountSelection.getSelectedIndex()+1;
+				int amountCost = (int) Math.pow(amount, amount);
 				int oreIndex = myOreSelection.getSelectedIndex();
 				Ore ore = OreData.getOreObject(oreIndex);
 				String oreName = ore.getMyName().toUpperCase();
-				addComponent(new AlloyText(oreName, 2, Integer.toString(sizeCost).length()*14 + 100, 10));
-				addComponent(new AlloyText(", 1 GEM", 2, (Integer.toString(sizeCost).length() + oreName.length())*14 + 100, 10));
+				addComponent(new AlloyText(oreName, 2, 100, 10));
+				addComponent(new AlloyText(", 1 GEM", 2, (oreName.length())*14 + 100, 10));
 			
 				addComponent(new AlloyText(oreName, 2, 10, 50));
 				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 50));
 				addComponent(new AlloyText(Integer.toString(myManager.getOre(oreIndex)), 2, oreName.length()*14 + 24 + 14 + 140, 50));
 				
-				if(sizeCost > myManager.getOre(oreIndex)){
-					removeComponent(myCreationButton);
+				if(false){ // insert condition for being unable to smelt here
+					removeComponent(mySmeltButton);
 					addComponent(new AlloyText("NOT ENOUGH RESOURCES", 2, 10, 90));
 				}
-				else if(myMap.getCell(myMap.getCurrentHighlightedCell().getX(), myMap.getCurrentHighlightedCell().getY() + 1).getObjects().size()!=0){
-					removeComponent(myCreationButton);
-					addComponent(new AlloyText("ROBOT IN THE WAY OF CREATION", 2, 10, 90));
-				}
 				else{
-					((RobotCreationButton)myCreationButton.getComponent()).setCost(oreIndex, size);
-					addComponent(myCreationButton);
+//					((SmeltButton)mySmeltButton.getComponent()).setCost(oreIndex, amount);
+					addComponent(mySmeltButton);
 				}
 				
 				addComponent(new AlloyText("OIL EFFICIENCY:", 1, 10, 130));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyOil(), size)), 1, "OIL EFFICIENCY:".length()*7 + 17, 130));
-				int length1 = "OIL EFFICIENCY:".length()*7 + 24 + Integer.toString(processStat(ore.getMyOil(), size)).length()*7 + 14;
+				addComponent(new AlloyText(Integer.toString(ore.getMyOil()), 1, "OIL EFFICIENCY:".length()*7 + 17, 130));
+				int length1 = "OIL EFFICIENCY:".length()*7 + 24 + Integer.toString(ore.getMyOil()).length()*7 + 14;
 				
 				addComponent(new AlloyText("ORE EFFICIENCY:", 1, length1, 130));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyOre(), size)), 1, "ORE EFFICIENCY:".length()*7 + 7 + length1, 130));
-				int length2 = length1 + "ORE EFFICIENCY".length()*7 + Integer.toString(processStat(ore.getMyOre(), size)).length()*7 + 14 + 14 + 14;
+				addComponent(new AlloyText(Integer.toString(ore.getMyOre()), 1, "ORE EFFICIENCY:".length()*7 + 7 + length1, 130));
+				int length2 = length1 + "ORE EFFICIENCY".length()*7 + Integer.toString(ore.getMyOre()).length()*7 + 14 + 14 + 14;
 				
 				addComponent(new AlloyText("GEM EFFICIENCY:", 1, length2, 130));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyGems(), size)), 1, "GEM EFFICIENCY:".length()*7 + 7 + length2, 130));
+				addComponent(new AlloyText(Integer.toString(ore.getMyGems()), 1, "GEM EFFICIENCY:".length()*7 + 7 + length2, 130));
 				
 				
 				addComponent(new AlloyText("DIVERSITY:", 1, 10, 150));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyDiversity(), size)), 1, "DIVERSITY:".length()*7 + 17, 150));
-				length1 = "DIVERSITY:".length()*7 + 24 + Integer.toString(processStat(ore.getMyDiversity(), size)).length()*7 + 14;
+				addComponent(new AlloyText(Integer.toString(ore.getMyDiversity()), 1, "DIVERSITY:".length()*7 + 17, 150));
+				length1 = "DIVERSITY:".length()*7 + 24 + Integer.toString(ore.getMyDiversity()).length()*7 + 14;
 				
 				addComponent(new AlloyText("DISTANCE:", 1, length1, 150));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyDistance(), size)), 1, "DISTANCE:".length()*7 + 7 + length1, 150));
-				length2 = length1 + "DISTANCE:".length()*7 + Integer.toString(processStat(ore.getMyDistance(), size)).length()*7 + 14 + 14 + 14;
+				addComponent(new AlloyText(Integer.toString(ore.getMyDistance()), 1, "DISTANCE:".length()*7 + 7 + length1, 150));
+				length2 = length1 + "DISTANCE:".length()*7 + Integer.toString(ore.getMyDistance()).length()*7 + 14 + 14 + 14;
 				
 				addComponent(new AlloyText("LUCK:", 1, length2, 150));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyLuck(), size)), 1, "LUCK:".length()*7 + 7 + length2, 150));
+				addComponent(new AlloyText(Integer.toString(ore.getMyLuck()), 1, "LUCK:".length()*7 + 7 + length2, 150));
 				
 			
 				addComponent(new AlloyText("POWER:", 1, 10, 170));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyPower(), size)), 1, "POWER:".length()*7 + 17, 170));
-				length1 = "POWER:".length()*7 + 24 + Integer.toString(processStat(ore.getMyPower(), size)).length()*7 + 14;
+				addComponent(new AlloyText(Integer.toString(ore.getMyPower()), 1, "POWER:".length()*7 + 17, 170));
+				length1 = "POWER:".length()*7 + 24 + Integer.toString(ore.getMyPower()).length()*7 + 14;
 				
 				addComponent(new AlloyText("DURABILITY:", 1, length1, 170));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyDurability(), size)), 1, "DURABILITY:".length()*7 + 7 + length1, 170));
-				length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(processStat(ore.getMyDurability(), size)).length()*7 + 14 + 14 + 14;
+				addComponent(new AlloyText(Integer.toString(ore.getMyDurability()), 1, "DURABILITY:".length()*7 + 7 + length1, 170));
+				length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(ore.getMyDurability()).length()*7 + 14 + 14 + 14;
 				
 				addComponent(new AlloyText("MAGIC:", 1, length2, 170));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyMagic(), size)), 1, "MAGIC:".length()*7 + 7 + length2, 170));
+				addComponent(new AlloyText(Integer.toString(ore.getMyMagic()), 1, "MAGIC:".length()*7 + 7 + length2, 170));
 				
 				loaded = true;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		else if (myOreSelection.getSelectedIndex()==-1 && mySizeSelection.getSelectedIndex()==-1){
+		else if (myOreSelection.getSelectedIndex()==-1 && myAmountSelection.getSelectedIndex()==-1){
 			removeComponents();
 			myComponents.add(myOreSelection);
-			myComponents.add(mySizeSelection);
+			myComponents.add(myAmountSelection);
 			try {
-				addComponent(new AlloyText("SELECT A MATERIAL AND SIZE", 2, 10, 10));
+				addComponent(new AlloyText("SELECT A MATERIAL AND AMOUNT", 2, 10, 10));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
-		g.drawImage(font.getStringImage("SIZES:", 1), 574, 7, null);
+		g.drawImage(font.getStringImage("AMOUNTS:", 1), 574, 7, null);
 		g.drawImage(font.getStringImage("ORES:", 1), 718, 7, null);
 		
 		
@@ -196,13 +188,6 @@ public class SmeltScreen extends ViewComponent{
 		
 		drawComponents();
 		return myImage;
-	}
-	
-	// Takes base stat and enters into equation to find robot's practical stat based on size
-	public int processStat(int base, int size){
-		int std = (int)Math.pow(2, base);
-		int actualStat = (int) (Math.pow(size, size)*std*size);
-		return actualStat;
 	}
 
 	@Override
