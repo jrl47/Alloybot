@@ -20,7 +20,6 @@ import ViewComponents.AlloyBorderedButton;
 import ViewComponents.AlloyBorderedText;
 import ViewComponents.AlloyText;
 import ViewComponents.Background;
-import ViewComponents.FactoryScreen;
 import ViewComponents.InformationPanelScreen;
 import ViewComponents.InventoryScreen;
 import ViewComponents.RobotCreationResourceScreen;
@@ -89,8 +88,8 @@ public class ScreenBuilder extends ViewComponent{
 			try {
 				myFactoryComponents = new ArrayList<ViewComponent>();
 				myFactoryComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/robotmakebackground.png"))));
-				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 240, 140, "BUILD ROBOT", 4));
-				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(1), 270, 240, "SMELT ORE", 4));
+				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 240, 120, "BUILD ROBOT", 4));
+				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(1), 270, 220, "SMELT ORE", 4));
 				myFactoryComponents.add(new AlloyBorderedButton(myData.getComponents().get(2), 698, 425, "BACK TO MAP", 1));
 			} catch (IOException e) {
 				e.printStackTrace();

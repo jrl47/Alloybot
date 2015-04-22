@@ -1,5 +1,8 @@
 package ModelComponents;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Model.OreData;
 
 public class Ore {
@@ -16,7 +19,8 @@ public class Ore {
 	protected int myIndex;
 	protected String myType;
 	protected String myName;
-	protected String[] myParents;
+	protected String[] parents;
+	protected List<Ore> myParents;
 	public Ore(int i){
 		String dataLine = OreData.oreData[i];
 		// Breaks up at colons
@@ -26,7 +30,7 @@ public class Ore {
 		String[] rankIndex = data[1].split("-");
 		myType = rankIndex[0];
 		myIndex = Integer.parseInt(rankIndex[1]);
-		myParents = data[2].split("-");
+		parents = data[2].split("-");
 		myOil = Integer.parseInt(data[3]);
 		myOre = Integer.parseInt(data[4]);
 		myGems = Integer.parseInt(data[5]);
@@ -36,6 +40,12 @@ public class Ore {
 		myPower = Integer.parseInt(data[9]);
 		myDurability = Integer.parseInt(data[10]);
 		myMagic = Integer.parseInt(data[11]);
+	}
+	public void init(){
+		myParents = new ArrayList<Ore>();
+		for(String s: parents){
+			myParents.add(OreData.getOreObject(s));
+		}
 	}
 	public int getMyOil() {
 		return myOil;
@@ -108,5 +118,8 @@ public class Ore {
 	}
 	public void setMyName(String myName) {
 		this.myName = myName;
+	}
+	public List<Ore> getMyParents(){
+		return myParents;
 	}
 }

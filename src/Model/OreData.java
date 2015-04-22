@@ -37,11 +37,18 @@ public class OreData {
 		myOres = new HashMap<Integer, Ore>();
 		myStringOres = new HashMap<String, Ore>();
 		for(int i=0; i<21; i++){
-			myOres.put(i, new Ore(i));
+			Ore o = new Ore(i);
+			myOres.put(i, o);
 			myStringOres.put(myOres.get(i).getMyName(), myOres.get(i));
+		}
+		for(int i=0; i<21; i++){
+			myOres.get(i).init();
 		}
 	}
 	public static Ore getOreObject(int i){
 		return myOres.get(i);
+	}
+	public static Ore getOreObject(String s){
+		return myStringOres.get(s);
 	}
 }

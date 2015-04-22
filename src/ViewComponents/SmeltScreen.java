@@ -31,7 +31,7 @@ public class SmeltScreen extends ViewComponent{
 		myManager = resourceManager;
 		mySmeltButton = null;
 		try {
-			mySmeltButton = new AlloyBorderedButton(smeltButton, 10, 90, "SMELT!", 2);
+			mySmeltButton = new AlloyBorderedButton(smeltButton, 10, 230, "SMELT!", 2);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -104,60 +104,73 @@ public class SmeltScreen extends ViewComponent{
 			try {
 				addComponent(new AlloyText("COST:", 2, 10, 10));
 				int amount = myAmountSelection.getSelectedIndex()+1;
-				int amountCost = (int) Math.pow(amount, amount);
+				int sizeCost = (int) Math.pow(amount, amount);
 				int oreIndex = myOreSelection.getSelectedIndex();
 				Ore ore = OreData.getOreObject(oreIndex);
-				String oreName = ore.getMyName().toUpperCase();
-				addComponent(new AlloyText(oreName, 2, 100, 10));
-				addComponent(new AlloyText(", 1 GEM", 2, (oreName.length())*14 + 100, 10));
+				List<Ore> parents = ore.getMyParents();
+				String oreName = parents.get(0).getMyName().toUpperCase();
+				String oreName2 = parents.get(1).getMyName().toUpperCase();
+				addComponent(new AlloyText(sizeCost + " " +  oreName + ",", 2, 86, 10));
+				addComponent(new AlloyText(sizeCost + " " +  oreName2 + ",", 2, 86, 40));
+				addComponent(new AlloyText("1 GEM", 2, 86, 70));
 			
-				addComponent(new AlloyText(oreName, 2, 10, 50));
-				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 50));
-				addComponent(new AlloyText(Integer.toString(myManager.getOre(oreIndex)), 2, oreName.length()*14 + 24 + 14 + 140, 50));
+				addComponent(new AlloyText(oreName, 2, 10, 100));
+				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 100));
+				addComponent(new AlloyText(Integer.toString(myManager.getOre(parents.get(0).getMyIndex())), 2, oreName.length()*14 + 24 + 14 + 140, 100));
 				
-				if(false){ // insert condition for being unable to smelt here
+				addComponent(new AlloyText(oreName2, 2, 10, 130));
+				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 130));
+				addComponent(new AlloyText(Integer.toString(myManager.getOre(parents.get(1).getMyIndex())), 2, oreName.length()*14 + 24 + 14 + 140, 130));
+				
+				boolean cantPay = false;
+				for(Ore o: parents){
+					if(amount > myManager.getOre(o.getMyIndex())){
+						cantPay = true;
+					}
+				}
+				if(cantPay){ 
 					removeComponent(mySmeltButton);
-					addComponent(new AlloyText("NOT ENOUGH RESOURCES", 2, 10, 90));
+					addComponent(new AlloyText("NOT ENOUGH RESOURCES", 2, 10, 230));
 				}
 				else{
 //					((SmeltButton)mySmeltButton.getComponent()).setCost(oreIndex, amount);
 					addComponent(mySmeltButton);
 				}
 				
-				addComponent(new AlloyText("OIL EFFICIENCY:", 1, 10, 130));
-				addComponent(new AlloyText(Integer.toString(ore.getMyOil()), 1, "OIL EFFICIENCY:".length()*7 + 17, 130));
+				addComponent(new AlloyText("OIL EFFICIENCY:", 1, 10, 270));
+				addComponent(new AlloyText(Integer.toString(ore.getMyOil()), 1, "OIL EFFICIENCY:".length()*7 + 17, 270));
 				int length1 = "OIL EFFICIENCY:".length()*7 + 24 + Integer.toString(ore.getMyOil()).length()*7 + 14;
 				
-				addComponent(new AlloyText("ORE EFFICIENCY:", 1, length1, 130));
-				addComponent(new AlloyText(Integer.toString(ore.getMyOre()), 1, "ORE EFFICIENCY:".length()*7 + 7 + length1, 130));
+				addComponent(new AlloyText("ORE EFFICIENCY:", 1, length1, 270));
+				addComponent(new AlloyText(Integer.toString(ore.getMyOre()), 1, "ORE EFFICIENCY:".length()*7 + 7 + length1, 270));
 				int length2 = length1 + "ORE EFFICIENCY".length()*7 + Integer.toString(ore.getMyOre()).length()*7 + 14 + 14 + 14;
 				
-				addComponent(new AlloyText("GEM EFFICIENCY:", 1, length2, 130));
-				addComponent(new AlloyText(Integer.toString(ore.getMyGems()), 1, "GEM EFFICIENCY:".length()*7 + 7 + length2, 130));
+				addComponent(new AlloyText("GEM EFFICIENCY:", 1, length2, 270));
+				addComponent(new AlloyText(Integer.toString(ore.getMyGems()), 1, "GEM EFFICIENCY:".length()*7 + 7 + length2, 270));
 				
 				
-				addComponent(new AlloyText("DIVERSITY:", 1, 10, 150));
-				addComponent(new AlloyText(Integer.toString(ore.getMyDiversity()), 1, "DIVERSITY:".length()*7 + 17, 150));
+				addComponent(new AlloyText("DIVERSITY:", 1, 10, 290));
+				addComponent(new AlloyText(Integer.toString(ore.getMyDiversity()), 1, "DIVERSITY:".length()*7 + 17, 290));
 				length1 = "DIVERSITY:".length()*7 + 24 + Integer.toString(ore.getMyDiversity()).length()*7 + 14;
 				
-				addComponent(new AlloyText("DISTANCE:", 1, length1, 150));
-				addComponent(new AlloyText(Integer.toString(ore.getMyDistance()), 1, "DISTANCE:".length()*7 + 7 + length1, 150));
+				addComponent(new AlloyText("DISTANCE:", 1, length1, 290));
+				addComponent(new AlloyText(Integer.toString(ore.getMyDistance()), 1, "DISTANCE:".length()*7 + 7 + length1, 290));
 				length2 = length1 + "DISTANCE:".length()*7 + Integer.toString(ore.getMyDistance()).length()*7 + 14 + 14 + 14;
 				
-				addComponent(new AlloyText("LUCK:", 1, length2, 150));
-				addComponent(new AlloyText(Integer.toString(ore.getMyLuck()), 1, "LUCK:".length()*7 + 7 + length2, 150));
+				addComponent(new AlloyText("LUCK:", 1, length2, 290));
+				addComponent(new AlloyText(Integer.toString(ore.getMyLuck()), 1, "LUCK:".length()*7 + 7 + length2, 290));
 				
 			
-				addComponent(new AlloyText("POWER:", 1, 10, 170));
-				addComponent(new AlloyText(Integer.toString(ore.getMyPower()), 1, "POWER:".length()*7 + 17, 170));
+				addComponent(new AlloyText("POWER:", 1, 10, 310));
+				addComponent(new AlloyText(Integer.toString(ore.getMyPower()), 1, "POWER:".length()*7 + 17, 310));
 				length1 = "POWER:".length()*7 + 24 + Integer.toString(ore.getMyPower()).length()*7 + 14;
 				
-				addComponent(new AlloyText("DURABILITY:", 1, length1, 170));
-				addComponent(new AlloyText(Integer.toString(ore.getMyDurability()), 1, "DURABILITY:".length()*7 + 7 + length1, 170));
+				addComponent(new AlloyText("DURABILITY:", 1, length1, 310));
+				addComponent(new AlloyText(Integer.toString(ore.getMyDurability()), 1, "DURABILITY:".length()*7 + 7 + length1, 310));
 				length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(ore.getMyDurability()).length()*7 + 14 + 14 + 14;
 				
-				addComponent(new AlloyText("MAGIC:", 1, length2, 170));
-				addComponent(new AlloyText(Integer.toString(ore.getMyMagic()), 1, "MAGIC:".length()*7 + 7 + length2, 170));
+				addComponent(new AlloyText("MAGIC:", 1, length2, 310));
+				addComponent(new AlloyText(Integer.toString(ore.getMyMagic()), 1, "MAGIC:".length()*7 + 7 + length2, 310));
 				
 				loaded = true;
 			} catch (IOException e) {
