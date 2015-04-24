@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Controller.Game;
 import Model.OreData;
 import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
@@ -92,6 +93,9 @@ public class SmeltScreen extends ViewComponent{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if(Game.ticks % 60 == 0){
+			loaded = false;
+		}
 		if(myOreSelection.getSelectedIndex()!=myOreIndex || myAmountSelection.getSelectedIndex()!=myAmountIndex){
 			loaded = false;
 			myOreIndex = myOreSelection.getSelectedIndex();
@@ -125,7 +129,7 @@ public class SmeltScreen extends ViewComponent{
 				
 				boolean cantPay = false;
 				for(Ore o: parents){
-					if(amount > myManager.getOre(o.getMyIndex())){
+					if(sizeCost > myManager.getOre(o.getMyPureIndex())){
 						cantPay = true;
 					}
 				}
@@ -134,7 +138,7 @@ public class SmeltScreen extends ViewComponent{
 					addComponent(new AlloyText("NOT ENOUGH RESOURCES", 2, 10, 230));
 				}
 				else{
-//					((SmeltButton)mySmeltButton.getComponent()).setCost(oreIndex, amount);
+					((SmeltButton)mySmeltButton.getComponent()).setCost(parents.get(0).getMyPureIndex(), parents.get(1).getMyPureIndex(), oreIndex, amount);
 					addComponent(mySmeltButton);
 				}
 				

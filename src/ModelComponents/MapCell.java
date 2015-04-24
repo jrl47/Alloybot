@@ -26,6 +26,7 @@ public class MapCell {
 	private int myY;
 	private int myOil;
 	private int[] myOre;
+	private int myGems;
 	public MapCell(String id, int x, int y){
 		myX = x;
 		myY = y;
@@ -42,9 +43,6 @@ public class MapCell {
 	public int getY(){
 		return myY;
 	}
-	public int getOil(){
-		return myOil;
-	}
 	public void incrementOre(ResourceManager r, int scalar){
 		Random rand = new Random();
 		int random = rand.nextInt(100);
@@ -59,14 +57,33 @@ public class MapCell {
 			r.setOre(r.getOre(index) + scalar, index);
 		}
 	}
-	public int getOre(int i){
-		return myOre[i];
+	public void incrementGems(ResourceManager r, int scalar) {
+		Random rand = new Random();
+		boolean add = false;
+		int random = rand.nextInt(100);
+		if(random < myGems)
+			add = true;
+		if(add){
+			r.setGems(r.getGems() + scalar);
+		}
+	}
+	public int getOil(){
+		return myOil;
 	}
 	public void setOil(int o){
 		myOil = o;
 	}
+	public int getOre(int i){
+		return myOre[i];
+	}
 	public void setOre(int o, int index) {
 		myOre[index] = o;
+	}
+	public int getGems(){
+		return myGems;
+	}
+	public void setGems(int i) {
+		myGems = i;
 	}
 	public List<MapCellObject> getObjects(){
 		return myObjects;

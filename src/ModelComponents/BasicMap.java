@@ -16,6 +16,7 @@ public class BasicMap extends ModelMap{
 	private static BufferedImage terrainDataImage;
 	private static BufferedImage oilDataImage;
 	private static BufferedImage[] oreDataImages;
+	private static BufferedImage gemDataImage;
 	public BasicMap(ResourceManager r){
 		super(getImage().getWidth(), getImage().getHeight(), r);
 		for(int i=0; i<getImage().getWidth(); i++){
@@ -78,6 +79,17 @@ public class BasicMap extends ModelMap{
 			}
 		}
 		return oreDataImages;
+	}
+	
+	protected BufferedImage getGemImage(){
+		if(gemDataImage==null){
+		try {
+			gemDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapGems.png"));
+		} catch (IOException e) {
+			return null;
+		}
+		}
+		return gemDataImage;
 	}
 	@Override
 	public void respond() {

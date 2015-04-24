@@ -66,7 +66,10 @@ public abstract class ModelMap extends ModelComponent{
 			myCells.getCell(i, j).setOre(getOreImages()[counter].getRGB(i, j)>>16 & 255, counter);
 			counter++;
 		}
+		myCells.getCell(i,j).setGems(getGemImage().getRGB(i, j)>>16 & 255);
 	}
+	protected abstract BufferedImage getGemImage();
+	
 	protected abstract BufferedImage getOilImage();
 	
 	protected abstract BufferedImage[] getOreImages();

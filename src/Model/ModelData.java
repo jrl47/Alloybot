@@ -106,7 +106,7 @@ public class ModelData {
 		List<ModelComponent> smeltComp = new ArrayList<ModelComponent>();
 		smeltComp.add(new StateChangeButton(state, MAP_EXPLORATION_STATE));
 		smeltComp.add(manager);
-		smeltComp.add(new SmeltButton());
+		smeltComp.add(new SmeltButton(myMap));
 		myComponents.addAll(smeltComp);
 		ScreenData s = new ScreenData(SMELT_STATE, smeltComp);
 		s.addAuxiliaryComponent(myMap);

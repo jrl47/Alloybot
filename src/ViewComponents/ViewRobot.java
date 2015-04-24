@@ -47,7 +47,7 @@ public class ViewRobot extends ViewMapObject{
 	}
 	private void loadPaths() {
 		myPaths.clear();
-		myMap.loadPaths(myPaths, myRobot.getX(), myRobot.getY(), Math.min(9, myMap.getResources().getOil()/1000));
+		myMap.loadPaths(myPaths, myRobot.getX(), myRobot.getY(), Math.min(5, myMap.getResources().getOil()/1000));
 		myMoves = myPaths.keySet();
 	}
 	public void trigger(int newX, int newY) {
