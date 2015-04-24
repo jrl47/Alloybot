@@ -3,11 +3,13 @@ package ViewComponents;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import Controller.Game;
 import Model.OreData;
 import Model.State;
 import ModelComponents.MapCell;
@@ -39,6 +41,7 @@ public class InformationPanelScreen extends ViewComponent{
 	private List<ViewComponent> myRobotComponents;
 	private List<ViewComponent> myGainComponents;
 	private List<ViewComponent> myStatComponents;
+	private Map<String, AlloyText> myCommonWords;
 	private State myState;
 	public InformationPanelScreen(ModelComponent c, ModelMap m, int xx, int yy){
 		super(c, xx, yy, 100, 300);
@@ -59,6 +62,7 @@ public class InformationPanelScreen extends ViewComponent{
 		myRobotComponents = new ArrayList<ViewComponent>();
 		myGainComponents = new ArrayList<ViewComponent>();
 		myStatComponents = new ArrayList<ViewComponent>();
+		myCommonWords = new HashMap<String, AlloyText>();
 		myState = new State("main");
 		try {
 			myMoveButton = new AlloyBorderedButton(null, 10, 176, "MOVE", 1);
@@ -84,7 +88,8 @@ public class InformationPanelScreen extends ViewComponent{
 				removeComponent(myBackButton);
 				needsBack = true;
 				needsStats = true;
-				createTileInfo();
+				if(Game.ticks % 11 == 0)
+					createTileInfo();
 				createRobotActionInfo();
 				createGainInfo();
 			}
@@ -318,10 +323,17 @@ public class InformationPanelScreen extends ViewComponent{
 			currentCell = ((ModelMap)myComponent).getSelectedCell();
 		}
 		if(currentCell!=null){
-			AlloyText a = new AlloyText("TILE RESOURCES", 1, 10, 10);
+			if(!myCommonWords.containsKey("TILE RESOURCES")){
+				myCommonWords.put("TILE RESOURCES", new AlloyText("TILE RESOURCES", 1, 10, 10));
+			}
+			if(!myCommonWords.containsKey("OIL:")){
+				myCommonWords.put("OIL:", new AlloyText("OIL:", 1, 10, 30));
+			}
+			
+			AlloyText a = myCommonWords.get("TILE RESOURCES");
 			myTileComponents.add(a);
 			addComponent(a);
-			a = new AlloyText("OIL:", 1, 10, 30);
+			a = myCommonWords.get("OIL:");
 			myTileComponents.add(a);
 			addComponent(a);
 			String s = currentCell.getOil() + "";
@@ -340,6 +352,16 @@ public class InformationPanelScreen extends ViewComponent{
 					addComponent(a);
 					counter++;
 				}
+			}
+			if(currentCell.getGems()!=0){
+				a = new AlloyText("GEMS:", 1, 10, 50 + (20*counter));
+				myTileComponents.add(a);
+				addComponent(a);
+				s = currentCell.getGems() + "";
+				a = new AlloyText(s + "%", 1, 110, 50 + (20*counter));
+				myTileComponents.add(a);
+				addComponent(a);
+				counter++;
 			}
 		}
 		else{
