@@ -35,20 +35,23 @@ public class InformationPanelScreen extends ViewComponent{
 	private AlloyBorderedButton myStatsButton;
 	private AlloyBorderedButton myBuildButton;
 	private AlloyBorderedButton myBackButton;
-	private boolean needsButton;
+	private boolean needsRobotButtons;
+	private boolean needsBuildButtons;
 	private boolean needsBack;
 	private boolean needsStats;
+	private AlloyBorderedButton myFactoryCreationButton;
 	private List<ViewComponent> myTileComponents;
 	private List<ViewComponent> myRobotComponents;
 	private List<ViewComponent> myGainComponents;
 	private List<ViewComponent> myStatComponents;
+	private List<ViewComponent> myBuildComponents;
 	private Map<String, AlloyText> myCommonWords;
 	private State myState;
 	public InformationPanelScreen(ModelComponent c, ModelMap m, int xx, int yy){
 		super(c, xx, yy, 100, 300);
 		myMap = m;
 		myResources = myMap.getResources();
-		needsButton = true;
+		needsRobotButtons = true;
 		needsBack = true;
 		needsStats = true;
 		myMoveButton = null;
@@ -63,6 +66,7 @@ public class InformationPanelScreen extends ViewComponent{
 		myRobotComponents = new ArrayList<ViewComponent>();
 		myGainComponents = new ArrayList<ViewComponent>();
 		myStatComponents = new ArrayList<ViewComponent>();
+		myBuildComponents = new ArrayList<ViewComponent>();
 		myCommonWords = new HashMap<String, AlloyText>();
 		myState = new State("main");
 		try {
@@ -73,6 +77,8 @@ public class InformationPanelScreen extends ViewComponent{
 			myDestroyButton = new AlloyBorderedButton(null, 10, 130, "DESTROY", 1);
 			myStatsButton = new AlloyBorderedButton(new StateChangeButton(myState, "stats"), 10, 150, "STATS", 1);
 			myBuildButton = new AlloyBorderedButton(new StateChangeButton(myState, "build"), 10, 170, "BUILD", 1);
+			
+			myFactoryCreationButton = new AlloyBorderedButton(null, 10, 10, "CREATE FACTORY", 1);
 			myBackButton = new AlloyBorderedButton(new StateChangeButton(myState, "main"), 7, 405, "BACK", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -99,13 +105,58 @@ public class InformationPanelScreen extends ViewComponent{
 				createRobotActionInfo();
 				}
 			}
-			else{
-				needsButton = true;
+			else if(myState.getState().equals("stats")){
+				needsRobotButtons = true;
+				needsBuildButtons = true;
 				createRobotStats();
+			}
+			else{
+				needsRobotButtons = true;
+				createBuildOptions();
 			}
 		} catch(IOException e) {e.printStackTrace();}
 		drawComponents();
 		return myImage;
+	}
+
+	private void createBuildOptions() throws IOException {
+		for(ViewComponent v: myTileComponents){
+			removeComponent(v);
+		}
+		for(ViewComponent v: myRobotComponents){
+			removeComponent(v);
+		}
+		for(ViewComponent v: myGainComponents){
+			removeComponent(v);
+		}
+		if(needsBack){
+			addComponent(myBackButton);
+			needsBack = false;
+		}
+		Robot r;
+		if(myMap.getSelectedObject()!=null){
+			if(needsBuildButtons){
+				if(myMap.getSelectedObject() instanceof Robot){
+					r = (Robot)myMap.getSelectedObject();
+					
+					myFactoryCreationButton.setComponent(null); //to be factory creation model button
+					addComponent(myFactoryCreationButton);
+					myBuildComponents.add(myFactoryCreationButton);
+
+					AlloyText a = new AlloyText("COSTS 1 GEM", 1, 10, 32);
+					addComponent(a);
+					myBuildComponents.add(a);
+
+					needsBuildButtons = false;
+				}
+			}
+		}
+		else{
+			for(ViewComponent v: myBuildComponents){
+				removeComponent(v);
+			}
+			needsBuildButtons = true;
+		}
 	}
 
 	private void createGainInfo() throws IOException {
@@ -288,9 +339,13 @@ public class InformationPanelScreen extends ViewComponent{
 		for(ViewComponent v: myGainComponents){
 			removeComponent(v);
 		}
+		for(ViewComponent v: myBuildComponents){
+			removeComponent(v);
+		}
+		needsBuildButtons = true;
 		Robot r;
 		if(myMap.getSelectedObject()!=null){
-			if(needsButton){
+			if(needsRobotButtons){
 				if(myMap.getSelectedObject() instanceof Robot){
 					r = (Robot)myMap.getSelectedObject();
 
@@ -320,7 +375,7 @@ public class InformationPanelScreen extends ViewComponent{
 					myRobotComponents.add(myStatsButton);
 					addComponent(myBuildButton);
 					myRobotComponents.add(myBuildButton);
-					needsButton = false;
+					needsRobotButtons = false;
 				}
 			}
 		}
@@ -328,7 +383,7 @@ public class InformationPanelScreen extends ViewComponent{
 			for(ViewComponent v: myRobotComponents){
 				removeComponent(v);
 			}
-			needsButton = true;
+			needsRobotButtons = true;
 		}
 	}
 
@@ -336,7 +391,11 @@ public class InformationPanelScreen extends ViewComponent{
 		for(ViewComponent v: myRobotComponents){
 			removeComponent(v);
 		}
-		needsButton = true;
+		needsRobotButtons = true;
+		for(ViewComponent v: myBuildComponents){
+			removeComponent(v);
+		}
+		needsBuildButtons = true;
 		for(ViewComponent v: myTileComponents){
 			removeComponent(v);
 		}
