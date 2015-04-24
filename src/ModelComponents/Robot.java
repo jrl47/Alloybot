@@ -112,4 +112,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	public int getSize() {
 		return mySize;
 	}
+	public int getDistance() {
+		return distance;
+	}
 }

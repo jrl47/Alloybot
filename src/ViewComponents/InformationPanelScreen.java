@@ -33,6 +33,7 @@ public class InformationPanelScreen extends ViewComponent{
 	private AlloyBorderedButton myStopButton;
 	private AlloyBorderedButton myDestroyButton;
 	private AlloyBorderedButton myStatsButton;
+	private AlloyBorderedButton myBuildButton;
 	private AlloyBorderedButton myBackButton;
 	private boolean needsButton;
 	private boolean needsBack;
@@ -65,12 +66,13 @@ public class InformationPanelScreen extends ViewComponent{
 		myCommonWords = new HashMap<String, AlloyText>();
 		myState = new State("main");
 		try {
-			myMoveButton = new AlloyBorderedButton(null, 10, 176, "MOVE", 1);
-			myMineButton = new AlloyBorderedButton(null, 10, 196, "MINE", 1);
-			myDeselectButton = new AlloyBorderedButton(null, 10, 216, "DESELECT", 1);
-			myStopButton = new AlloyBorderedButton(null, 10, 236, "STOP", 1);
-			myDestroyButton = new AlloyBorderedButton(null, 10, 256, "DESTROY", 1);
-			myStatsButton = new AlloyBorderedButton(new StateChangeButton(myState, "stats"), 10, 276, "STATS", 1);
+			myMoveButton = new AlloyBorderedButton(null, 10, 50, "MOVE", 1);
+			myMineButton = new AlloyBorderedButton(null, 10, 70, "MINE", 1);
+			myDeselectButton = new AlloyBorderedButton(null, 10, 90, "DESELECT", 1);
+			myStopButton = new AlloyBorderedButton(null, 10, 110, "STOP", 1);
+			myDestroyButton = new AlloyBorderedButton(null, 10, 130, "DESTROY", 1);
+			myStatsButton = new AlloyBorderedButton(new StateChangeButton(myState, "stats"), 10, 150, "STATS", 1);
+			myBuildButton = new AlloyBorderedButton(new StateChangeButton(myState, "build"), 10, 170, "BUILD", 1);
 			myBackButton = new AlloyBorderedButton(new StateChangeButton(myState, "main"), 7, 405, "BACK", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -88,10 +90,14 @@ public class InformationPanelScreen extends ViewComponent{
 				removeComponent(myBackButton);
 				needsBack = true;
 				needsStats = true;
+				if(!hasRobotAction()){
 				if(Game.ticks % 11 == 0)
 					createTileInfo();
-				createRobotActionInfo();
 				createGainInfo();
+				}
+				else{
+				createRobotActionInfo();
+				}
 			}
 			else{
 				needsButton = true;
@@ -267,15 +273,29 @@ public class InformationPanelScreen extends ViewComponent{
 		return actualStat;
 	}
 
+	private boolean hasRobotAction(){
+		Robot r;
+		if(myMap.getSelectedObject()!=null){
+			if(myMap.getSelectedObject() instanceof Robot)
+				return true;
+		}
+		return false;
+	}
 	private void createRobotActionInfo() throws IOException {
+		for(ViewComponent v: myTileComponents){
+			removeComponent(v);
+		}
+		for(ViewComponent v: myGainComponents){
+			removeComponent(v);
+		}
 		Robot r;
 		if(myMap.getSelectedObject()!=null){
 			if(needsButton){
 				if(myMap.getSelectedObject() instanceof Robot){
 					r = (Robot)myMap.getSelectedObject();
 
-					AlloyText a = new AlloyText(r.getName().toUpperCase() + " ROBOT", 1, 10, 136);
-					AlloyText b = new AlloyText("SIZE " + r.getSize(), 1, 10, 156);
+					AlloyText a = new AlloyText(r.getName().toUpperCase() + " ROBOT", 1, 10, 10);
+					AlloyText b = new AlloyText("SIZE " + r.getSize(), 1, 10, 30);
 					addComponent(a);
 					addComponent(b);
 					myRobotComponents.add(a);
@@ -298,6 +318,8 @@ public class InformationPanelScreen extends ViewComponent{
 
 					addComponent(myStatsButton);
 					myRobotComponents.add(myStatsButton);
+					addComponent(myBuildButton);
+					myRobotComponents.add(myBuildButton);
 					needsButton = false;
 				}
 			}
@@ -311,6 +333,10 @@ public class InformationPanelScreen extends ViewComponent{
 	}
 
 	private void createTileInfo() throws IOException {
+		for(ViewComponent v: myRobotComponents){
+			removeComponent(v);
+		}
+		needsButton = true;
 		for(ViewComponent v: myTileComponents){
 			removeComponent(v);
 		}

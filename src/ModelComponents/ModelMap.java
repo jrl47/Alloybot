@@ -13,6 +13,7 @@ public abstract class ModelMap extends ModelComponent{
 	protected MapCellFactory myFactory;
 	protected List<MapCellObject> myMapCellObjects;
 	protected List<Robot> myRobots;
+	protected List<RobotFactory> myFactories;
 	protected ResourceManager myManager;
 	protected int x;
 	protected int y;
@@ -38,6 +39,7 @@ public abstract class ModelMap extends ModelComponent{
 		myHeight = height;
 		myCells = new MapCellArray(myList);
 		myFactory = new MapCellFactory();
+		myFactories = new ArrayList<RobotFactory>();
 		myManager = m;
 		myMapCellObjects = new ArrayList<MapCellObject>();
 		myRobots = new ArrayList<Robot>();
@@ -56,6 +58,7 @@ public abstract class ModelMap extends ModelComponent{
 	public void addObject(MapCellObject m, int x, int y){
 		myMapCellObjects.add(m);
 		if(m instanceof Robot) myRobots.add((Robot)m);
+		if(m instanceof RobotFactory) myFactories.add((RobotFactory)m);
 		m.addToMap(this, x, y);
 	}
 	protected void setResources(int i, int j){
@@ -151,26 +154,29 @@ public abstract class ModelMap extends ModelComponent{
 		xHover = -1;
 		yHover = -1;
 	}
-	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, int cap) {
+	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, int cap, int maxDistCost) {
 		LinkedList<Character> u = new LinkedList<Character>();
 		u.add('u');
-		loadPaths(myPaths, x, y-1, cap, u);
+		loadPaths(myPaths, x, y-1, cap, maxDistCost, u);
 		LinkedList<Character> d = new LinkedList<Character>();
 		d.add('d');
-		loadPaths(myPaths, x, y+1, cap, d);
+		loadPaths(myPaths, x, y+1, cap, maxDistCost, d);
 		LinkedList<Character> l = new LinkedList<Character>();
 		l.add('l');
-		loadPaths(myPaths, x-1, y, cap, l);
+		loadPaths(myPaths, x-1, y, cap, maxDistCost, l);
 		LinkedList<Character> r = new LinkedList<Character>();
 		r.add('r');
-		loadPaths(myPaths, x+1, y, cap, r);
+		loadPaths(myPaths, x+1, y, cap, maxDistCost, r);
 	}
-	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, int cap, List<Character> c){
+	public void loadPaths(Map<MapCell, List<Character>> myPaths, int x, int y, int cap, int maxDistCost, List<Character> c){
 		if(x < 0 || y < 0 || x >= myWidth || y >= myHeight){
 			return;
 		}
 		MapCell currentCell = myCells.getCell(x, y);
 		if(!currentCell.isPassable()){
+			return;
+		}
+		if(getFactoryCost(x,y) > maxDistCost){
 			return;
 		}
 		if(c.size() > cap){
@@ -190,19 +196,19 @@ public abstract class ModelMap extends ModelComponent{
 		LinkedList<Character> u = new LinkedList<Character>();
 		u.addAll(c);
 		u.add('u');
-		loadPaths(myPaths, x, y-1, cap, u);
+		loadPaths(myPaths, x, y-1, cap, maxDistCost, u);
 		LinkedList<Character> d = new LinkedList<Character>();
 		d.addAll(c);
 		d.add('d');
-		loadPaths(myPaths, x, y+1, cap, d);
+		loadPaths(myPaths, x, y+1, cap, maxDistCost, d);
 		LinkedList<Character> l = new LinkedList<Character>();
 		l.addAll(c);
 		l.add('l');
-		loadPaths(myPaths, x-1, y, cap, l);
+		loadPaths(myPaths, x-1, y, cap, maxDistCost, l);
 		LinkedList<Character> r = new LinkedList<Character>();
 		r.addAll(c);
 		r.add('r');
-		loadPaths(myPaths, x+1, y, cap, r);
+		loadPaths(myPaths, x+1, y, cap, maxDistCost, r);
 	}
 	public List<Robot> getRobots() {
 		return myRobots;
@@ -211,5 +217,18 @@ public abstract class ModelMap extends ModelComponent{
 		myMapCellObjects.remove(m);
 		if(m instanceof Robot) myRobots.remove((Robot)m);
 		m.removeFromMap(this);
+	}
+	public int getFactoryDistance(int x, int y){
+		int minDist = Integer.MAX_VALUE;
+		for(RobotFactory f : myFactories){
+			if(Math.abs(x - f.getX()) + Math.abs(y - f.getY()) < minDist)
+				minDist = Math.abs(x - f.getX()) + Math.abs(y - f.getY());
+		}
+		return minDist;
+	}
+	public int getFactoryCost(int x, int y){
+		double dist = (double) getFactoryDistance(x,y);
+		int cost = (int)Math.pow(dist/10, 7);
+		return cost;
 	}
 }
