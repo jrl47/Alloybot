@@ -114,13 +114,14 @@ public class SmeltScreen extends ViewComponent{
 				addComponent(new AlloyText(sizeCost + " " +  oreName2 + ",", 2, 86, 40));
 				addComponent(new AlloyText("1 GEM", 2, 86, 70));
 			
-				addComponent(new AlloyText(oreName, 2, 10, 100));
-				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 100));
-				addComponent(new AlloyText(Integer.toString(myManager.getOre(parents.get(0).getMyIndex())), 2, oreName.length()*14 + 24 + 14 + 140, 100));
+				addComponent(new AlloyText(oreName + " AVAILABLE:", 2, 10, 100));
+//				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 100));
+				addComponent(new AlloyText(Integer.toString(myManager.getOre(parents.get(0).getMyPureIndex())), 2, oreName.length()*14 + 24 + 14 + 140, 100));
 				
-				addComponent(new AlloyText(oreName2, 2, 10, 130));
-				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 130));
-				addComponent(new AlloyText(Integer.toString(myManager.getOre(parents.get(1).getMyIndex())), 2, oreName.length()*14 + 24 + 14 + 140, 130));
+				addComponent(new AlloyText(oreName2 + " AVAILABLE:", 2, 10, 130));
+//				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 130));
+//				System.out.println(parents.get(1).getMyIndex());
+				addComponent(new AlloyText(Integer.toString(myManager.getOre(parents.get(1).getMyPureIndex())), 2, oreName.length()*14 + 24 + 14 + 140, 130));
 				
 				boolean cantPay = false;
 				for(Ore o: parents){

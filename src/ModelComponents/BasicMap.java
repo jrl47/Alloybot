@@ -71,7 +71,7 @@ public class BasicMap extends ModelMap{
 	protected BufferedImage[] getOreImages() {
 		if(oreDataImages==null){
 			oreDataImages = new BufferedImage[OreData.NUMBER_OF_ORES];
-			for(int i=0;i<5;i++){
+			for(int i=0;i<8;i++){
 				String oreMapName = "/standardMapOre" + i + ".png";
 				try {oreDataImages[i] = ImageIO.read(ScreenBuilder.class.getResource(oreMapName));} 
 				catch (IOException e) {return null;}

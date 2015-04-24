@@ -17,11 +17,13 @@ public class Ore {
 	protected int myDurability;
 	protected int myMagic;
 	protected int myIndex;
+	protected int myPureIndex;
 	protected String myType;
 	protected String myName;
 	protected String[] parents;
 	protected List<Ore> myParents;
 	public Ore(int i){
+		myPureIndex = i;
 		String dataLine = OreData.oreData[i];
 		// Breaks up at colons
 		String[] data = dataLine.split(":");
@@ -118,6 +120,12 @@ public class Ore {
 	}
 	public void setMyName(String myName) {
 		this.myName = myName;
+	}
+	public int getMyPureIndex() {
+		return myPureIndex;
+	}
+	public void setMyPureIndex(int myPureIndex) {
+		this.myPureIndex = myPureIndex;
 	}
 	public List<Ore> getMyParents(){
 		return myParents;
