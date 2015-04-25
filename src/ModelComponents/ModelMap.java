@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import Model.MapCellFactory;
+import Model.State;
 
 public abstract class ModelMap extends ModelComponent{
 	protected MapCellArray myCells;
@@ -26,7 +27,10 @@ public abstract class ModelMap extends ModelComponent{
 	
 	protected int myWidth;
 	protected int myHeight;
-	public ModelMap(int width, int height, ResourceManager m){
+	
+	protected State myState;
+	public ModelMap(int width, int height, ResourceManager m, State s){
+		myManager = m;
 		List<List<MapCell>> myList = new ArrayList<List<MapCell>>();
 		for(int i=0; i<width; i++){
 			List<MapCell> newList = new ArrayList<MapCell>();
@@ -35,12 +39,12 @@ public abstract class ModelMap extends ModelComponent{
 			}
 			myList.add(newList);
 		}
+		myState = s;
 		myWidth = width;
 		myHeight = height;
 		myCells = new MapCellArray(myList);
 		myFactory = new MapCellFactory();
 		myFactories = new ArrayList<RobotFactory>();
-		myManager = m;
 		myMapCellObjects = new ArrayList<MapCellObject>();
 		myRobots = new ArrayList<Robot>();
 	}
@@ -230,5 +234,8 @@ public abstract class ModelMap extends ModelComponent{
 		double dist = (double) getFactoryDistance(x,y);
 		int cost = (int)Math.pow(dist/10, 7);
 		return cost;
+	}
+	public State getState(){
+		return myState;
 	}
 }

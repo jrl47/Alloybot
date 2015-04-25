@@ -56,7 +56,7 @@ public class ModelData {
 	}
 
 	private void makeModelMap() {
-		BasicMap b = new BasicMap(manager);
+		BasicMap b = new BasicMap(manager, state);
 		myMap = b;
 		Robot r = new Robot(0, 1, myMap);
 		b.addObject(r, 50, 50);

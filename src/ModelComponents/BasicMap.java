@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import Model.OreData;
+import Model.State;
 import View.ScreenBuilder;
 
 public class BasicMap extends ModelMap{
@@ -17,8 +18,8 @@ public class BasicMap extends ModelMap{
 	private static BufferedImage oilDataImage;
 	private static BufferedImage[] oreDataImages;
 	private static BufferedImage gemDataImage;
-	public BasicMap(ResourceManager r){
-		super(getImage().getWidth(), getImage().getHeight(), r);
+	public BasicMap(ResourceManager r, State s){
+		super(getImage().getWidth(), getImage().getHeight(), r, s);
 		for(int i=0; i<getImage().getWidth(); i++){
 			for(int j=0; j<getImage().getHeight(); j++){
 				if(getImage().getRGB(i, j)==-8421505)

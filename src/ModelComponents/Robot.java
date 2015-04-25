@@ -25,9 +25,11 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	private Ore myOre;
 	private int mySize;
 	private String myName;
+	private ModelMap myMap;
 	private Random myRandom;
 	public Robot(int oreType, int size, ModelMap m){
 		super(false);
+		myMap = m;
 		myManagerButtons = new ArrayList<ModelButton>();
 		mySize = size;
 		myOre = OreData.getOreObject(oreType);
@@ -47,6 +49,7 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 		addButton(new RobotDeselectButton(this));
 		addButton(new RobotStopButton(this));
 		addButton(new RobotDestroyButton(this, m.getResources()));
+		addButton(new FactoryCreationButton(this));
 	}
 	public void step(){
 		if(enabled && (Game.ticks % Model.TICK_SCALAR )==0){
@@ -114,5 +117,8 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	}
 	public int getDistance() {
 		return distance;
+	}
+	public ModelMap getMap() {
+		return myMap;
 	}
 }

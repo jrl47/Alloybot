@@ -139,7 +139,7 @@ public class InformationPanelScreen extends ViewComponent{
 				if(myMap.getSelectedObject() instanceof Robot){
 					r = (Robot)myMap.getSelectedObject();
 					
-					myFactoryCreationButton.setComponent(null); //to be factory creation model button
+					myFactoryCreationButton.setComponent(r.getButtons().get(5)); //to be factory creation model button
 					addComponent(myFactoryCreationButton);
 					myBuildComponents.add(myFactoryCreationButton);
 
