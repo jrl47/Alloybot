@@ -87,8 +87,21 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			// If we've got a click and no object, we might be selecting one
 			else if(b){
 				if(((ModelMap)myComponent).getCurrentHighlightedCell().getObjects().size()!=0){
+					MapCellObject selected = ((ModelMap)(myComponent)).getObject(((ModelMap)myComponent).getCurrentHighlightedCell().getX(),
+							((ModelMap)myComponent).getCurrentHighlightedCell().getY());
+					if(myViewMapObjects.get(selected)==null){
+						if(selected instanceof Robot){
+							ViewRobot v = new ViewRobot((Robot)selected, myMap);
+							myViewMapObjects.put(selected, v);
+						}
+						if(selected instanceof RobotFactory){
+							ViewRobotFactory v = new ViewRobotFactory((RobotFactory)selected, myMap);
+							myViewMapObjects.put(selected, v);
+						}
+					}
 					currentlySelectedObject = myViewMapObjects.get(((ModelMap)(myComponent)).getObject(((ModelMap)myComponent).getCurrentHighlightedCell().getX(),
 							((ModelMap)myComponent).getCurrentHighlightedCell().getY()));
+//					System.out.println(currentlySelectedObject.toString());
 					currentlySelectedObject.getMapObject().select();
 					return;
 				}
