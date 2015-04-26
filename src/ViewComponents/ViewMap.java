@@ -59,6 +59,20 @@ public class ViewMap extends ViewComponent implements InputSensitive{
 			if(!m.isDestroyed())
 				mapObjects.add(myViewMapObjects.get(m));
 		}
+		if(myMap.acknowledgeAdded()){
+			for(MapCellObject m : myMap.getObjects()){
+				if(myViewMapObjects.get(m)==null){
+					if(m instanceof Robot){
+						ViewRobot v = new ViewRobot((Robot)m, myMap);
+						myViewMapObjects.put(m, v);
+					}
+					if(m instanceof RobotFactory){
+						ViewRobotFactory v = new ViewRobotFactory((RobotFactory)m, myMap);
+						myViewMapObjects.put(m, v);
+					}
+				}
+			}
+		}
 		return graphics.drawVisibleMapRegion(isHover, mapObjects);
 	}
 	

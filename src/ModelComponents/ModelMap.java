@@ -28,6 +28,7 @@ public abstract class ModelMap extends ModelComponent{
 	protected int myWidth;
 	protected int myHeight;
 	
+	protected boolean wasAdded;
 	protected State myState;
 	public ModelMap(int width, int height, ResourceManager m, State s){
 		myManager = m;
@@ -60,6 +61,7 @@ public abstract class ModelMap extends ModelComponent{
 		return myManager;
 	}
 	public void addObject(MapCellObject m, int x, int y){
+		wasAdded = true;
 		myMapCellObjects.add(m);
 		if(m instanceof Robot) myRobots.add((Robot)m);
 		if(m instanceof RobotFactory) myFactories.add((RobotFactory)m);
@@ -237,5 +239,12 @@ public abstract class ModelMap extends ModelComponent{
 	}
 	public State getState(){
 		return myState;
+	}
+	public boolean acknowledgeAdded() {
+		if(wasAdded==true){
+			wasAdded = false;
+			return true;
+		}
+		return false;
 	}
 }

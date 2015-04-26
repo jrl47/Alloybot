@@ -29,7 +29,7 @@ public class ViewRobotFactory extends ViewMapObject{
 		}
 		else if(triggered){
 			timer++;
-			if(timer>2) {myMapObject.deselect(); triggered = false;}
+			if(timer>2) {myMapObject.deselect(); triggered = false; timer = 0;}
 		}
 		
 		g.drawImage(manager.generateRobotFactory(), myMapObject.getX()*16 - animation.getOriginX(),

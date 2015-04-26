@@ -22,7 +22,6 @@ public class RobotCreationButton extends ModelButton{
 	public void respond() {
 		wasTriggered = true;
 		myFactory = (RobotFactory) myMap.getSelectedObject();
-		System.out.println(myFactory.toString());
 		if(myManager.getOre(myOreType)>=myOreCost && myManager.getGems()>=1
 				&& myMap.getCell(myFactory.getX(), myFactory.getY() + 1).getObjects().size()==0){
 			myManager.setOre(myManager.getOre(myOreType) - myOreCost, 0);
