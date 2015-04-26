@@ -43,7 +43,9 @@ public class MapCell {
 	public int getY(){
 		return myY;
 	}
-	public void incrementOre(ResourceManager r, int scalar){
+	public void incrementOre(ResourceManager r, Ore oreUsed){
+		int oreEfficiency = oreUsed.getMyOre();
+		int diversity = oreUsed.getMyDiversity();
 		Random rand = new Random();
 		int random = rand.nextInt(100);
 		int index = -1;
@@ -54,7 +56,9 @@ public class MapCell {
 			counter+=myOre[i];
 		}
 		if(index!=-1){
-			r.setOre(r.getOre(index) + scalar, index);
+			Ore o = OreData.getOreObject(index);
+			if((o.getMyPureIndex()/7 == oreUsed.getMyPureIndex()) || (o.getMyPureIndex()/7 != oreUsed.getMyPureIndex() && diversity>10))
+			r.setOre(r.getOre(index) + oreEfficiency, index);
 		}
 	}
 	public void incrementGems(ResourceManager r, int scalar) {
