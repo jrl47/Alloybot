@@ -431,8 +431,25 @@ public class InformationPanelScreen extends ViewComponent{
 					a = new AlloyText(OreData.getOreObject(i).getMyName().toUpperCase() + " ORE:", 1, 10, 50 + (20*counter));
 					myTileComponents.add(a);
 					addComponent(a);
-					s = currentCell.getOre(i) + "";
-					a = new AlloyText(s + "%", 1, 110, 50 + (20*counter));
+					
+					double oreFreq = currentCell.getOre(i);
+					if(oreFreq >= 8)
+						s = "COMMON";
+					else if(oreFreq >= 4)
+						s = "UNCOMMON";
+					else if(oreFreq >= 1)
+						s = "RARE";
+					else if(oreFreq >= .2)
+						s = "SUPER RARE";
+					else if(oreFreq >= .05)
+						s = "ULTRA RARE";
+					else if(oreFreq >= .01)
+						s = "MEGA RARE";
+					else if(oreFreq >= .002)
+						s = "GIGA RARE";
+					
+//					s = currentCell.getOre(i) + "%";
+					a = new AlloyText(s, 1, (OreData.getOreObject(i).getMyName().toUpperCase().length()+6)*7 + 10, 50 + (20*counter));
 					myTileComponents.add(a);
 					addComponent(a);
 					counter++;
@@ -443,7 +460,7 @@ public class InformationPanelScreen extends ViewComponent{
 				myTileComponents.add(a);
 				addComponent(a);
 				s = currentCell.getGems() + "";
-				a = new AlloyText(s + "%", 1, 110, 50 + (20*counter));
+				a = new AlloyText(s + "%", 1, 50, 50 + (20*counter));
 				myTileComponents.add(a);
 				addComponent(a);
 				counter++;

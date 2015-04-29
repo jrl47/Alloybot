@@ -25,14 +25,14 @@ public class MapCell {
 	private int myX;
 	private int myY;
 	private int myOil;
-	private int[] myOre;
+	private double[] myOre;
 	private int myGems;
 	public MapCell(String id, int x, int y){
 		myX = x;
 		myY = y;
 		myID = id;
 		myObjects = new ArrayList<MapCellObject>();
-		myOre = new int[OreData.NUMBER_OF_ORES];
+		myOre = new double[OreData.NUMBER_OF_ORES];
 	}
 	public String getID(){
 		return myID;
@@ -47,9 +47,9 @@ public class MapCell {
 		int oreEfficiency = oreUsed.getMyOre();
 		int diversity = oreUsed.getMyDiversity();
 		Random rand = new Random();
-		int random = rand.nextInt(100);
+		double random = rand.nextDouble()*100.0;
 		int index = -1;
-		int counter = 0;
+		double counter = 0;
 		for(int i=0; i<myOre.length; i++){
 			if(random >= counter && random < counter + myOre[i])
 				index = i;
@@ -77,11 +77,11 @@ public class MapCell {
 	public void setOil(int o){
 		myOil = o;
 	}
-	public int getOre(int i){
+	public double getOre(int i){
 		return myOre[i];
 	}
-	public void setOre(int o, int index) {
-		myOre[index] = o;
+	public void setOre(double d, int index) {
+		myOre[index] = d;
 	}
 	public int getGems(){
 		return myGems;

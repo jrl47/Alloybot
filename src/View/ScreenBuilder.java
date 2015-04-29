@@ -121,9 +121,9 @@ public class ScreenBuilder extends ViewComponent{
 				myMapComponents = new ArrayList<ViewComponent>();
 				myMapComponents.add(new Background(0, 0, ImageIO.read(ScreenBuilder.class.getResource("/mapbackground.png"))));
 				myMapComponents.add(new ViewMap(myData.getComponents().get(1), 0, 0));
-				myMapComponents.add(new InformationPanelScreen(myData.getComponents().get(1), (ModelMap)myData.getComponents().get(1), 658, 0));
-				myMapComponents.add(new AlloyBorderedButton((ModelButton)(myData.getComponents().get(3)), 665, 425, "INVENTORY", 1));
-				myMapComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 735, 425, "END GAME", 1));
+				myMapComponents.add(new InformationPanelScreen(myData.getComponents().get(1), (ModelMap)myData.getComponents().get(1), 594, 0));
+				myMapComponents.add(new AlloyBorderedButton((ModelButton)(myData.getComponents().get(3)), 601, 425, "INVENTORY", 1));
+				myMapComponents.add(new AlloyBorderedButton(myData.getComponents().get(0), 671, 425, "END GAME", 1));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
