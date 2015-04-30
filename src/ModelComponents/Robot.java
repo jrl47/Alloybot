@@ -61,9 +61,10 @@ public class Robot extends MapCellObject implements Comparable<Robot>{
 	public Ore getOre(){
 		return myOre;
 	}
-	public int processStat(int base, int size){
+	// Takes base stat and enters into equation to find robot's practical stat based on size
+	public static int processStat(int base, int size){
 		int std = (int)Math.pow(2, base);
-		int actualStat = (int) (Math.pow(size, size)*std*size);
+		int actualStat = (int) (Math.pow(size, size)*std*Math.pow(size, base));
 		return actualStat;
 	}
 	public void enabled() {

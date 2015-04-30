@@ -11,6 +11,7 @@ import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
 import ModelComponents.Ore;
 import ModelComponents.ResourceManager;
+import ModelComponents.Robot;
 import ModelComponents.RobotCreationButton;
 import View.AlloyFont;
 
@@ -128,39 +129,39 @@ public class RobotCreationResourceScreen extends ViewComponent{
 				}
 				
 				addComponent(new AlloyText("OIL EFFICIENCY:", 1, 10, 130));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyOil(), size)), 1, "OIL EFFICIENCY:".length()*7 + 17, 130));
-				int length1 = "OIL EFFICIENCY:".length()*7 + 24 + Integer.toString(processStat(ore.getMyOil(), size)).length()*7 + 14;
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyOil(), size)), 1, "OIL EFFICIENCY:".length()*7 + 17, 130));
+				int length1 = "OIL EFFICIENCY:".length()*7 + 24 + Integer.toString(Robot.processStat(ore.getMyOil(), size)).length()*7 + 14;
 				
 				addComponent(new AlloyText("ORE EFFICIENCY:", 1, length1, 130));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyOre(), size)), 1, "ORE EFFICIENCY:".length()*7 + 7 + length1, 130));
-				int length2 = length1 + "ORE EFFICIENCY".length()*7 + Integer.toString(processStat(ore.getMyOre(), size)).length()*7 + 14 + 14 + 14;
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyOre(), size)), 1, "ORE EFFICIENCY:".length()*7 + 7 + length1, 130));
+				int length2 = length1 + "ORE EFFICIENCY".length()*7 + Integer.toString(Robot.processStat(ore.getMyOre(), size)).length()*7 + 14 + 14 + 14;
 				
 				addComponent(new AlloyText("GEM EFFICIENCY:", 1, length2, 130));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyGems(), size)), 1, "GEM EFFICIENCY:".length()*7 + 7 + length2, 130));
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyGems(), size)), 1, "GEM EFFICIENCY:".length()*7 + 7 + length2, 130));
 				
 				
 				addComponent(new AlloyText("DIVERSITY:", 1, 10, 150));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyDiversity(), size)), 1, "DIVERSITY:".length()*7 + 17, 150));
-				length1 = "DIVERSITY:".length()*7 + 24 + Integer.toString(processStat(ore.getMyDiversity(), size)).length()*7 + 14;
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyDiversity(), size)), 1, "DIVERSITY:".length()*7 + 17, 150));
+				length1 = "DIVERSITY:".length()*7 + 24 + Integer.toString(Robot.processStat(ore.getMyDiversity(), size)).length()*7 + 14;
 				
 				addComponent(new AlloyText("DISTANCE:", 1, length1, 150));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyDistance(), size)), 1, "DISTANCE:".length()*7 + 7 + length1, 150));
-				length2 = length1 + "DISTANCE:".length()*7 + Integer.toString(processStat(ore.getMyDistance(), size)).length()*7 + 14 + 14 + 14;
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyDistance(), size)), 1, "DISTANCE:".length()*7 + 7 + length1, 150));
+				length2 = length1 + "DISTANCE:".length()*7 + Integer.toString(Robot.processStat(ore.getMyDistance(), size)).length()*7 + 14 + 14 + 14;
 				
 				addComponent(new AlloyText("LUCK:", 1, length2, 150));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyLuck(), size)), 1, "LUCK:".length()*7 + 7 + length2, 150));
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyLuck(), size)), 1, "LUCK:".length()*7 + 7 + length2, 150));
 				
 			
 				addComponent(new AlloyText("POWER:", 1, 10, 170));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyPower(), size)), 1, "POWER:".length()*7 + 17, 170));
-				length1 = "POWER:".length()*7 + 24 + Integer.toString(processStat(ore.getMyPower(), size)).length()*7 + 14;
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyPower(), size)), 1, "POWER:".length()*7 + 17, 170));
+				length1 = "POWER:".length()*7 + 24 + Integer.toString(Robot.processStat(ore.getMyPower(), size)).length()*7 + 14;
 				
 				addComponent(new AlloyText("DURABILITY:", 1, length1, 170));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyDurability(), size)), 1, "DURABILITY:".length()*7 + 7 + length1, 170));
-				length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(processStat(ore.getMyDurability(), size)).length()*7 + 14 + 14 + 14;
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyDurability(), size)), 1, "DURABILITY:".length()*7 + 7 + length1, 170));
+				length2 = length1 + "DURABILITY:".length()*7 + Integer.toString(Robot.processStat(ore.getMyDurability(), size)).length()*7 + 14 + 14 + 14;
 				
 				addComponent(new AlloyText("MAGIC:", 1, length2, 170));
-				addComponent(new AlloyText(Integer.toString(processStat(ore.getMyMagic(), size)), 1, "MAGIC:".length()*7 + 7 + length2, 170));
+				addComponent(new AlloyText(Integer.toString(Robot.processStat(ore.getMyMagic(), size)), 1, "MAGIC:".length()*7 + 7 + length2, 170));
 				
 				loaded = true;
 			} catch (IOException e) {
@@ -193,12 +194,12 @@ public class RobotCreationResourceScreen extends ViewComponent{
 		return myImage;
 	}
 	
-	// Takes base stat and enters into equation to find robot's practical stat based on size
-	public int processStat(int base, int size){
-		int std = (int)Math.pow(2, base);
-		int actualStat = (int) (Math.pow(size, size)*std*size);
-		return actualStat;
-	}
+//	// Takes base stat and enters into equation to find robot's practical stat based on size
+//	public int processStat(int base, int size){
+//		int std = (int)Math.pow(2, base);
+//		int actualStat = (int) (Math.pow(size, size)*std*Math.pow(size, base));
+//		return actualStat;
+//	}
 
 	@Override
 	public BufferedImage loadHover() {
