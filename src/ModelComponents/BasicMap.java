@@ -92,7 +92,7 @@ public class BasicMap extends ModelMap{
 	protected BufferedImage getGemImage(){
 		if(gemDataImage==null){
 		try {
-			gemDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapGems.png"));
+			gemDataImage = ImageIO.read(ScreenBuilder.class.getResource("/DemoMapGems.png"));
 		} catch (IOException e) {
 			return null;
 		}

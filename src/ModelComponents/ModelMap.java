@@ -73,6 +73,7 @@ public abstract class ModelMap extends ModelComponent{
 		for(BufferedImage b: getOreImages()){
 			if(b==null) break;
 			int value = getOreImages()[counter].getRGB(i, j)>>16 & 255;
+			System.out.println(value);
 			if(value>250) //common
 				myCells.getCell(i,j).setOre(8, counter);
 			else if(value>200) // uncommon

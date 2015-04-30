@@ -51,8 +51,12 @@ public class MapCell {
 		int index = -1;
 		double counter = 0;
 		for(int i=0; i<myOre.length; i++){
-			if(random >= counter && random < counter + myOre[i])
+			System.out.println(myOre[i]);
+			System.out.println(random);
+			if(random >= counter && random < counter + myOre[i]){
 				index = i;
+				System.out.println("YEE");
+			}
 			counter+=myOre[i];
 		}
 		if(index!=-1){
