@@ -46,13 +46,13 @@ public class BasicMap extends ModelMap{
 				setResources(i, j);
 			}
 		}
-		setX(getImage().getWidth()/2);
-		setY(getImage().getHeight()/2);
+		setX(80);
+		setY(84);
 	}
 	public static BufferedImage getImage(){
 		if(terrainDataImage==null){
 		try {
-			terrainDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMap.png"));
+			terrainDataImage = ImageIO.read(ScreenBuilder.class.getResource("/OfficialDemoMap.png"));
 		} catch (IOException e) {
 			return null;
 		}
@@ -62,7 +62,7 @@ public class BasicMap extends ModelMap{
 	public BufferedImage getOilImage(){
 		if(oilDataImage==null){
 		try {
-			oilDataImage = ImageIO.read(ScreenBuilder.class.getResource("/standardMapOil.png"));
+			oilDataImage = ImageIO.read(ScreenBuilder.class.getResource("/DemoMapOil.png"));
 		} catch (IOException e) {
 			return null;
 		}

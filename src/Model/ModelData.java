@@ -59,11 +59,9 @@ public class ModelData {
 		BasicMap b = new BasicMap(manager, state);
 		myMap = b;
 		Robot r = new Robot(0, 1, myMap);
-		b.addObject(r, 50, 50);
-		r = new Robot(1, 1, myMap);
-		b.addObject(r, 40, 50);
+		b.addObject(r, 85, 85);
 		RobotFactory rf = new RobotFactory(state);
-		b.addObject(rf, 45, 45);
+		b.addObject(rf, 87, 87);
 	}
 
 	private void loadMap() {
