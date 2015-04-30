@@ -16,7 +16,8 @@ public class FactoryCreationButton extends ModelButton{
 	public void respond() {
 		wasTriggered = true;
 		if(myManager.getGems()>=1
-				&& myMap.getCell(myRobot.getX(), myRobot.getY() + 1).getObjects().size()==0){
+				&& myMap.getCell(myRobot.getX(), myRobot.getY() + 1).getObjects().size()==0
+				&& myMap.getCell(myRobot.getX(), myRobot.getY() + 1).isBuildable()){
 			myManager.setGems(myManager.getGems() - 1);
 			RobotFactory f = new RobotFactory(myMap.getState());
 			myMap.addObject(f, myRobot.getX(), myRobot.getY() + 1);

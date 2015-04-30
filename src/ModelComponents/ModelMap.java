@@ -73,21 +73,27 @@ public abstract class ModelMap extends ModelComponent{
 		for(BufferedImage b: getOreImages()){
 			if(b==null) break;
 			int value = getOreImages()[counter].getRGB(i, j)>>16 & 255;
-			System.out.println(value);
-			if(value>250) //common
+			if(value>250){ //common
 				myCells.getCell(i,j).setOre(8, counter);
-			else if(value>200) // uncommon
+			}
+			else if(value>200) {// uncommon
 				myCells.getCell(i,j).setOre(4,counter);
-			else if(value>150) //rare
+			}
+			else if(value>150){ //rare
 				myCells.getCell(i,j).setOre(1,counter);
-			else if(value>100) // super rare
+			}
+			else if(value>100){ // super rare
 				myCells.getCell(i,j).setOre(.2,counter);
-			else if(value>50) // ultra rare
+			}
+			else if(value>50){ // ultra rare
 				myCells.getCell(i,j).setOre(.05,counter);
-			else if(value>10) // mega rare
+			}
+			else if(value>10){ // mega rare
 				myCells.getCell(i,j).setOre(.01,counter);
-			else if (value > 1)// mythical
+			}
+			else if (value > 1){// mythical
 				myCells.getCell(i,j).setOre(.002, counter);
+			}
 			counter++;
 		}
 		myCells.getCell(i,j).setGems(getGemImage().getRGB(i, j)>>16 & 255);
@@ -249,7 +255,7 @@ public abstract class ModelMap extends ModelComponent{
 	}
 	public int getFactoryCost(int x, int y){
 		double dist = (double) getFactoryDistance(x,y);
-		int cost = (int)Math.pow(dist/10, 7);
+		int cost = (int)Math.pow(dist/10, 4);
 		return cost;
 	}
 	public State getState(){

@@ -9,7 +9,7 @@ public class RobotDestroyButton extends ModelButton{
 	}
 	@Override
 	public void respond() {
-		resources.setGems(resources.getGems()+1);
+		resources.setGems(resources.getGems()+(int)Math.pow(myRobot.getSize(),myRobot.getSize()));
 		myRobot.destroy();
 	}
 }

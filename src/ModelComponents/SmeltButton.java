@@ -26,10 +26,10 @@ public class SmeltButton extends ModelButton{
 	}
 	public void respond() {
 		wasTriggered = true;
-		if(myManager.getOre(myOreType1)>=myOreCost && myManager.getOre(myOreType2)>=myOreCost && myManager.getGems()>=1){
+		if(myManager.getOre(myOreType1)>=myOreCost && myManager.getOre(myOreType2)>=myOreCost && myManager.getGems()>=myOreCost){
 			myManager.setOre(myManager.getOre(myOreType1) - myOreCost, myOreType1);
 			myManager.setOre(myManager.getOre(myOreType2) - myOreCost, myOreType2);
-			myManager.setGems(myManager.getGems() - 1);
+			myManager.setGems(myManager.getGems() - myOreCost);
 			myManager.setOre(myManager.getOre(myCreationType) + myOreCost, myCreationType);
 		}
 	}

@@ -13,7 +13,6 @@ import ModelComponents.ModelComponent;
 import ModelComponents.ModelMap;
 import ModelComponents.ResourceManager;
 import ModelComponents.Robot;
-import ModelComponents.OldRobotCreationButton;
 import ModelComponents.RobotCreationButton;
 import ModelComponents.RobotDeselectButton;
 import ModelComponents.RobotEnableButton;

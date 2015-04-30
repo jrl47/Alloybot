@@ -109,7 +109,7 @@ public class RobotCreationResourceScreen extends ViewComponent{
 				Ore ore = OreData.getOreObject(oreIndex);
 				String oreName = ore.getMyName().toUpperCase();
 				addComponent(new AlloyText(oreName, 2, Integer.toString(sizeCost).length()*14 + 100, 10));
-				addComponent(new AlloyText(", 1 GEM", 2, (Integer.toString(sizeCost).length() + oreName.length())*14 + 100, 10));
+				addComponent(new AlloyText(", " + Integer.toString(sizeCost) + " GEMS", 2, (Integer.toString(sizeCost).length() + oreName.length())*14 + 100, 10));
 			
 				addComponent(new AlloyText(oreName, 2, 10, 50));
 				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 50));
@@ -118,6 +118,10 @@ public class RobotCreationResourceScreen extends ViewComponent{
 				if(sizeCost > myManager.getOre(oreIndex)){
 					removeComponent(myCreationButton);
 					addComponent(new AlloyText("NOT ENOUGH RESOURCES", 2, 10, 90));
+				}
+				else if(myMap.getRobots().size()==4){
+					removeComponent(myCreationButton);
+					addComponent(new AlloyText("TOO MANY ROBOTS", 2, 10, 90));
 				}
 				else if(myMap.getCell(myMap.getCurrentHighlightedCell().getX(), myMap.getCurrentHighlightedCell().getY() + 1).getObjects().size()!=0){
 					removeComponent(myCreationButton);

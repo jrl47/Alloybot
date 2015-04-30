@@ -13,7 +13,9 @@ public class MapCellFactory {
 	}
 	
 	public MapCell makeSmallRocksCell(int x, int y) {
-		return new MapCell(MapCell.SMALL_ROCKS, x, y);
+		MapCell m = new MapCell(MapCell.SMALL_ROCKS, x, y);
+		m.setUnbuildable();
+		return m;
 	}
 	
 	public MapCell makeLargeRocksCell(int x, int y) {

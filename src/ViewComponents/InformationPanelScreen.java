@@ -165,10 +165,7 @@ public class InformationPanelScreen extends ViewComponent{
 		}
 		AlloyText a = null;
 		if(myResources.getOilDif()!=0){
-			if(myResources.getOilDif()>0)
-				a = new AlloyText("GOT " + myResources.getOilDif() + " OIL", 1, 10, 298);
-			if(myResources.getOilDif()<0)
-				a = new AlloyText("LOST " + -1*myResources.getOilDif() + " OIL", 1, 10, 298);
+			a = new AlloyText(myResources.getOilDif() + " OIL PER SECOND", 1, 10, 298);
 			myGainComponents.add(a);
 			addComponent(a);
 		}

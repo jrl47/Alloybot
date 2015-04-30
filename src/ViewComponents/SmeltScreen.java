@@ -116,7 +116,7 @@ public class SmeltScreen extends ViewComponent{
 				String oreName2 = parents.get(1).getMyName().toUpperCase();
 				addComponent(new AlloyText(sizeCost + " " +  oreName + ",", 2, 86, 10));
 				addComponent(new AlloyText(sizeCost + " " +  oreName2 + ",", 2, 86, 40));
-				addComponent(new AlloyText("1 GEM", 2, 86, 70));
+				addComponent(new AlloyText(sizeCost + " GEMS", 2, 86, 70));
 			
 				addComponent(new AlloyText(oreName + " AVAILABLE:", 2, 10, 100));
 //				addComponent(new AlloyText("AVAILABLE:", 2, oreName.length()*14 + 24, 100));
