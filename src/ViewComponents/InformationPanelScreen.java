@@ -97,7 +97,7 @@ public class InformationPanelScreen extends ViewComponent{
 				needsBack = true;
 				needsStats = true;
 				if(!hasRobotAction()){
-				if(Game.ticks % 11 == 0)
+				if(Game.ticks % 3 == 0)
 					createTileInfo();
 				createGainInfo();
 				}

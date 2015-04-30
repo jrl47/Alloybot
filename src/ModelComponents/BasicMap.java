@@ -52,7 +52,7 @@ public class BasicMap extends ModelMap{
 	public static BufferedImage getImage(){
 		if(terrainDataImage==null){
 		try {
-			terrainDataImage = ImageIO.read(ScreenBuilder.class.getResource("/OfficialDemoMap.png"));
+			terrainDataImage = ImageIO.read(ScreenBuilder.class.getResource("/DemoMap.png"));
 		} catch (IOException e) {
 			return null;
 		}
@@ -73,10 +73,17 @@ public class BasicMap extends ModelMap{
 	protected BufferedImage[] getOreImages() {
 		if(oreDataImages==null){
 			oreDataImages = new BufferedImage[OreData.NUMBER_OF_ORES];
-			for(int i=0;i<8;i++){
-				String oreMapName = "/standardMapOre" + i + ".png";
-				try {oreDataImages[i] = ImageIO.read(ScreenBuilder.class.getResource(oreMapName));} 
-				catch (IOException e) {return null;}
+			for(int i=0;i<21;i++){
+				String oreMapName = "/DemoMapOre" + i + ".png";
+				try {
+					if(ScreenBuilder.class.getResource(oreMapName)!=null){
+						oreDataImages[i] = ImageIO.read(ScreenBuilder.class.getResource(oreMapName));
+					}
+					else{
+						oreDataImages[i] = ImageIO.read(ScreenBuilder.class.getResource("/DemoMapTemplate.png"));
+					}
+				}
+				catch (IOException e) { return null;}
 			}
 		}
 		return oreDataImages;
