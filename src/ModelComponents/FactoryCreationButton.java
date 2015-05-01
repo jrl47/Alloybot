@@ -15,10 +15,11 @@ public class FactoryCreationButton extends ModelButton{
 	}
 	public void respond() {
 		wasTriggered = true;
-		if(myManager.getGems()>=1
+		if(myManager.getGems()>=5 && myManager.getOil()>=5000
 				&& myMap.getCell(myRobot.getX(), myRobot.getY() + 1).getObjects().size()==0
 				&& myMap.getCell(myRobot.getX(), myRobot.getY() + 1).isBuildable()){
-			myManager.setGems(myManager.getGems() - 1);
+			myManager.setGems(myManager.getGems() - 5);
+			myManager.setOil(myManager.getOil() - 5000);
 			RobotFactory f = new RobotFactory(myMap.getState());
 			myMap.addObject(f, myRobot.getX(), myRobot.getY() + 1);
 		}

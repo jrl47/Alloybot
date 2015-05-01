@@ -21,12 +21,8 @@ public class ResourceManager extends ModelComponent{
 	private Map<Integer, Integer> myOreDif;
 	private int myGemDif;
 	public ResourceManager(){
-		myOil = 150000;
+		myOil = 1000;
 		myOre = new int[100];
-		myOre[0] = 1;
-		myOre[1] = 1;
-		myOre[7] = 1;
-		myGems = 1;
 		myOldOreDif = new HashMap<Integer, Integer>();
 		myOreDif = new HashMap<Integer, Integer>();
 	}

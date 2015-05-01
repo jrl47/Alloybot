@@ -143,7 +143,7 @@ public class InformationPanelScreen extends ViewComponent{
 					addComponent(myFactoryCreationButton);
 					myBuildComponents.add(myFactoryCreationButton);
 
-					AlloyText a = new AlloyText("COSTS 1 GEM", 1, 10, 32);
+					AlloyText a = new AlloyText("COSTS 5 GEMS, 5000 OIL", 1, 10, 32);
 					addComponent(a);
 					myBuildComponents.add(a);
 
