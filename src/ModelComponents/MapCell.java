@@ -52,13 +52,13 @@ public class MapCell {
 		double random = rand.nextDouble()*100.0;
 		int index = -1;
 		double counter = 0;
-		System.out.println(Math.log10(luck));
+		System.out.println(Math.log10(luck+1));
 		for(int i=0; i<myOre.length; i++){
 //			System.out.println();
-			if(random >= counter && random < counter + Math.min(myOre[i] + Math.max(myOre[i]*Math.log10(luck), 0), 10)){
+			if(random >= counter && random < counter + Math.min(myOre[i] + Math.max(myOre[i]*Math.log10(luck+1), 0), 10)){
 				index = i;
 			}
-			counter+=Math.min(myOre[i] + myOre[i]*Math.log10(luck), 10);
+			counter+=Math.min(myOre[i] + Math.max(myOre[i]*Math.log10(luck+1), 0), 10);
 		}
 		if(index!=-1){
 			Ore o = OreData.getOreObject(index);
